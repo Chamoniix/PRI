@@ -13,26 +13,51 @@ export default class Home extends Component<{}> {
 	
   render() {
     return (
-      <View style={styles.container}>
-		
-        <Text style={styles.welcome}>
-          Welcome to Trainy!
-        </Text>  
-      </View>
+       <View style={styles.container}>
+              <View style={styles.halfHeight} >
+                <Text style={styles.caption}>
+                  Create new plan
+                </Text>
+              </View>
+
+              <View style={styles.quarterHeight}>
+                <Text style={styles.caption}>
+                  Explore plans
+                </Text>
+              </View>
+
+              <View style={[styles.quarterHeight, {backgroundColor: '#CCC'}]}>
+                <Text style={styles.caption}>
+                  My followed
+                </Text>
+              </View>
+          </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
+var styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+    halfHeight: {
+        flex: .5,
+        backgroundColor: '#FF3366',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    quarterHeight: {
+        flex: .25,
+        backgroundColor: '#000',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center'
+    },
+    caption: {
+      color: 'white',
+      fontSize: 50,
+      textAlign: 'center',
+    }
 });
