@@ -1,50 +1,28 @@
 import React, { Component } from 'react';
-import { StackNavigator, TabNavigator, } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Home from './Home';
-import CalendarApp from './CalendarApp';
-import Shop from './Shop';
-import User from './User';
+import Navigation from './Navigation';
+import Seance from './Seance';
 
-export const App = TabNavigator({
-  Home: {
-	  screen: Home,
-	   navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
-      },
-	},
-  CalendarApp: {
-	  screen: CalendarApp,
+export const App = StackNavigator({
+  Navigation: {
+	  screen:Navigation,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="calendar" size={25} />,
-      },
+        header : null,
+      },	  
 	},
-  Shop: {
-	  screen: Shop,
+  Seance: {
+	  screen: Seance,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
+        //header : null,
+		title: 'Seance',
       },
 	},
-  User: {
-	  screen: User,
-	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
-      },
-	},
-  
-}
-,{
-  tabBarOptions: {
-    showIcon: true,
-	showLabel : false,
-    indicatorStyle: {
-          backgroundColor: 'rgb(125,125,125)',
-          height: 60,
-      },
-	style: {
-		backgroundColor: 'rgb(217,217,217)',
-	},
+},{
+  StackNavigatorConfig: {
   },
-},);
+ },
+  
+);
 
 export default App;

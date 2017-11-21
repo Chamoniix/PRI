@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Users\\Hugo\\Desktop\\Sandbox\\testReact\\git\\PRI\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher.png",
         "source": "C:\\Users\\Hugo\\Desktop\\Sandbox\\testReact\\git\\PRI\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\Marc\\Documents\\AppliMuscu\\PRI\\android\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi\\ic_launcher.png",
+        "source": "C:\\Users\\Marc\\Documents\\AppliMuscu\\PRI\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     }
 ]
