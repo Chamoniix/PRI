@@ -14,6 +14,7 @@ const remote = 'https://cdn-maf0.heartyhosting.com/sites/muscleandfitness.com/fi
 export default class Home extends Component<{}> {
 
   render() {
+	  
     const resizeMode = 'center';
 
     return (
