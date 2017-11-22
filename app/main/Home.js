@@ -18,7 +18,9 @@ var h = Dimensions.get('window').height;
 export default class Home extends Component<{}> {
 
   render() {
+
     let imgUrl = require('../img/DSC_6536.jpg');
+
     return (
           <View style={styles.container}>
               <View>
