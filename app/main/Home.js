@@ -19,30 +19,48 @@ export default class Home extends Component<{}> {
 
   render() {
 
-    let imgUrl = require('../img/DSC_6536.jpg');
+    let imgCreer = require('../img/creerAccueil.jpg');
+    let imgSuivre = require('../img/gainage.jpg');
+    let imgPartage = require('../img/partageAccueil.jpg');
 
     return (
           <View style={styles.container}>
-              <View>
-                <Image source={imgUrl} style={{height: w*0.328, width: w}}/>
+              <View style={styles.section}>
+                <View>
+                  <Image source={imgCreer} style={{height: h*0.2, width: w, opacity: 0.7}}/>
+                </View>
+
+                <View style={styles.textContain} >
+                  <Text style={styles.caption}>
+                    Créer un plan
+                  </Text>
+                </View>
               </View>
 
-              <View style={styles.halfHeight} >
-                <Text style={styles.caption}>
-                  Create new plan
-                </Text>
+
+              <View style={styles.section}>
+                <View>
+                  <Image source={imgSuivre} style={{height: h*0.2, width: w, opacity: 0.7}}/>
+                </View>
+
+                <View style={[styles.textContain, , {backgroundColor: '#CCC'}]} >
+                  <Text style={styles.caption}>
+                    Suivre un plan
+                  </Text>
+                </View>
               </View>
 
-              <View style={styles.quarterHeight}>
-                <Text style={styles.caption}>
-                  Explore plans
-                </Text>
-              </View>
 
-              <View style={[styles.quarterHeight, {backgroundColor: '#CCC'}]}>
-                <Text style={styles.caption}>
-                  My followed
-                </Text>
+              <View style={styles.section}>
+                <View>
+                  <Image source={imgPartage} style={{height: h*0.2, width: w, opacity: 0.7}}/>
+                </View>
+
+                <View style={[styles.textContain, {backgroundColor: '#000'}]} >
+                  <Text style={styles.caption}>
+                    Partager plan
+                  </Text>
+                </View>
               </View>
 
           </View>
@@ -57,23 +75,19 @@ var styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-    halfHeight: {
-        flex: .5,
-        backgroundColor: '#FF3366',
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center'
+    section: {
+        flex: 0.33333,
     },
-    quarterHeight: {
-        flex: .25,
-        backgroundColor: '#000',
+    textContain: {
+        flex: 1,
+        backgroundColor: '#FF3366',
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'center'
     },
     caption: {
       color: 'white',
-      fontSize: 50,
+      fontSize: 40,
       textAlign: 'center',
     }
 });
