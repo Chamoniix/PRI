@@ -7,7 +7,8 @@ import {
   Text,
   View,
   Button,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from 'react-native';
 
 var width = Dimensions.get('window').width;
@@ -18,11 +19,34 @@ export default class CreatePlan extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Create Your Plan!
+          Create Your Plan! 
         </Text>  
+        <TouchableHighlight onPress={this.getActivites()}>
+             <Text>Appuie</Text>
+          </TouchableHighlight>  
       </View>
     );
   }
+  
+  getActivites = () => {
+    fetch('http://213.32.66.63/appliPP/getActivites.php', 
+    {
+        method : 'POST',
+        headers: {
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+            key: 'test',  
+        })
+    }
+    )
+    .then((response) => response.json())
+    .then((res) =>{
+        alert(res.test);
+    })
+    .done();
+}
 }
 
 const styles = StyleSheet.create({
