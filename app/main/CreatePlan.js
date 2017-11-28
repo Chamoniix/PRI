@@ -8,45 +8,72 @@ import {
   View,
   Button,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  ActivityIndicator,
+  ListView,
+  Alert
 } from 'react-native';
 
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
 export default class CreatePlan extends Component {
-    render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Create Your Plan! 
-        </Text>  
-        <TouchableHighlight onPress={this.getActivites()}>
-             <Text>Appuie</Text>
-          </TouchableHighlight>  
-      </View>
-    );
-  }
-  
-  getActivites = () => {
-    fetch('http://213.32.66.63/appliPP/getActivites.php', 
-    {
-        method : 'POST',
-        headers: {
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-            key: 'test',  
-        })
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            isLoading: true
+        }
     }
-    )
-    .then((response) => response.json())
-    .then((res) =>{
-        alert(res.test);
-    })
-    .done();
-}
+    
+    GetItem(activity){
+        Alert.alert(activity);
+    }
+    
+    componentDidMount(){
+        return fetch('http://213.32.66.63/appliPP/getActivites.php')
+        .then((response) => response.json())
+        .then((res) => {
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                isLoading: false,
+                dataSource: ds.cloneWithRows(res),
+            })
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+    
+    ListViewItemSeparator = () => {
+        return (
+            <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
+        );
+    }
+    
+    render() {
+        if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, paddingTop: 20}}>
+                    <ActivityIndicator />
+                </View>
+            );
+        }
+        
+        return (
+          <View style={styles.container}>
+            <Text style={styles.welcome}>
+              Choisissez votre activité:
+            </Text> 
+            <ListView
+                dataSource={this.state.dataSource}
+                renderSeparator={this.ListViewItemSeparator}
+                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.activite_nom)}>
+                {rowData.activite_nom}</Text>}
+            />
+          </View>
+        );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -61,4 +88,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+   rowViewContainer: {
+        fontSize: 20,
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+      }
 });
