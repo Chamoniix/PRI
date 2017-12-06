@@ -22,12 +22,41 @@ export default class CreatePlan extends Component {
     constructor(props){
         super(props);
         this.state = {
-            isLoading: true
+            isLoading: true,
+            dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
         }
     }
     
-    GetItem(activity){
-        Alert.alert(activity);
+    GetItem(obj){
+        Alert.alert(obj);
+    }
+    
+    GetObj(activity){
+        this.setState({
+            isLoading: true,
+        });
+        return fetch('http://213.32.66.63/appliPP/getObjectifs.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+                    id: activity,
+                })
+        })
+        .then((response) => response.json())
+        .then((res) => {
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                isLoading: false,
+                dataSourceObj: ds.cloneWithRows(res),
+            })
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
     
     componentDidMount(){
@@ -37,7 +66,7 @@ export default class CreatePlan extends Component {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
-                dataSource: ds.cloneWithRows(res),
+                dataSourceAct: ds.cloneWithRows(res),
             })
         })
         .catch((error) => {
@@ -66,10 +95,16 @@ export default class CreatePlan extends Component {
               Choisissez votre activité:
             </Text> 
             <ListView
-                dataSource={this.state.dataSource}
+                dataSource={this.state.dataSourceAct}
                 renderSeparator={this.ListViewItemSeparator}
-                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.activite_nom)}>
+                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetObj.bind(this, rowData.activite_id)}>
                 {rowData.activite_nom}</Text>}
+            />
+            <ListView
+                dataSource={this.state.dataSourceObj}
+                renderSeparator={this.ListViewItemSeparator}
+                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.objectif_nom)}>
+                {rowData.objectif_nom}</Text>}
             />
           </View>
         );
