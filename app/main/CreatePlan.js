@@ -91,21 +91,31 @@ export default class CreatePlan extends Component {
         
         return (
           <View style={styles.container}>
-            <Text style={styles.welcome}>
-              Choisissez votre activité:
-            </Text> 
-            <ListView
-                dataSource={this.state.dataSourceAct}
-                renderSeparator={this.ListViewItemSeparator}
-                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetObj.bind(this, rowData.activite_id)}>
-                {rowData.activite_nom}</Text>}
-            />
-            <ListView
-                dataSource={this.state.dataSourceObj}
-                renderSeparator={this.ListViewItemSeparator}
-                renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.objectif_nom)}>
-                {rowData.objectif_nom}</Text>}
-            />
+            <View>
+                <View style={{backgroundColor:'red'}}>
+                    <Text style={styles.textTitle}>
+                    Créer mon plan d'entrainement
+                    </Text>
+                </View>
+                <Text>Texte de présentation</Text>
+            </View>
+            <View>
+                <Text style={styles.welcome}>
+                  Choisissez votre activité:
+                </Text> 
+                <ListView
+                    dataSource={this.state.dataSourceAct}
+                    renderSeparator={this.ListViewItemSeparator}
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetObj.bind(this, rowData.activite_id)}>
+                    {rowData.activite_nom}</Text>}
+                />
+                <ListView
+                    dataSource={this.state.dataSourceObj}
+                    renderSeparator={this.ListViewItemSeparator}
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.objectif_id)}>
+                    {rowData.objectif_nom}</Text>}
+                />
+            </View>
           </View>
         );
   }
@@ -118,6 +128,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+    textTitle:{
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+    },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
