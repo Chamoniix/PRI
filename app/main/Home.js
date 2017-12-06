@@ -32,7 +32,7 @@ export default class Home extends Component<{}> {
 
             
             <View style={styles.section}>
-              <TouchableHighlight onPress={() => navigate('Shop')}>
+              <TouchableHighlight onPress={() => navigate('ChoixExercice')}>
                 <View>
                   <Image source={imgCreer} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
