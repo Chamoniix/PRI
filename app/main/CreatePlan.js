@@ -17,6 +17,8 @@ import {
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
+var objectif;
+
 export default class CreatePlan extends Component {
     
     constructor(props){
@@ -28,7 +30,9 @@ export default class CreatePlan extends Component {
     }
     
     GetItem(obj){
-        Alert.alert(obj);
+        //Alert.alert(obj);
+        objectif = obj;
+        this.props.navigation.navigate('CreatePlanBis');
     }
     
     GetObj(activity){
@@ -145,3 +149,5 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
       }
 });
+
+export {objectif};
