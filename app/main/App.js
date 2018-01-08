@@ -6,8 +6,6 @@ import CalendarApp from './CalendarApp';
 import Shop from './Shop';
 import User from './User';
 import Navigation from './Navigation';
-import Seance from './Seance';
-import ChoixExercice from './ChoixExercice.js';
 
 export const App = TabNavigator({
   Home: {
