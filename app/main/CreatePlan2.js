@@ -57,9 +57,6 @@ export default class CreatePlanBis extends Component {
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={(rowData) => <Text style={styles.rowViewContainer}>{rowData}</Text>}
                 />
-                <Text style={styles.welcome}>
-                  Nom de votre plan d'entraînement:
-                </Text> 
             </View>
           </View>
         );

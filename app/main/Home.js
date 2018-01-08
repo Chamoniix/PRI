@@ -31,7 +31,7 @@ export default class Home extends Component<{}> {
                 </View>
 
                 <View style={styles.textContain} >
-                  <Text style={styles.caption}>
+                  <Text style={styles.caption} onPress={() => this.props.navigation.navigate('CreatePlan')}>
                     Créer un plan
                   </Text>
                 </View>
