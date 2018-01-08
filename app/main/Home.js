@@ -37,11 +37,8 @@ export default class Home extends Component<{}> {
                   <Image source={imgCreer} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
               </TouchableHighlight>
-
-              
-            <View style={styles.textContain} >
-                <TouchableHighlight onPress={() => navigate('Shop')}>
-                  <Text style={styles.caption}>
+                <View style={styles.textContain} >
+                  <Text style={styles.caption} onPress={() => this.props.navigation.navigate('CreatePlan')}>
                     Créer un plan
                   </Text>
                 </TouchableHighlight>
