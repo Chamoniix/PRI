@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import Navigation from './Navigation';
 import Seance from './Seance';
 

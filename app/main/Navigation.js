@@ -5,10 +5,12 @@ import Home from './Home';
 import CalendarApp from './CalendarApp';
 import Shop from './Shop';
 import User from './User';
+import CreatePlan from './CreatePlan';
 
 export const App = TabNavigator({
   Home: {
-	  screen: Home,
+	  //screen: Home,
+      screen: CreatePlan,
 	   navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
       },
