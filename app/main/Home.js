@@ -7,7 +7,9 @@ import {
   Text,
   View,
   Button,
-  Dimensions
+  Dimensions,
+  TouchableHighlight,
+  Navigator
 } from 'react-native';
 
 //Dimension of screen :
@@ -23,45 +25,61 @@ export default class Home extends Component<{}> {
     let imgSuivre = require('../img/gainage.jpg');
     let imgPartage = require('../img/partageAccueil.jpg');
 
+    const {navigate} = this.props.navigation;
+
     return (
           <View style={styles.container}>
-              <View style={styles.section}>
+
+            
+            <View style={styles.section}>
+              <TouchableHighlight onPress={() => navigate('Shop')}>
                 <View>
                   <Image source={imgCreer} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
-
+              </TouchableHighlight>
                 <View style={styles.textContain} >
-                  <Text style={styles.caption}>
+                  <Text style={styles.caption} onPress={() => this.props.navigation.navigate('CreatePlan')}>
                     Créer un plan
                   </Text>
-                </View>
+                </TouchableHighlight>
               </View>
+            
+            </View>
+            
 
 
-              <View style={styles.section}>
+            <View style={styles.section}>
+              <TouchableHighlight onPress={() => navigate('Shop')}>
                 <View>
                   <Image source={imgSuivre} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
+              </TouchableHighlight>
 
-                <View style={[styles.textContain, , {backgroundColor: '#CCC'}]} >
+              <View style={[styles.textContain, , {backgroundColor: '#CCC'}]} >
+                <TouchableHighlight onPress={() => navigate('Shop')}>
                   <Text style={styles.caption}>
                     Suivre un plan
                   </Text>
-                </View>
+                </TouchableHighlight>
               </View>
+            </View>
 
 
-              <View style={styles.section}>
+            <View style={styles.section}>
+              <TouchableHighlight onPress={() => navigate('Shop')}>
                 <View>
                   <Image source={imgPartage} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
+              </TouchableHighlight>
 
-                <View style={[styles.textContain, {backgroundColor: '#000'}]} >
+              <View style={[styles.textContain, {backgroundColor: '#000'}]} >
+                <TouchableHighlight onPress={() => navigate('Shop')}>
                   <Text style={styles.caption}>
                     Partager plan
                   </Text>
-                </View>
+                </TouchableHighlight>
               </View>
+            </View>
 
           </View>
     );

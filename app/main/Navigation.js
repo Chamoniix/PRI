@@ -1,52 +1,36 @@
 import React, { Component } from 'react';
-import { TabNavigator, } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Home from './Home';
-import CalendarApp from './CalendarApp';
-import Shop from './Shop';
-import User from './User';
-import CreatePlan from './CreatePlan';
 
-export const App = TabNavigator({
-  Home: {
-	  //screen: Home,
-      screen: CreatePlan,
-	   navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
-      },
-	},
-  CalendarApp: {
-	  screen: CalendarApp,
+import Seance from './Seance';
+import CreatePlan from './CreatePlan';
+import CreatePlanBis from './CreatePlan2';
+import Home from './Home';
+
+export const App = StackNavigator({
+    Home: {
+	  screen:Home,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="calendar" size={25} />,
-      },
+        header : null,
+      },	  
 	},
-  Shop: {
-	  screen: Shop,
+    CreatePlan: {
+	  screen:CreatePlan,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
-      },
+        header : null,
+      },	  
 	},
-  User: {
-	  screen: User,
+    CreatePlanBis: {
+	  screen: CreatePlanBis,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
+        header : null,
       },
 	},
-  
-}
-,{
-  tabBarOptions: {
-    showIcon: true,
-	showLabel : false,
-    indicatorStyle: {
-          backgroundColor: 'rgb(125,125,125)',
-          height: 60,
-      },
-	style: {
-		backgroundColor: 'rgb(217,217,217)',
-	},
+},{
+  StackNavigatorConfig: {
   },
-},);
+ },
+  
+);
 
 export default App;
