@@ -7,9 +7,12 @@ import CreatePlan from './CreatePlan';
 import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
 
+import New from './New';
+
 export const App = StackNavigator({
     Home: {
 	  screen:Home,
+      //screen:New,
 	  navigationOptions: {
         header : null,
       },	  
@@ -28,6 +31,7 @@ export const App = StackNavigator({
 	},
 },{
   StackNavigatorConfig: {
+      initialRouteName: 'Home',
   },
  },
   
