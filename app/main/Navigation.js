@@ -7,6 +7,7 @@ import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
 import ChoixZoneCorps from './ChoixZoneCorps.js';
 import ChoixMuscle from './ChoixMuscle.js';
+import Materiel from './ChoixMateriel.js';
 
 export const App = StackNavigator({
     Home: {
@@ -30,6 +31,12 @@ export const App = StackNavigator({
 	},
 	ChoixMuscle: {
 		screen: ChoixMuscle,
+		navigationOptions: {
+        header : null,
+      },
+	},
+	Materiel: {
+		screen: Materiel,
 		navigationOptions: {
         header : null,
       },

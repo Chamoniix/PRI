@@ -31,7 +31,7 @@ export default class Home extends Component<{}> {
     }
 	
 	componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getMuscles.php')
+        return fetch('http://213.32.66.63/appliPP/getZoneCorps.php')
         .then((response) => response.json())
         .then((res) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

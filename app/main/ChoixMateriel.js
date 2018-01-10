@@ -18,12 +18,9 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-import {idZone} from './ChoixZoneCorps.js';
-
-var idMuscle;
+var idZone;
 
 export default class Home extends Component<{}> {
-	
 	
 	constructor(props){
         super(props);
@@ -33,20 +30,10 @@ export default class Home extends Component<{}> {
     }
 	
 	componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getMuscleByZone.php',
-        {
-            method: "POST", 
-            headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-            body: JSON.stringify({
-                    zoneid: idZone,
-                })
-        })
+        return fetch('http://213.32.66.63/appliPP/getZoneCorps.php')
         .then((response) => response.json())
         .then((res) => {
-             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
                 dataSourceAct: ds.cloneWithRows(res),
@@ -63,10 +50,10 @@ export default class Home extends Component<{}> {
         );
     }
 	
-	muscleChoosen = (rowData) => {
-		idMuscle = rowData.muscle_id;
-		//Alert.alert(idMuscle);
-		this.props.navigation.navigate('Materiel');
+	zoneChoosen = (rowData) => {
+			//Alert.alert(rowData.zone_id);
+			idMuscle = rowData.muscle_id;
+			this.props.navigation.navigate('Materiel');
 	}
 	
 	
@@ -81,7 +68,7 @@ export default class Home extends Component<{}> {
                 </View>
             );
         }
-	
+
     return (
           <View style={styles.container}>
             <View>
@@ -95,14 +82,8 @@ export default class Home extends Component<{}> {
 			
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez le muscle à travailler: 	
+                  Choisissez votre matériel: 	
                 </Text> 
-				<ListView
-                    dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.muscleChoosen(rowData)}>
-                    {rowData.muscle_nom}</Text>}
-                />
             </View>
          </View>
     );
@@ -142,5 +123,3 @@ var styles = StyleSheet.create({
 		borderColor: '#d6d7da',
 	}
 });
-
-export{idMuscle};
