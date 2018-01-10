@@ -29,8 +29,7 @@ export default class CreatePlan extends Component {
         }
     }
     
-    GetItem(obj){
-        //Alert.alert(obj);
+    GoToNextStep(obj){
         objectif = obj;
         this.props.navigation.navigate('CreatePlanBis');
     }
@@ -116,7 +115,7 @@ export default class CreatePlan extends Component {
                 <ListView
                     dataSource={this.state.dataSourceObj}
                     renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.objectif_id)}>
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GoToNextStep.bind(this, rowData.objectif_id)}>
                     {rowData.objectif_nom}</Text>}
                 />
             </View>

@@ -15,13 +15,24 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
-import {objectif} from './CreatePlan.js';
+import {objectif} from './CreatePlan';
+
+var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Home'})
+  ]
+})
 
 export default class CreatePlanBis extends Component {
     
@@ -75,7 +86,7 @@ export default class CreatePlanBis extends Component {
                   Choisissez votre difficulté:
                 </Text> 
                 <ListView
-                    dataSource={ds.cloneWithRows(["Débutant", "Intermédiaire", "Confirmé"])}
+                    dataSource={ds.cloneWithRows(["Debutant", "Intermediaire", "Confirmé"])}
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.setState({niveau: rowData})}>{rowData}</Text>}
                 />
@@ -90,18 +101,12 @@ export default class CreatePlanBis extends Component {
                 <TouchableHighlight onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info)}>
                     <Text style={styles.welcome}>Créer votre plan</Text>
                 </TouchableHighlight>
-                <ListView
-                    dataSource={this.state.dataSourceObj}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer}>{rowData}</Text>}
-                />
             </View>
           </ScrollView>
         );
   }
   
   createPlan(name, length, level, objectifid, information){
-      //Alert.alert(this.state.nom+' '+this.state.duree+' '+this.state.niveau+' '+objectif+' '+this.state.info)
       this.setState({
             isLoading: true,
         });
@@ -125,6 +130,9 @@ export default class CreatePlanBis extends Component {
             this.setState({
                 isLoading: false,
             })
+            planId = res;
+            this.props.navigation.dispatch(resetAction);
+            this.props.navigation.navigate('CalendarApp');
         })
         .catch((error) => {
             console.error(error);
@@ -165,3 +173,5 @@ const styles = StyleSheet.create({
        borderRadius:3,
    }
 });
+
+export {planId};

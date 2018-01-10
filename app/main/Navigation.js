@@ -31,6 +31,7 @@ export const App = StackNavigator({
 	},
 },{
   StackNavigatorConfig: {
+      initialRouteName: 'Home',
   },
  },
   
