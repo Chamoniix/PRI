@@ -27,11 +27,12 @@ export default class CreatePlanBis extends Component {
     
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
+                isLoading: false,
                 duree: '',
                 niveau: '',
                 nom: '',
-                comm: ''
+                info: '',
         };
     }
         
@@ -41,7 +42,16 @@ export default class CreatePlanBis extends Component {
         );
     }
     
-    render() {        
+    render() {
+
+        if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, paddingTop: 20}}>
+                    <ActivityIndicator />
+                </View>
+            );
+        }
+    
         return (
           <ScrollView>
             <View>
@@ -74,19 +84,51 @@ export default class CreatePlanBis extends Component {
                 </Text>
                 <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                 <Text style={styles.welcome}>
-                  Commentaires sur votre plan d'entraînement (optionnel):
+                  Informations sur votre plan d'entraînement:
                 </Text>
-                <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(note) => this.setState({comm: note})} value={this.state.comm}/>
-                <TouchableHighlight onPress={this.createPlan}>
+                <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
+                <TouchableHighlight onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info)}>
                     <Text style={styles.welcome}>Créer votre plan</Text>
                 </TouchableHighlight>
+                <ListView
+                    dataSource={this.state.dataSourceObj}
+                    renderSeparator={this.ListViewItemSeparator}
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer}>{rowData}</Text>}
+                />
             </View>
           </ScrollView>
         );
   }
   
-  createPlan = () => {
-      Alert.alert(this.state.nom+' '+this.state.duree+' '+this.state.niveau+' '+objectif+' '+this.state.comm)
+  createPlan(name, length, level, objectifid, information){
+      //Alert.alert(this.state.nom+' '+this.state.duree+' '+this.state.niveau+' '+objectif+' '+this.state.info)
+      this.setState({
+            isLoading: true,
+        });
+        return fetch('http://213.32.66.63/appliPP/createPlan.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+                    duree: length,
+                    niveau: level,
+                    nom: name,
+                    info: information,
+                    obj: objectifid,
+                })
+        })
+        .then((response) => response.json())
+        .then((res) => {
+            this.setState({
+                isLoading: false,
+            })
+        })
+        .catch((error) => {
+            console.error(error);
+        });
   }
  }
 

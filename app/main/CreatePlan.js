@@ -52,10 +52,10 @@ export default class CreatePlan extends Component {
         })
         .then((response) => response.json())
         .then((res) => {
-            let dss = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
-                dataSourceObj: dss.cloneWithRows(res),
+                dataSourceObj: ds.cloneWithRows(res),
             })
         })
         .catch((error) => {
