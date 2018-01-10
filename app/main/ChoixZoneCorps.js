@@ -10,13 +10,15 @@ import {
   TouchableHighlight,
   ListView,
   ActivityIndicator,
-  Navigator
+  Navigator,
+  Alert
 } from 'react-native';
 
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
+var idZone;
 
 export default class Home extends Component<{}> {
 	
@@ -29,7 +31,7 @@ export default class Home extends Component<{}> {
     }
 	
 	componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getZoneCorps.php')
+        return fetch('http://213.32.66.63/appliPP/getMuscles.php')
         .then((response) => response.json())
         .then((res) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -48,7 +50,14 @@ export default class Home extends Component<{}> {
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
-
+	
+	zoneChoosen = (rowData) => {
+			//Alert.alert(rowData.zone_id);
+			idZone = rowData.zone_id;
+			this.props.navigation.navigate('ChoixMuscle');
+	}
+	
+	
   render() {
 
     const {navigate} = this.props.navigation;
@@ -74,12 +83,12 @@ export default class Home extends Component<{}> {
 			
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez votre activité: 	
+                  Choisissez votre zone du corps: 	
                 </Text> 
 				<ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer}>
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.zoneChoosen(rowData)}>
                     {rowData.zone_nom}</Text>}
                 />
             </View>
@@ -121,3 +130,5 @@ var styles = StyleSheet.create({
 		borderColor: '#d6d7da',
 	}
 });
+
+export{idZone};

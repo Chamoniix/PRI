@@ -5,12 +5,13 @@ import Seance from './Seance';
 import CreatePlan from './CreatePlan';
 import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
-import ChoixExercice from './ChoixExercice.js';
+import ChoixZoneCorps from './ChoixZoneCorps.js';
+import ChoixMuscle from './ChoixMuscle.js';
 
 export const App = StackNavigator({
     Home: {
 	  //screen:Home,
-      screen:ChoixExercice,
+      screen:ChoixZoneCorps,
 	  navigationOptions: {
         header : null,
       },	  
@@ -27,8 +28,15 @@ export const App = StackNavigator({
         header : null,
       },
 	},
+	ChoixMuscle: {
+		screen: ChoixMuscle,
+		navigationOptions: {
+        header : null,
+      },
+	}
 },{
   StackNavigatorConfig: {
+	  mode: 'modal',
   },
  },
   
