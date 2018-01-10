@@ -19,6 +19,7 @@ import Seance from './Seance';
 
 
 export default class AddSeance extends Component<{}> {
+	
 	render() {
 	  const { navigate } = this.props.navigation;
 		return(
