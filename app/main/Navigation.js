@@ -16,7 +16,7 @@ export const App = StackNavigator({
 	  screen:Home,
       // screen:New,
 	  // screen:Home,
-      // screen:ChoixZoneCorps,
+      //screen:ChoixZoneCorps,
 	  navigationOptions: {
         header : null,
       },	  
