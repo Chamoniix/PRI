@@ -23,13 +23,34 @@ export default class CreatePlan extends Component {
     
     constructor(props){
         super(props);
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 === r2
+        });
         this.state = {
             isLoading: true,
             dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            dataSourceAct: ds.cloneWithRows(this.getActivites()),
+            selectedID: 'Reprise'
         }
     }
     
-    GoToNextStep(obj){
+    getActivites = () => {
+        return fetch('http://213.32.66.63/appliPP/getActivites.php')
+        .then((response) => response.json())
+        .then((res) => {
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
+            this.setState({
+                isLoading: false,
+                dataSourceAct: ds.cloneWithRows(res),
+            })
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+    
+    GetItem(obj){
+        //Alert.alert(obj);
         objectif = obj;
         this.props.navigation.navigate('CreatePlanBis');
     }
@@ -51,10 +72,10 @@ export default class CreatePlan extends Component {
         })
         .then((response) => response.json())
         .then((res) => {
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            let dss = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
-                dataSourceObj: ds.cloneWithRows(res),
+                dataSourceObj: dss.cloneWithRows(res),
             })
         })
         .catch((error) => {
@@ -62,11 +83,11 @@ export default class CreatePlan extends Component {
         });
     }
     
-    componentDidMount(){
+    /*componentDidMount(){
         return fetch('http://213.32.66.63/appliPP/getActivites.php')
         .then((response) => response.json())
         .then((res) => {
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
             this.setState({
                 isLoading: false,
                 dataSourceAct: ds.cloneWithRows(res),
@@ -75,7 +96,7 @@ export default class CreatePlan extends Component {
         .catch((error) => {
             console.error(error);
         });
-    }
+    }*/
     
     ListViewItemSeparator = () => {
         return (
@@ -109,20 +130,41 @@ export default class CreatePlan extends Component {
                 <ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}    
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetObj.bind(this, rowData.activite_id)}>
-                    {rowData.activite_nom}</Text>}
+                    renderRow={this._renderRow.bind(this)}
                 />
                 <ListView
                     dataSource={this.state.dataSourceObj}
                     renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GoToNextStep.bind(this, rowData.objectif_id)}>
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetItem.bind(this, rowData.objectif_id)}>
                     {rowData.objectif_nom}</Text>}
                 />
             </View>
           </View>
         );
   }
+  
+   _renderRow(rowData, rowID) {
+    return (
+      <TouchableHighlight onPress={() => {
+        this._selectedAct(rowData, rowID)
+      }}>
+        <View style={this.state.selectedID == rowData.activite_nom
+          ? styles.weekRowSelected
+          : styles.weekRow}>
+          <Text style={this.state.selectedID == rowData.activite_nom
+            ? styles.weekTextSelected
+            : styles.weekText}>
+            {rowData.activite_nom}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+  _selectedAct(rowData, rowID) {
+    this.setState({selectedID: rowData.activite_nom, dataSourceAct: this.state.dataSourceAct.cloneWithRows(this.getActivites())});
+  }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -152,6 +194,19 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
         backgroundColor: 'blue',
-   }
+   },
+   weekRowSelected : {
+  },
+  weekRow: {
+  },
+  weekTextSelected: {
+    fontSize: 16,
+    color: 'yellow',
+  },
+  weekText: {
+    fontSize: 14,
+    color: 'blue',
+  }
 });
+
 export {objectif};
