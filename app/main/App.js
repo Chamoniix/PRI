@@ -2,21 +2,20 @@ import React, { Component } from 'react';
 import { TabNavigator, } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './Home';
-import CalendarApp from './CalendarApp';
+import CalendarNavigation from './CalendarNavigation';
 import Shop from './Shop';
 import User from './User';
 import Navigation from './Navigation';
 
 export const App = TabNavigator({
   Home: {
-      //screen: Home,
       screen: Navigation,
 	   navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
       },
 	},
-  CalendarApp: {
-	  screen: CalendarApp,
+  Calendar: {
+	  screen: CalendarNavigation,
 	  navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name="calendar" size={25} />,
       },

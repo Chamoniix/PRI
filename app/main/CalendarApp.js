@@ -7,44 +7,43 @@ import {
   Text,
   View,
   Button,
-  Navigator,
+  ActivityIndicator,
   TouchableHighlight,
+  ListView,
+  ScrollView,
 } from 'react-native';
-import Seance from './Seance';
+import AddSeance from './AddSeance';
+
+var date; 
 
 export default class CalendarApp extends Component<{}> {
+	constructor(props){
+        super(props);
+		this.state = {
+			isLoading: true
+		};
+	}
 	
-  render() {
-	  const { navigate } = this.props.navigation;
-    return (
+	GetDay(day) {
+		date = day;
+		this.props.navigation.navigate('AddSeance');
+	}
 	
-      <View style={styles.container}>
-	    <Calendar
-		  // Specify style for calendar container element. Default = {}
-		  style={{
-			height: 350
-		  }}
-		  // Specify theme properties to override specific styles for calendar parts. Default = {}
-		  theme={{
-			selectedDayBackgroundColor: '#650205',
-			selectedDayTextColor: 'white',
-			todayTextColor: '#650205',
-			
-		  }}
-          // Initially visible month. Default = Date()
-          current={'2017-11-14'}
-          // If firstDay=1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday.
-          firstDay={1}
-		  markedDates={{
-			'2017-11-16': {selected: true},
-			'2017-11-17': {selected: true},
-			'2017-12-18': {selected: true}
-		  }}
-		  onDayPress={() => navigate('Seance')}
-		   
-        />
+	render() {
+		/*if(this.state.isLoading){
+			return(
+				<View style={{flex: 1, paddingTop: 20}}>
+					<ActivityIndicator />
+				</View>
+			);
+		}*/
 		
-      </View>
+    return (
+		<ScrollView>
+	    <Calendar
+			onDayPress={this.GetDay.bind(this)}
+        />
+	  </ScrollView>
     );
   }
 }
