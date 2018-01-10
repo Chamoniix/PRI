@@ -19,6 +19,12 @@ export const CalendarNavigation = StackNavigator({
         header : null,
       },	  
 	},
+    Seance: {
+	  screen:Seance,
+	  navigationOptions: {
+        header : null,
+      },	  
+	},
 },{
   StackNavigatorConfig: {
   },

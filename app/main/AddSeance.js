@@ -15,11 +15,12 @@ import {
   TextInput,
 } from 'react-native';
 
-//import {dateSeance} from './CalendarApp';
+import Seance from './Seance';
 
 
 export default class AddSeance extends Component<{}> {
 	render() {
+	  const { navigate } = this.props.navigation;
 		return(
 			<ScrollView>
 			<Text style={styles.title}>Nom</Text>
@@ -49,7 +50,9 @@ export default class AddSeance extends Component<{}> {
 			  />
 			  
 			  
-			<Button title="Continuer" style={styles.bouton}/>
+			<Button 
+			onPress={() => navigate('Seance')}
+			title="Continuer" style={styles.bouton}/>
 			</ScrollView>
 		);
 	}
