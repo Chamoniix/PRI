@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import Seance from './Seance';
+//import {date} from './CalendarApp';
 
 
 export default class AddSeance extends Component<{}> {
@@ -50,12 +51,16 @@ export default class AddSeance extends Component<{}> {
 					info: infoS,
                 })
         })
+		.then(() => this.props.navigation.navigate('Seance'))
+		.then((res)=> {
+			lastId = res;
+		})
         .catch((error) => {
             console.error(error);
         });
     }
+	
 	render() {
-	  const { navigate } = this.props.navigation;
 		return(
 			<ScrollView>
 			<Text style={styles.title}>Nom</Text>

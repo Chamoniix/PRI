@@ -25,7 +25,7 @@ export default class CreatePlan extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
         }
     }
     
@@ -49,6 +49,14 @@ export default class CreatePlan extends Component {
             body: JSON.stringify({
                     id: activity,
                 })
+        })
+        .then((response) => response.json())
+        .then((res) => {
+            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+            this.setState({
+                isLoading: false,
+                dataSourceObj: ds.cloneWithRows(res),
+            })
         })
         .catch((error) => {
             console.error(error);
@@ -101,7 +109,7 @@ export default class CreatePlan extends Component {
                 </Text> 
                 <ListView
                     dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}
+                    renderSeparator={this.ListViewItemSeparator}    
                     renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={this.GetObj.bind(this, rowData.activite_id)}>
                     {rowData.activite_nom}</Text>}
                 />
@@ -116,12 +124,11 @@ export default class CreatePlan extends Component {
         );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
     textTitle:{
@@ -139,7 +146,13 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 10,
         paddingBottom: 10,
-      }
+      },
+      
+   rowSelected: {
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: 'blue',
+   }
 });
-
 export {objectif};
