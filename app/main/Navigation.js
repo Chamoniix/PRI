@@ -5,13 +5,12 @@ import Seance from './Seance';
 import CreatePlan from './CreatePlan';
 import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
-import Seance from './Seance';
 import ChoixExercice from './ChoixExercice.js';
 
 export const App = StackNavigator({
     Home: {
 	  //screen:Home,
-    screen:ChoixExercice,
+      screen:ChoixExercice,
 	  navigationOptions: {
         header : null,
       },	  
