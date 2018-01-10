@@ -123,7 +123,6 @@ export default class CreatePlan extends Component {
         );
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -155,5 +154,4 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
    }
 });
-
 export {objectif};
