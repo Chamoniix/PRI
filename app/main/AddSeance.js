@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Calendar} from 'react-native-calendars';
 import {
+  AppRegistry,
   Platform,
   Alert,
   StyleSheet,
@@ -15,9 +16,8 @@ import {
   TextInput,
 } from 'react-native';
 
-import Seance from './Seance';
-//import {date} from './CalendarApp';
-
+import {date} from './CalendarApp';
+import {planId} from './CreatePlan2';
 
 export default class AddSeance extends Component<{}> {
 	constructor(props){
@@ -32,7 +32,7 @@ export default class AddSeance extends Component<{}> {
         }
     }
 	
-	AddS(nomS, objS, numS, nbR, infoS){
+	AddS(nomS, objS, numS, nbR, infoS, date, planId){
         this.setState({
             isLoading: true,
         });
@@ -49,6 +49,9 @@ export default class AddSeance extends Component<{}> {
 					num: numS,
 					nbRepos: nbR,
 					info: infoS,
+					dateS: date,
+					planIdS:planId,
+					
                 })
         })
 		.then(() => this.props.navigation.navigate('Seance'))
@@ -59,10 +62,11 @@ export default class AddSeance extends Component<{}> {
             console.error(error);
         });
     }
-	
+   
 	render() {
 		return(
 			<ScrollView>
+			<Text style={styles.firstTitle}>Créer votre seance</Text>
 			<Text style={styles.title}>Nom</Text>
 			<TextInput
 				editable = {true}
@@ -98,7 +102,7 @@ export default class AddSeance extends Component<{}> {
 			  
 			  
 			<Button 
-			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance)}
+			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planId)}
 			title="Continuer" style={styles.bouton}/>
 			</ScrollView>
 		);
@@ -110,5 +114,11 @@ const styles = StyleSheet.create({
 	  paddingTop :10,
     textAlign:'center',
     backgroundColor: 'rgb(204, 204, 204)',
+  },
+  firstTitle: {
+	  fontSize: 20,
+	  padding :10,
+    textAlign:'center',
+   // backgroundColor: 'rgb(204, 204, 204)',
   },
 });

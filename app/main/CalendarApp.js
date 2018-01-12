@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Calendar} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {
+  AppRegistry,
   Platform,
   Alert,
   StyleSheet,
@@ -12,11 +13,12 @@ import {
   ListView,
   ScrollView,
 } from 'react-native';
-import AddSeance from './AddSeance';
 
 var date; 
 
-export default class CalendarApp extends Component<{}> {
+
+
+export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
 		this.state = {
@@ -25,7 +27,7 @@ export default class CalendarApp extends Component<{}> {
 	}
 	
 	GetDay(day) {
-		date = day;
+		date = day.dateString;
 		this.props.navigation.navigate('AddSeance');
 	}
 	
@@ -40,6 +42,7 @@ export default class CalendarApp extends Component<{}> {
 		
     return (
 		<ScrollView>
+		<Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
 	    <Calendar
 			onDayPress={this.GetDay.bind(this)}
         />
@@ -57,4 +60,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(204, 204, 204)',
   },
+  
+  firstTitle: {
+	  fontSize: 20,
+	  padding :10,
+    textAlign:'center',
+   // backgroundColor: 'rgb(204, 204, 204)',
+  },
 });
+export {date};

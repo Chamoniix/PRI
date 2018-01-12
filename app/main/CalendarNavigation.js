@@ -5,6 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Seance from './Seance';
 import AddSeance from './AddSeance';
 import CalendarApp from './CalendarApp';
+import ChoixZoneCorps from './ChoixZoneCorps.js';
+import ChoixMuscle from './ChoixMuscle.js';
+import Materiel from './ChoixMateriel.js';
 
 export const CalendarNavigation = StackNavigator({
     CalendarApp: {
@@ -25,6 +28,24 @@ export const CalendarNavigation = StackNavigator({
         header : null,
       },	  
 	},
+	ChoixZoneCorps: {
+		screen: ChoixZoneCorps,
+		navigationOptions: {
+        header : null,
+      },
+	},
+	ChoixMuscle: {
+		screen: ChoixMuscle,
+		navigationOptions: {
+        header : null,
+      },
+	},
+	Materiel: {
+		screen: Materiel,
+		navigationOptions: {
+        header : null,
+      },
+	}
 },{
   StackNavigatorConfig: {
   },
