@@ -7,6 +7,8 @@ import {
   Dimensions,
   ScrollView,
   Button,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import Navigation from './Navigation';
@@ -15,14 +17,25 @@ var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
 export default class Seance extends Component<{}> {
+   gotToChoixZoneCorps = (value) => {
+	this.props.navigation.navigate('ChoixZoneCorps');
+  }
   render() {
+	const ele = (value) => (
+		<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,value)}>
+			<View >
+			  <Text>Choisir un exercice</Text>
+			</View>
+		</TouchableOpacity>
+	);
+	
 	  const tableHead = ['', 'Atelier', 'Nombre de seance', 'Nombre de repetion'];
     const tableData = [
-      ['1', '', '', ''],
-      ['2', '', '', ''],
-      ['3', '', '', ''],
-      ['4', '', '', ''],
-      ['5', '', '', ''],
+      ['1',  ele('1'), '', ''],
+      ['2', ele('2'), '', ''],
+      ['3',ele('3'), '', ''],
+      ['4', ele('4'), '', ''],
+      ['5', ele('5'), '', ''],
     ];
     return (
       <ScrollView>
@@ -30,8 +43,6 @@ export default class Seance extends Component<{}> {
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
-		<Button title="Sauvegarder" style={styles.bouton}/>
-		<Button title="Commencer" style={styles.bouton}/>
       </ScrollView>
     );
   }

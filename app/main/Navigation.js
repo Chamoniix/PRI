@@ -5,9 +5,6 @@ import Seance from './Seance';
 import CreatePlan from './CreatePlan';
 import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
-import ChoixZoneCorps from './ChoixZoneCorps.js';
-import ChoixMuscle from './ChoixMuscle.js';
-import Materiel from './ChoixMateriel.js';
 
 import New from './New';
 
@@ -33,18 +30,6 @@ export const App = StackNavigator({
         header : null,
       },
 	},
-	ChoixMuscle: {
-		screen: ChoixMuscle,
-		navigationOptions: {
-        header : null,
-      },
-	},
-	Materiel: {
-		screen: Materiel,
-		navigationOptions: {
-        header : null,
-      },
-	}
 },{
   StackNavigatorConfig: {
       initialRouteName: 'Home',

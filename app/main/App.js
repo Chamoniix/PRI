@@ -4,8 +4,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './Home';
 import CalendarNavigation from './CalendarNavigation';
 import Shop from './Shop';
-import User from './User';
+//import User from './User';
 import Navigation from './Navigation';
+
+import User from './Seance';
 
 export const App = TabNavigator({
   Home: {
