@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import {date} from './CalendarApp';
-
+import {planId} from './CreatePlan2';
 
 export default class AddSeance extends Component<{}> {
 	constructor(props){
@@ -32,7 +32,7 @@ export default class AddSeance extends Component<{}> {
         }
     }
 	
-	AddS(nomS, objS, numS, nbR, infoS, date){
+	AddS(nomS, objS, numS, nbR, infoS, date, planId){
         this.setState({
             isLoading: true,
         });
@@ -50,6 +50,7 @@ export default class AddSeance extends Component<{}> {
 					nbRepos: nbR,
 					info: infoS,
 					dateS: date,
+					planIdS:planId,
 					
                 })
         })
@@ -61,14 +62,11 @@ export default class AddSeance extends Component<{}> {
             console.error(error);
         });
     }
-	
-	showAlert = () => {
-      Alert.alert(date)
-   }
    
 	render() {
 		return(
 			<ScrollView>
+			<Text style={styles.firstTitle}>Créer votre seance</Text>
 			<Text style={styles.title}>Nom</Text>
 			<TextInput
 				editable = {true}
@@ -104,7 +102,7 @@ export default class AddSeance extends Component<{}> {
 			  
 			  
 			<Button 
-			onPress={this.showAlert}
+			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planId)}
 			title="Continuer" style={styles.bouton}/>
 			</ScrollView>
 		);
@@ -116,5 +114,11 @@ const styles = StyleSheet.create({
 	  paddingTop :10,
     textAlign:'center',
     backgroundColor: 'rgb(204, 204, 204)',
+  },
+  firstTitle: {
+	  fontSize: 20,
+	  padding :10,
+    textAlign:'center',
+   // backgroundColor: 'rgb(204, 204, 204)',
   },
 });
