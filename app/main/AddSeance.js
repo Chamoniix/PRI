@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Calendar} from 'react-native-calendars';
 import {
+  AppRegistry,
   Platform,
   Alert,
   StyleSheet,
@@ -15,8 +16,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import Seance from './Seance';
-//import {date} from './CalendarApp';
+import {date} from './CalendarApp';
 
 
 export default class AddSeance extends Component<{}> {
@@ -32,7 +32,7 @@ export default class AddSeance extends Component<{}> {
         }
     }
 	
-	AddS(nomS, objS, numS, nbR, infoS){
+	AddS(nomS, objS, numS, nbR, infoS, date){
         this.setState({
             isLoading: true,
         });
@@ -49,6 +49,8 @@ export default class AddSeance extends Component<{}> {
 					num: numS,
 					nbRepos: nbR,
 					info: infoS,
+					dateS: date,
+					
                 })
         })
 		.then(() => this.props.navigation.navigate('Seance'))
@@ -60,6 +62,10 @@ export default class AddSeance extends Component<{}> {
         });
     }
 	
+	showAlert = () => {
+      Alert.alert(date)
+   }
+   
 	render() {
 		return(
 			<ScrollView>
@@ -98,7 +104,7 @@ export default class AddSeance extends Component<{}> {
 			  
 			  
 			<Button 
-			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance)}
+			onPress={this.showAlert}
 			title="Continuer" style={styles.bouton}/>
 			</ScrollView>
 		);

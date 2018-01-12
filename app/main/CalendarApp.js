@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Calendar} from 'react-native-calendars';
+import {Calendar} from 'react-native-calendars';
 import {
+  AppRegistry,
   Platform,
   Alert,
   StyleSheet,
@@ -12,11 +13,10 @@ import {
   ListView,
   ScrollView,
 } from 'react-native';
-import AddSeance from './AddSeance';
 
 var date; 
 
-export default class CalendarApp extends Component<{}> {
+export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
 		this.state = {
@@ -25,7 +25,9 @@ export default class CalendarApp extends Component<{}> {
 	}
 	
 	GetDay(day) {
-		date = day;
+		date = day.dateString;
+		//date = "salut les cocos";
+		Alert.alert(date);
 		this.props.navigation.navigate('AddSeance');
 	}
 	
