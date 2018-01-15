@@ -12,9 +12,10 @@ import {
   TouchableHighlight,
   ListView,
   ScrollView,
+  picket,
 } from 'react-native';
 
-var date; 
+var date;
 
 
 
@@ -25,23 +26,25 @@ export default class CalendarApp extends Component {
 			isLoading: true
 		};
 	}
-	
+
 	GetDay(day) {
 		date = day.dateString;
 		this.props.navigation.navigate('AddSeance');
 	}
-	
+
 	render() {
-		/*if(this.state.isLoading){
-			return(
-				<View style={{flex: 1, paddingTop: 20}}>
-					<ActivityIndicator />
-				</View>
-			);
-		}*/
-		
     return (
 		<ScrollView>
+    /*
+    <View>
+        <Picker selectedValue = {this.state.user} onValueChange = {this.updateUser}>
+           <Picker.Item label = "Steve" value = "steve" />
+           <Picker.Item label = "Ellen" value = "ellen" />
+           <Picker.Item label = "Maria" value = "maria" />
+        </Picker>
+        <Text style = {styles.text}>{this.state.user}</Text>
+     </View>
+     */
 		<Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
 	    <Calendar
 			onDayPress={this.GetDay.bind(this)}
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(204, 204, 204)',
   },
-  
+
   firstTitle: {
 	  fontSize: 20,
 	  padding :10,
