@@ -95,12 +95,11 @@ export default class Home extends Component<{}> {
                     Choix de mon exercice
                     </Text>
                 </View>
-                <Text style={styles.description}>Choisissez le muscle que vous souhaitez travailler</Text>
             </View>
 
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez le muscle à travailler:
+                  Choisissez un muscle à travailler:
                 </Text>
 				        <ListView
                     dataSource={this.state.dataSourceAct}
@@ -112,8 +111,8 @@ export default class Home extends Component<{}> {
               <View style={styles.buttonStyle}>
               <Button
                 onPress={() => this.pass()}
-                title="Tous les muscles >"
-                color="#841584"
+                title="Passer cette étape >"
+                color="#FF3366"
                 accessibilityLabel="Passer cette etape"
               />
             </View>
@@ -131,7 +130,7 @@ var styles = StyleSheet.create({
   },
     textTitle:{
     color: 'white',
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
   },
 	welcome: {
@@ -145,15 +144,6 @@ var styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     },
-	description: {
-		textAlign: 'center',
-		width: '80%',
-		marginRight: 'auto',
-		marginLeft: 'auto',
-		borderRadius: 4,
-		borderWidth: 0.5,
-		borderColor: '#d6d7da',
-	},
   buttonStyle: {
     marginTop: 30,
     paddingRight: 10,

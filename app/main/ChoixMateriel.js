@@ -77,7 +77,6 @@ export default class Home extends Component<{}> {
                     Choix de mon exercice
                     </Text>
                 </View>
-                <Text style={styles.description}>Choisissez matieriel que vous possédez</Text>
             </View>
 
             <View>
@@ -106,7 +105,7 @@ var styles = StyleSheet.create({
     },
     textTitle:{
         color: 'white',
-        fontSize: 20,
+        fontSize: 30,
         textAlign: 'center',
     },
 	welcome: {
@@ -120,15 +119,6 @@ var styles = StyleSheet.create({
         paddingTop: 10,
         paddingBottom: 10,
     },
-	description: {
-		textAlign: 'center',
-		width: '80%',
-		marginRight: 'auto',
-		marginLeft: 'auto',
-		borderRadius: 4,
-		borderWidth: 0.5,
-		borderColor: '#d6d7da',
-	}
 });
 
 export{idMateriel};
