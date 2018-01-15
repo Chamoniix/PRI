@@ -54,7 +54,9 @@ export default class Home extends Component<{}> {
         })
     })
     .catch((error) => {
-        console.error(error);
+        //console.error(error);
+        Alert.alert("0Results");
+        this.props.navigation.navigate('ChoixZoneCorps');
     });
 }
 
