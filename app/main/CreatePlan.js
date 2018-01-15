@@ -11,7 +11,8 @@ import {
   TouchableHighlight,
   ActivityIndicator,
   ListView,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
 
 var width = Dimensions.get('window').width;
@@ -88,11 +89,11 @@ export default class CreatePlan extends Component {
         this.selectAct(rowData, rowID)
       }}>
         <View style={this.state.selectedAct == rowData.activite_id
-          ? styles.weekRowSelected
-          : styles.weekRow}>
+          ? styles.viewRowSelected
+          : styles.viewRow}>
           <Text style={this.state.selectedAct == rowData.activite_id
-            ? styles.weekTextSelected
-            : styles.weekText}>
+            ? styles.viewTextSelected
+            : styles.viewText}>
             {rowData.activite_nom}
           </Text>
         </View>
@@ -101,7 +102,7 @@ export default class CreatePlan extends Component {
   }
   
   selectAct(rowData, rowID) {
-    this.setState({selectedAct: rowData.activite_id, isLoading: true});
+    this.setState({selectedAct: rowData.activite_id, isLoading: true, selectedObj: ''});
     this.getActivites();
     this.getObjectifs(rowData.activite_id);
   }
@@ -112,11 +113,11 @@ export default class CreatePlan extends Component {
         this.selectObj(rowData, rowID)
       }}>
         <View style={this.state.selectedObj == rowData.objectif_id
-          ? styles.weekRowSelected
-          : styles.weekRow}>
+          ? styles.viewRowSelected
+          : styles.viewRow}>
           <Text style={this.state.selectedObj == rowData.objectif_id
-            ? styles.weekTextSelected
-            : styles.weekText}>
+            ? styles.viewTextSelected
+            : styles.viewText}>
             {rowData.objectif_nom}
           </Text>
         </View>
@@ -139,89 +140,123 @@ export default class CreatePlan extends Component {
         if(this.state.isLoading){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
-                    <ActivityIndicator size='large' color='rgb(217,217,217)'/>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
                 </View>
             );
         }
         
         return (
-          <View style={styles.container}>
+          <ScrollView style={styles.container}>
             <View>
-                <View style={{backgroundColor:'red'}}>
+                <View style={styles.mainTitle}>
                     <Text style={styles.textTitle}>
-                    Créer mon plan d'entrainement
+                    Créer mon plan d'entraînement
                     </Text>
                 </View>
-                <Text>Texte de présentation</Text>
+                <Text style={styles.presentationText}>"Créer mon plan d'entraînement" vous permet de donner libre court à votre inspiration,
+                 et de développer votre plan d'entraînement.
+                </Text>
+                <Text style={styles.presentationText}>Bénéficiez de conseils avisés et profitez des centaines d'exercices proposés!
+                </Text>
+                <Text style={styles.presentationText}>Nous commençons par vous demandez quelques informations afin de mieux vous connaître.
+                </Text>
             </View>
             <View>
-                <Text style={styles.welcome}>
-                  Choisissez votre activité:
-                </Text> 
+                <View style={styles.secondTitle}>
+                    <Text style={styles.textTitle}>
+                      Choisissez votre activité:
+                    </Text>
+                </View>
                 <ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}    
                     renderRow={this.renderAct.bind(this)}
                 />
-                <Text style={styles.welcome}>
-                  Choisissez votre objectif:
-                </Text> 
+                <View style={this.state.selectedAct === ''
+                ? styles.invisibleButton
+                : styles.secondTitle}>
+                    <Text style={this.state.selectedAct === ''
+                    ? styles.invisibleText
+                    : styles.textTitle}>
+                      Choisissez votre objectif:
+                    </Text> 
+                </View>
                 <ListView
                     dataSource={this.state.dataSourceObj}
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={this.renderObj.bind(this)}
                 />
-                <TouchableHighlight onPress={() => this.goToNextStep()}>
-                    <Text>Prochaine Etape</Text>
-                </TouchableHighlight>
+                <View style={{alignItems: 'flex-end'}}>
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()} 
+                    style={this.state.selectedObj === ''
+                    ? styles.invisibleButton
+                    : styles.buttonNext}>
+                        <Text style={this.state.selectedObj === ''
+                        ? styles.invisibleText
+                        : styles.textTitle}>Suivant</Text>
+                    </TouchableHighlight>
+                </View>
             </View>
-          </View>
+          </ScrollView>
         );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+    },
     textTitle:{
         color: 'white',
         fontSize: 20,
         textAlign: 'center',
+        margin: 10
     },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-   rowViewContainer: {
+    welcome: {
         fontSize: 20,
-        paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-      },
-      
-   rowSelected: {
-        paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
-        backgroundColor: 'blue',
-   },
-   weekRowSelected : {
-  },
-  weekRow: {
-  },
-  weekTextSelected: {
-    fontSize: 22,
-    color: 'yellow',
-  },
-  weekText: {
-    fontSize: 20,
-    color: 'blue',
-  }
+        textAlign: 'center',
+        margin: 10,
+    },
+    viewRowSelected : {
+        backgroundColor: 'rgb(125,125,125)'
+    },
+    viewRow: {
+    },
+    viewTextSelected: {
+        fontSize: 20,
+        color: '#F5FCFF',
+        textAlign: 'center',
+        margin: 10,
+    },
+    viewText: {
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 10,
+    },
+    invisibleText: {
+        fontSize: 0,
+    },
+    invisibleButton: {
+        height: 0,
+    },
+    buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 120,
+    },
+    mainTitle: {
+        backgroundColor: 'rgb(125,125,125)',
+    },
+    secondTitle: {
+        backgroundColor: '#FF3366',
+    },
+    presentationText : {
+        textAlign: 'center',
+        fontSize: 16,
+        margin: 10
+    }
 });
 
 export {objectif};
