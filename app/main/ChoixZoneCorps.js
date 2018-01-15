@@ -21,15 +21,15 @@ var h = Dimensions.get('window').height;
 var idZone;
 
 export default class Home extends Component<{}> {
-	
-	
+
+
 	constructor(props){
         super(props);
         this.state = {
             isLoading: true,
         }
     }
-	
+
 	componentDidMount(){
         return fetch('http://213.32.66.63/appliPP/getZoneCorps.php')
         .then((response) => response.json())
@@ -44,24 +44,24 @@ export default class Home extends Component<{}> {
             console.error(error);
         });
     }
-	
+
 	ListViewItemSeparator = () => {
         return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
-	
+
 	zoneChoosen = (rowData) => {
 			//Alert.alert(rowData.zone_id);
 			idZone = rowData.zone_id;
 			this.props.navigation.navigate('ChoixMuscle');
 	}
-	
-	
+
+
   render() {
 
     const {navigate} = this.props.navigation;
-	
+
 	if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
@@ -78,13 +78,13 @@ export default class Home extends Component<{}> {
                     Choix de mon exercice
                     </Text>
                 </View>
-                <Text style={styles.description}>Choisissez la zone du corps que vous souhaitez travailler, puis le muscle et finalement le matieriel que vous possédez</Text>
+                <Text style={styles.description}>Choisissez la zone du corps que vous souhaitez travailler</Text>
             </View>
-			
+
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez votre zone du corps: 	
-                </Text> 
+                  Choisissez votre zone du corps:
+                </Text>
 				<ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}

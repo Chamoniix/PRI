@@ -10,19 +10,19 @@ import New from './New';
 
 export const App = StackNavigator({
     Home: {
-	  screen:Home,
-      // screen:New,
-	  // screen:Home,
-      // screen:ChoixZoneCorps,
+	     screen:Home,
+       // screen:New,
+	     // screen:Home,
+       // screen:ChoixZoneCorps,
 	  navigationOptions: {
         header : null,
-      },	  
+      },
 	},
     CreatePlan: {
 	  screen:CreatePlan,
 	  navigationOptions: {
         header : null,
-      },	  
+      },
 	},
     CreatePlanBis: {
 	  screen: CreatePlanBis,
@@ -35,7 +35,7 @@ export const App = StackNavigator({
       initialRouteName: 'Home',
   },
  },
-  
+
 );
 
 export default App;

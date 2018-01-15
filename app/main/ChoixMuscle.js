@@ -23,19 +23,19 @@ import {idZone} from './ChoixZoneCorps.js';
 var idMuscle;
 
 export default class Home extends Component<{}> {
-	
-	
+
+
 	constructor(props){
         super(props);
         this.state = {
             isLoading: true,
         }
     }
-	
+
 	componentDidMount(){
         return fetch('http://213.32.66.63/appliPP/getMuscleByZone.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -56,24 +56,24 @@ export default class Home extends Component<{}> {
             console.error(error);
         });
     }
-	
+
 	ListViewItemSeparator = () => {
         return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
-	
+
 	muscleChoosen = (rowData) => {
 		idMuscle = rowData.muscle_id;
 		//Alert.alert(idMuscle);
-		this.props.navigation.navigate('Materiel');
+		this.props.navigation.navigate('ChoixMateriel');
 	}
-	
-	
+
+
   render() {
 
     const {navigate} = this.props.navigation;
-	
+
 	if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
@@ -81,7 +81,7 @@ export default class Home extends Component<{}> {
                 </View>
             );
         }
-	
+
     return (
           <View style={styles.container}>
             <View>
@@ -90,14 +90,14 @@ export default class Home extends Component<{}> {
                     Choix de mon exercice
                     </Text>
                 </View>
-                <Text style={styles.description}>Choisissez la zone du corps que vous souhaitez travailler, puis le muscle et finalement le matieriel que vous possédez</Text>
+                <Text style={styles.description}>Choisissez le muscle que vous souhaitez travailler</Text>
             </View>
-			
+
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez le muscle à travailler: 	
-                </Text> 
-				<ListView
+                  Choisissez le muscle à travailler:
+                </Text>
+				        <ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.muscleChoosen(rowData)}>
