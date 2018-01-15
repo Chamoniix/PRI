@@ -101,7 +101,7 @@ export default class Home extends Component<{}> {
                 <Text style={styles.welcome}>
                   Choisissez votre Exercice:
                 </Text>
-				<ListView
+				        <ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.exerciceChoosen(rowData)}>

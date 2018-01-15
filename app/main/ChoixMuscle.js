@@ -69,6 +69,11 @@ export default class Home extends Component<{}> {
 		this.props.navigation.navigate('ChoixMateriel');
 	}
 
+  pass = () => {
+    idMuscle = "ANY(SELECT materiel_id FROM Materiel)";
+    this.props.navigation.navigate('ChoixMateriel');
+  }
+
 
   render() {
 
@@ -104,6 +109,14 @@ export default class Home extends Component<{}> {
                     {rowData.muscle_nom}</Text>}
                 />
             </View>
+              <View style={styles.buttonStyle}>
+              <Button
+                onPress={() => this.pass()}
+                title="Tous les muscles >"
+                color="#841584"
+                accessibilityLabel="Passer cette etape"
+              />
+            </View>
          </View>
     );
   }
@@ -112,25 +125,25 @@ export default class Home extends Component<{}> {
 AppRegistry.registerComponent('BackgroundImage', () => BackgroundImage);
 
 var styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column'
-    },
+  container: {
+    flex: 1,
+    flexDirection: 'column'
+  },
     textTitle:{
-        color: 'white',
-        fontSize: 20,
-        textAlign: 'center',
-    },
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+  },
 	welcome: {
 		fontSize: 20,
 		textAlign: 'center',
 		margin: 10,
 	},
 	rowViewContainer: {
-        fontSize: 20,
-        paddingRight: 10,
-        paddingTop: 10,
-        paddingBottom: 10,
+    fontSize: 20,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
     },
 	description: {
 		textAlign: 'center',
@@ -140,7 +153,13 @@ var styles = StyleSheet.create({
 		borderRadius: 4,
 		borderWidth: 0.5,
 		borderColor: '#d6d7da',
-	}
+	},
+  buttonStyle: {
+    marginTop: 30,
+    paddingRight: 10,
+    width: '100%',
+    alignItems: 'flex-end',
+  }
 });
 
 export{idMuscle};
