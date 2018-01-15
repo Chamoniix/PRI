@@ -7,26 +7,27 @@ import AddSeance from './AddSeance';
 import CalendarApp from './CalendarApp';
 import ChoixZoneCorps from './ChoixZoneCorps.js';
 import ChoixMuscle from './ChoixMuscle.js';
-import Materiel from './ChoixMateriel.js';
+import ChoixMateriel from './ChoixMateriel.js';
+import ChoixExercice from './ChoixExercice.js'
 
 export const CalendarNavigation = StackNavigator({
     CalendarApp: {
 	  screen:CalendarApp,
 	  navigationOptions: {
         header : null,
-      },	  
+      },
 	},
     AddSeance: {
 	  screen:AddSeance,
 	  navigationOptions: {
         header : null,
-      },	  
+      },
 	},
     Seance: {
 	  screen:Seance,
 	  navigationOptions: {
         header : null,
-      },	  
+      },
 	},
 	ChoixZoneCorps: {
 		screen: ChoixZoneCorps,
@@ -40,8 +41,14 @@ export const CalendarNavigation = StackNavigator({
         header : null,
       },
 	},
-	Materiel: {
-		screen: Materiel,
+	ChoixMateriel: {
+		screen: ChoixMateriel,
+		navigationOptions: {
+        header : null,
+      },
+	},
+  ChoixExercice: {
+		screen: ChoixExercice,
 		navigationOptions: {
         header : null,
       },
@@ -50,7 +57,7 @@ export const CalendarNavigation = StackNavigator({
   StackNavigatorConfig: {
   },
  },
-  
+
 );
 
 export default CalendarNavigation;
