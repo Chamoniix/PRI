@@ -19,7 +19,9 @@ var date;
 import {dateM} from './AddSeance';
 
 var listDate=[];
-
+var mark;
+var cpt = 0;
+var dateMarked=[];
 export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
@@ -44,21 +46,17 @@ export default class CalendarApp extends Component {
 		}*/
 		if(dateM!=null){
 			listDate.push(dateM);
-			Alert.alert(listDate[0]);
+			
+			//Alert.alert("cpt = "+cpt + "list date" + listDate[cpt]);
+			dateMarked[listDate[cpt]]={selected: true};
+			cpt = cpt + 1;
 		}
-		const mark = {
-			//if(dateM!=null){
-				//for(var i=0;i<1;i++){
-					[listDate]: {selected: true}
-				//}
-			//}
-		};
     return (
 		<ScrollView>
 		<Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
 	    <Calendar
 			onDayPress={this.GetDay.bind(this)}
-			markedDates={mark}
+			markedDates={dateMarked}
         />
 	  </ScrollView>
     );
