@@ -67,10 +67,10 @@ export default class Home extends Component<{}> {
     }
 
 	exerciceChoosen = (rowData) => {
-			//Alert.alert(rowData.exercice_nom);
-      Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + rowData.exercice_id + "- " + rowData.exercice_nom);
-			idExercice = rowData.exercice_id;
-			//this.props.navigation.navigate('ChoixMuscle');
+		idExercice = rowData.exercice_id;
+      //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
+			
+        this.props.navigation.navigate('Seance');
 	}
 
 
@@ -146,3 +146,5 @@ var styles = StyleSheet.create({
 		borderColor: '#d6d7da',
 	}
 });
+
+export{idExercice};

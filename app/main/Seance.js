@@ -26,16 +26,27 @@ rep[2]=0;
 rep[3]=0;
 rep[4]=0;
 rep[5]=0;
+// valeur de l'id exo
+var ex = new Array(8);
 
-var seanceId = 41;
-//import {seanceId} from './AddSeance';
+var seanceId = 40;
+import {idExercice} from './ChoixExercice';
+
+var valEx;
+
+var ele = new Array(8);; 
+
 export default class Seance extends Component<{}> {
 	
    gotToChoixZoneCorps = (value) => {
+	   
 	this.props.navigation.navigate('ChoixZoneCorps');
+	valEx = value;
+	/*ex[value] = idExercice;
+	Alert.alert("idExercice "+idExercice);*/
   }
   
-  AddSeanceExo(seanceId, nbrR, nbrS){
+  AddSeanceExo(seanceId, idEx, nbrR, nbrS){
        this.setState({
             isLoading: true,
         });
@@ -48,6 +59,7 @@ export default class Seance extends Component<{}> {
                 },
             body: JSON.stringify({
                     sId: seanceId,
+					idE: idEx,
 					nRep: nbrR,
 					nSerie: nbrS,
                 })
@@ -63,21 +75,49 @@ export default class Seance extends Component<{}> {
   test = () => {
 	var k = 1;
 	while(rep[k]!=0){
-	this.AddSeanceExo(seanceId, rep[k], ser[k]);
+	this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
 		k = k + 1;
 	}
 	this.props.navigation.navigate('CalendarApp');
   }
   
   render() {
-	const ele = (value) => (
-		<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,value)}>
-			<View >
-			  <Text>Choisir un exercice</Text>
-			</View>
-		</TouchableOpacity>
-	);
+    if(idExercice!=null){
+		ex[valEx]=idExercice;
+	}
 	
+			
+	for(var i=1; i<6; i++){
+		if(idExercice != null){
+			if(ex[i]===idExercice){
+			ele[i]=
+				<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
+					<View>
+						<Text>exo choisi</Text>
+					</View>
+				</TouchableOpacity>
+			}
+		}else{
+			ele[i]=
+				<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
+					<View>
+						<Text>choisir</Text>
+					</View>
+				</TouchableOpacity>
+			
+		}
+		
+	}
+	const repet = (value) => (
+		<View >
+		  <TextInput
+			editable = {true}
+			maxLength = {40}
+			keyboardType = 'numeric'
+			onChangeText={(text) => {rep[value]=text}}
+		  />
+		</View>
+	);
 	const serie = (value) => (
 		<View >
 		  <TextInput
@@ -89,24 +129,14 @@ export default class Seance extends Component<{}> {
 		</View>
 	);
 	
-	const repet = (value) => (
-		<View >
-		  <TextInput
-			editable = {true}
-			maxLength = {40}
-			keyboardType = 'numeric'
-			onChangeText={(text) => {rep[value]=text}}
-		  />
-		</View>
-	);
 	
 	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
     const tableData = [
-      ['1', ele(1), serie(1), repet(1)],
-      ['2', ele(2), serie(2), repet(2)],
-      ['3', ele(3), serie(3), repet(3)],
-      ['4', ele(4), serie(4), repet(4)],
-      ['5', ele(5), serie(5), repet(5)],
+      ['1', ele[1], serie(1), repet(1)],
+      ['2', ele[2], serie(2), repet(2)],
+      ['3', ele[3], serie(3), repet(3)],
+      ['4', ele[4], serie(4), repet(4)],
+      ['5', ele[5], serie(5), repet(5)],
     ];
     return (
       <ScrollView>

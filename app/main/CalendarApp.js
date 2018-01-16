@@ -44,7 +44,7 @@ export default class CalendarApp extends Component {
 		}*/
 		if(dateM!=null){
 			listDate.push(dateM);
-			//Alert.alert(listDate[0]);
+			Alert.alert(listDate[0]);
 		}
 		const mark = {
 			//if(dateM!=null){
