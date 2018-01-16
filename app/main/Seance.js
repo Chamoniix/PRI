@@ -12,7 +12,6 @@ import {
   TextInput,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
-import Navigation from './Navigation';
 // dimensions of the screen
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
