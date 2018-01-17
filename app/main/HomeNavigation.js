@@ -6,20 +6,15 @@ import CreatePlan from './CreatePlan';
 import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
 
-import New from './New';
-
 export const App = StackNavigator({
     Home: {
-	     screen:Home,
-       // screen:New,
-	     // screen:Home,
-       // screen:ChoixZoneCorps,
+	  screen: Home,
 	  navigationOptions: {
         header : null,
       },
 	},
     CreatePlan: {
-	  screen:CreatePlan,
+	  screen: CreatePlan,
 	  navigationOptions: {
         header : null,
       },
