@@ -19,6 +19,8 @@ import {
 import {date} from './CalendarApp';
 import {planId} from './CreatePlan2';
 
+var seanceId;
+var dateM;
 export default class AddSeance extends Component<{}> {
 	constructor(props){
         super(props);
@@ -54,9 +56,11 @@ export default class AddSeance extends Component<{}> {
 					
                 })
         })
-		.then(() => this.props.navigation.navigate('Seance'))
+        .then((response) => response.json())
 		.then((res)=> {
-			lastId = res;
+			seanceId = res;
+			dateM = date;
+			this.props.navigation.navigate('Seance');
 		})
         .catch((error) => {
             console.error(error);
@@ -122,3 +126,5 @@ const styles = StyleSheet.create({
    // backgroundColor: 'rgb(204, 204, 204)',
   },
 });
+
+export{seanceId, dateM};
