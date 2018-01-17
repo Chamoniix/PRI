@@ -35,7 +35,7 @@ const resetAction = NavigationActions.reset({
 })
 
 export default class CreatePlanBis extends Component {
-    
+
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({
@@ -43,6 +43,7 @@ export default class CreatePlanBis extends Component {
         });
         this.state = {
                 isLoading: false,
+                hasInternet: true,
                 duree: '',
                 niveau: '',
                 nom: '',
@@ -51,15 +52,15 @@ export default class CreatePlanBis extends Component {
                 dataSourceNiveau: ds.cloneWithRows(this.getNiveaux()),
         };
     }
-    
+
     getDurees = () => {
         return ["1 mois", "3 mois", "6 mois"];
     }
-    
+
     getNiveaux = () => {
         return ["Debutant", "Intermediaire", "Confirmé"];
     }
-    
+
     renderDuree(rowData, rowID){
         return(
             <TouchableHighlight onPress={() => {
@@ -77,11 +78,11 @@ export default class CreatePlanBis extends Component {
             </TouchableHighlight>
         );
     }
-    
+
     selectDuree(rowData, rowID) {
         this.setState({duree: rowData, dataSourceDuree: this.state.dataSourceDuree.cloneWithRows(this.getDurees())});
     }
-    
+
     renderNiveaux(rowData, rowID){
         return(
             <TouchableHighlight onPress={() => {
@@ -99,18 +100,18 @@ export default class CreatePlanBis extends Component {
             </TouchableHighlight>
         );
     }
-    
+
     selectNiveaux(rowData, rowID) {
         this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux())});
     }
-    
+
     createPlan(name, length, level, objectifid, information){
       this.setState({
             isLoading: true,
         });
         return fetch('http://213.32.66.63/appliPP/createPlan.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -133,16 +134,19 @@ export default class CreatePlanBis extends Component {
             this.props.navigation.navigate('CalendarApp');
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
-        
+
     ListViewItemSeparator = () => {
         return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
-    
+
     render() {
         if(this.state.isLoading){
             return(
@@ -151,7 +155,19 @@ export default class CreatePlanBis extends Component {
                 </View>
             );
         }
-    
+
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
+                </View>
+            );
+        }
+
         return (
           <ScrollView style={styles.container}>
             <View>
@@ -218,6 +234,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5FCFF',
+    },
+    textTitle:{
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
     },
     textTitle:{
         color: 'white',

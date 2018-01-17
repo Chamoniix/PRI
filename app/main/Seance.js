@@ -41,22 +41,30 @@ var ele = new Array(8);
 var edit = false;
 //var repet = new Array(5);
 export default class Seance extends Component<{}> {
-	
+
+  constructor(props){
+      super(props);
+      this.state = {
+          isLoading: true,
+          hasInternet: true,
+      }
+  }
+
    gotToChoixZoneCorps = (value) => {
-	   
+
 	this.props.navigation.navigate('ChoixZoneCorps');
 	valEx = value;
 	/*ex[value] = idExercice;
 	Alert.alert("idExercice "+idExercice);*/
   }
-  
+
   AddSeanceExo(seanceId, idEx, nbrR, nbrS){
        this.setState({
             isLoading: true,
         });
         return fetch('http://213.32.66.63/appliPP/addSeanceExo.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -72,10 +80,13 @@ export default class Seance extends Component<{}> {
 			err = res;
 		})
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
-   
+
   test = () => {
 	var k = 1;
 	while(rep[k]!=0){
@@ -84,13 +95,25 @@ export default class Seance extends Component<{}> {
 	}
 	this.props.navigation.navigate('CalendarApp');
   }
-  
+
   render() {
     if(idExercice!=null){
 		ex[valEx]=idExercice;
 	}
-	
-			
+
+  if(!this.state.hasInternet){
+      return(
+          <View style={{flex: 1, justifyContent: 'center'}}>
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+              <Text style={styles.textTitle}>
+              Pas de connexion internet...
+              </Text>
+          </View>
+      );
+  }
+
+
 	for(var i=1; i<6; i++){
 		/*if(edit === false){
 			ele[i]=
@@ -114,13 +137,13 @@ export default class Seance extends Component<{}> {
 							<Text>choisir</Text>
 						</View>
 					</TouchableOpacity>
-				
+
 			}
 		//}
-		
-		
+
+
 	}
-	
+
 	const repet = (value) => (
 		<View >
 		  <TextInput
@@ -143,8 +166,8 @@ export default class Seance extends Component<{}> {
 		  />
 		</View>
 	);
-	
-	
+
+
 	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
     /*const tableData = [
       ['1', ele[1], serie(1), repet[1]],
@@ -174,7 +197,7 @@ export default class Seance extends Component<{}> {
 
 const styles = StyleSheet.create({
   table:{
-	  
+
   },
   container: {
     flex: 1,
@@ -187,24 +210,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  head: { 
-	width : w, 
-	height: w/5, 
+  textTitle:{
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10
+  },
+  head: {
+	width : w,
+	height: w/5,
 	backgroundColor: 'rgb(140,140,140)'
   },
-  headText: { 
+  headText: {
 	textAlign:'center',
 	fontSize : 15,
 	color : 'white',
   },
-  text: { 
+  text: {
 	textAlign:'center',
 	fontSize : 20,
 	color : 'black',
   },
-  row: { 
-	width : w, 
-	height: w/5, 
+  row: {
+	width : w,
+	height: w/5,
 	backgroundColor: 'rgb(208,208,208)'
 	},
   bouton: {
@@ -212,4 +241,3 @@ const styles = StyleSheet.create({
 	  paddingBottom:10,
   }
 });
-
