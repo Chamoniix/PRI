@@ -24,7 +24,7 @@ import {dateM} from './AddSeance';
 var listDate=[];
 var mark;
 var cpt = 0;
-var dateMarked= new Object();
+var dateMarked=[];
 
 var seanceLaungedId = null;
 
@@ -115,7 +115,7 @@ export default class CalendarApp extends Component {
 
 		if(dateM!=null){
 			listDate.push(dateM);
-			dateMarked.listDate[cpt]={selected: true};
+			dateMarked[listDate[cpt]]={selected: true};
 			cpt = cpt + 1;
 		}
 
