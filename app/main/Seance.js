@@ -17,8 +17,12 @@ var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 // valeur du nombre de serie par exo
 var ser = new Array(8);
+// initialisation a zero
+for(var i=1; i<6; i++){
+	ser[i]=0;
+}
 // valeur du nbr de repetition par exo
-var rep = new Array(8);
+var rep = new Array(5);
 // initialisation a zero
 rep[1]=0;
 rep[2]=0;
@@ -28,13 +32,13 @@ rep[5]=0;
 // valeur de l'id exo
 var ex = new Array(8);
 
-var seanceId = 40;
-import {idExercice} from './ChoixExercice';
+var seanceId = 39;
+import {idExercice, nomExo} from './ChoixExercice';
 
 var valEx;
 
-var ele = new Array(8);; 
-
+var ele = new Array(8);
+//var repet = new Array(5);
 export default class Seance extends Component<{}> {
 	
    gotToChoixZoneCorps = (value) => {
@@ -92,7 +96,7 @@ export default class Seance extends Component<{}> {
 			ele[i]=
 				<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
 					<View>
-						<Text>exo choisi</Text>
+						<Text>{nomExo}</Text>
 					</View>
 				</TouchableOpacity>
 			}
@@ -107,12 +111,14 @@ export default class Seance extends Component<{}> {
 		}
 		
 	}
+	
 	const repet = (value) => (
 		<View >
 		  <TextInput
 			editable = {true}
 			maxLength = {40}
 			keyboardType = 'numeric'
+			defaultValue={rep[value].toString()}
 			onChangeText={(text) => {rep[value]=text}}
 		  />
 		</View>
@@ -123,6 +129,7 @@ export default class Seance extends Component<{}> {
 			editable = {true}
 			maxLength = {40}
 			keyboardType = 'numeric'
+			defaultValue={ser[value].toString()}
 			onChangeText={(text) => {ser[value]=text}}
 		  />
 		</View>
@@ -130,7 +137,14 @@ export default class Seance extends Component<{}> {
 	
 	
 	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
-    const tableData = [
+    /*const tableData = [
+      ['1', ele[1], serie(1), repet[1]],
+      ['2', ele[2], serie(2), repet[2]],
+      ['3', ele[3], serie(3), repet[3]],
+      ['4', ele[4], serie(4), repet[4]],
+      ['5', ele[5], serie(5), repet[5]],
+    ];*/
+	const tableData = [
       ['1', ele[1], serie(1), repet(1)],
       ['2', ele[2], serie(2), repet(2)],
       ['3', ele[3], serie(3), repet(3)],

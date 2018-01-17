@@ -49,20 +49,6 @@ export default class Home extends Component<{}> {
                   </Text>
                 </View>
               </View>
-
-
-              <View style={styles.section}>
-                <View>
-                  <Image source={imgPartage} style={{height: h*0.2, width: w, opacity: 0.7}}/>
-                </View>
-
-                <View style={[styles.textContain, {backgroundColor: '#000'}]} >
-                  <Text style={styles.caption}>
-                    Partager plan
-                  </Text>
-                </View>
-              </View>
-
           </View>
     );
   }
@@ -76,7 +62,7 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
     },
     section: {
-        flex: 0.33333,
+        flex: 0.5,
     },
     textContain: {
         flex: 1,

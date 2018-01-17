@@ -22,7 +22,7 @@ import {idMuscle} from './ChoixMuscle.js';
 import {idMateriel} from './ChoixMateriel.js';
 
 var idExercice;
-
+var nomExo;
 export default class Home extends Component<{}> {
 
 	constructor(props){
@@ -68,6 +68,7 @@ export default class Home extends Component<{}> {
 
 	exerciceChoosen = (rowData) => {
 		idExercice = rowData.exercice_id;
+		nomExo = rowData.exercice_nom;
       //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
 			
         this.props.navigation.navigate('Seance');
@@ -137,4 +138,4 @@ var styles = StyleSheet.create({
     },
 });
 
-export{idExercice};
+export{idExercice, nomExo};
