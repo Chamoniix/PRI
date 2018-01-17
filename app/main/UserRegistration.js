@@ -53,11 +53,12 @@ export default class UserRegistration extends Component {
             .then((response) => response.json())
             .then((res) => {
                 this.setState({isLoading: false})
-                if(res === 'Existe deja'){
-                    this.setState({errorMsg: "L'utilisateur " + this.state.pseudo + " est déjà inscrit"});
+                if(res === 'Pseudo existe deja'){
+                    this.setState({errorMsg: "Ce pseudo est déjà utilisé"});
+                }else if(res === 'Email existe deja'){
+                    this.setState({errorMsg: "Cet e-mail est déjà utilisé"});
                 }else{
-                    Alert.alert(res.toString());
-                    //this.props.navigation.navigate('UserLoggedIn');
+                    this.props.navigation.navigate('Registered');
                 }
             })
             .catch((error) => {

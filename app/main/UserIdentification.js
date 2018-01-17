@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import UserChoice from './UserChoice';
 import UserLogin from './UserLogin';
 import UserRegistration from './UserRegistration';
+import UserRegistered from './UserRegistered';
 
 export const UserIdentification = StackNavigator({  
     Choice: {
@@ -20,6 +21,12 @@ export const UserIdentification = StackNavigator({
 	},
     Register: {
 	  screen: UserRegistration,
+	  navigationOptions: {
+        header : null,
+      },
+	},
+    Registered: {
+	  screen: UserRegistered,
 	  navigationOptions: {
         header : null,
       },
