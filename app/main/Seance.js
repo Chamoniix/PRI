@@ -150,6 +150,8 @@ export default class Seance extends Component<{}> {
 
 			}
 
+		}
+		
 	}
 
 	const repet = (value) => (
