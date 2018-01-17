@@ -23,7 +23,8 @@ var mark;
 var cpt = 0;
 var dateMarked=[];
 
-var seanceDate;
+var seanceDate = false;
+var seance_id;
 
 export default class CalendarApp extends Component {
 	constructor(props){
@@ -50,17 +51,30 @@ export default class CalendarApp extends Component {
         })
         .then((response) => response.json())
 		.then((res)=> {
-			seanceDate = res;
-			Alert.alert(seanceDate.toString());
+			seanceDate = true;
+			seance_id = res[0].seance_id;
+			this.props.navigation.navigate('Seance');
+			//Alert.alert(res[0].seance_id);
 		})
         .catch((error) => {
-            console.error(error);
+			seanceDate = false;
+			this.props.navigation.navigate('AddSeance');
+           // console.error(error);
         });
 	}
 	GetDay(day) {
 		date = day.dateString;
 		this.CheckSeance(date);
-		//this.props.navigation.navigate('AddSeance');
+		/*if(seanceDate===true){
+		}else{
+		}*/
+	}
+	
+	exerciceChoosen = (rowData) => {
+		idExercice = rowData.seance_id;
+        Alert.alert("Exercice Choisi : " + idExercice);
+			
+        //this.props.navigation.navigate('Seance');
 	}
 	
 	render() {
