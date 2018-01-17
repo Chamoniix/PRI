@@ -246,7 +246,7 @@ export default class Seance extends Component<{}> {
 			if(seanceLaungedId != null){
 				return(
 					<View>
-						<Button title="Modifier" style={styles.bouton} onPress={this.test.bind(this)}/>
+						<Button title="Modifier" style={styles.bouton} onPress={() => {edit=true}}/>
 						<Button title="Commencer" style={styles.bouton} onPress={this.test.bind(this)}/>
 					</View>
 				);
