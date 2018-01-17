@@ -25,7 +25,7 @@ var mark;
 var cpt = 0;
 var dateMarked=[];
 
-var seance_id = null;
+var seanceLaungedId = null;
 
 // TODO Enlever l'initialisation quand création utilisateur faite.
 var idUser = 2;
@@ -38,6 +38,7 @@ export default class CalendarApp extends Component {
 			isLoading: true,
       selectedPlan:"",
 		};
+		seanceLaungedId = null;
 	}
 
 	CheckSeance(date){
@@ -58,7 +59,7 @@ export default class CalendarApp extends Component {
         })
         .then((response) => response.json())
 		.then((res)=> {
-			seance_id = res[0].seance_id;
+			seanceLaungedId = res[0].seance_id;
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,
@@ -166,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {date, seance_id};
+export {date, seanceLaungedId};
