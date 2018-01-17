@@ -34,7 +34,7 @@ var ex = new Array(8);
 
 var seanceId = 39;
 import {idExercice, nomExo} from './ChoixExercice';
-//import {seanceId} from './CalendarApp';
+import {seance_id} from './CalendarApp';
 var valEx;
 
 var ele = new Array(8);
@@ -92,12 +92,19 @@ export default class Seance extends Component<{}> {
 	
 			
 	for(var i=1; i<6; i++){
-		/*if(edit === false){
-			ele[i]=
-				<View>
-					<Text>{seanceId}</Text>
-				</View>
-		}else{*/
+		if(edit === false){
+			if(seance_id===null){
+				ele[i]=
+					<View>
+						<Text>{seance_id}</Text>
+					</View>
+			}else{
+				ele[i]=
+					<View>
+						<Text>{seance_id}</Text>
+					</View>
+			}
+		}else{
 			if(idExercice != null){
 				if(ex[i]===idExercice){
 					ele[i]=
@@ -116,7 +123,7 @@ export default class Seance extends Component<{}> {
 					</TouchableOpacity>
 				
 			}
-		//}
+		}
 		
 		
 	}
