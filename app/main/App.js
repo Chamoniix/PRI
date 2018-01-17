@@ -7,6 +7,9 @@ import Shop from './Shop';
 import User from './User';
 import HomeNavigation from './HomeNavigation';
 
+// Temporaire
+import laughSeance from './laughSeance';
+
 export const App = TabNavigator({
   Home: {
       screen: HomeNavigation,
@@ -21,7 +24,10 @@ export const App = TabNavigator({
       },
 	},
   Shop: {
-	  screen: Shop,
+// Temporaire
+
+    // screen: shop,
+    screen: laughSeance,
 	  navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
       },
@@ -32,7 +38,7 @@ export const App = TabNavigator({
         tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
       },
 	},
-  
+
 }
 ,{
   tabBarOptions: {
