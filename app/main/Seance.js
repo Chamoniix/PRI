@@ -34,10 +34,11 @@ var ex = new Array(8);
 
 var seanceId = 39;
 import {idExercice, nomExo} from './ChoixExercice';
-
+//import {seanceId} from './CalendarApp';
 var valEx;
 
 var ele = new Array(8);
+var edit = false;
 //var repet = new Array(5);
 export default class Seance extends Component<{}> {
 	
@@ -91,24 +92,32 @@ export default class Seance extends Component<{}> {
 	
 			
 	for(var i=1; i<6; i++){
-		if(idExercice != null){
-			if(ex[i]===idExercice){
+		/*if(edit === false){
 			ele[i]=
-				<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
-					<View>
-						<Text>{nomExo}</Text>
-					</View>
-				</TouchableOpacity>
+				<View>
+					<Text>{seanceId}</Text>
+				</View>
+		}else{*/
+			if(idExercice != null){
+				if(ex[i]===idExercice){
+					ele[i]=
+						<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
+							<View>
+								<Text>{nomExo}</Text>
+							</View>
+						</TouchableOpacity>
+				}
+			}else{
+				ele[i]=
+					<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
+						<View>
+							<Text>choisir</Text>
+						</View>
+					</TouchableOpacity>
+				
 			}
-		}else{
-			ele[i]=
-				<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
-					<View>
-						<Text>choisir</Text>
-					</View>
-				</TouchableOpacity>
-			
-		}
+		//}
+		
 		
 	}
 	
