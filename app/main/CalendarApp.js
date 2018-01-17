@@ -22,6 +22,9 @@ var listDate=[];
 var mark;
 var cpt = 0;
 var dateMarked=[];
+
+var seanceDate;
+
 export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
@@ -29,10 +32,35 @@ export default class CalendarApp extends Component {
 			isLoading: true
 		};
 	}
+	CheckSeance(date){
+		this.setState({
+            isLoading: true,
+        });
+        return fetch('http://213.32.66.63/appliPP/getSeance.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+					dateS: date,
+					
+                })
+        })
+        .then((response) => response.json())
+		.then((res)=> {
+			seanceDate = res;
+			Alert.alert(seanceDate.toString());
+		})
+        .catch((error) => {
+            console.error(error);
+        });
+	}
 	GetDay(day) {
 		date = day.dateString;
-		//Alert.alert(dateM);
-		this.props.navigation.navigate('AddSeance');
+		this.CheckSeance(date);
+		//this.props.navigation.navigate('AddSeance');
 	}
 	
 	render() {
