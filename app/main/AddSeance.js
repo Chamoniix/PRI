@@ -61,6 +61,9 @@ export default class AddSeance extends Component<{}> {
 			seanceId = res;
 			dateM = date;
 			this.props.navigation.navigate('Seance');
+			this.setState({
+                isLoading: false,
+            })
 		})
         .catch((error) => {
             console.error(error);
