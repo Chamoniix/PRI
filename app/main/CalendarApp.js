@@ -19,7 +19,7 @@ import {
 var date;
 
 import {dateM} from './AddSeance';
-
+import {userId} from './UserLogin';
 var listDate=[];
 var mark;
 var cpt = 0;
@@ -27,8 +27,6 @@ var dateMarked=[];
 
 var seance_id = null;
 
-// TODO Enlever l'initialisation quand création utilisateur faite.
-var idUser = 2;
 var rowsPlanByUser = [];
 
 export default class CalendarApp extends Component {
@@ -86,7 +84,7 @@ export default class CalendarApp extends Component {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    userid: idUser,
+                    userid: userId,
                 })
         })
         .then((response) => response.json())
