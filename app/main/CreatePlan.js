@@ -38,7 +38,7 @@ export default class CreatePlan extends Component {
     }
     
     getActivites = () => {
-        return fetch('http://213.32.66.63/appliPP/getActivites.php')
+        return fetch(path + 'getActivites.php')
         .then((response) => response.json())
         .then((res) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
@@ -53,7 +53,7 @@ export default class CreatePlan extends Component {
     }
     
     getObjectifs(activity){
-        return fetch('http://213.32.66.63/appliPP/getObjectifs.php',
+        return fetch(path + 'getObjectifs.php',
         {
             method: "POST", 
             headers: {

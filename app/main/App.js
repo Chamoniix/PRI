@@ -7,6 +7,8 @@ import Shop from './Shop';
 import User from './User';
 import HomeNavigation from './HomeNavigation';
 
+global.path = 'http://213.32.66.63/appliPP/'
+
 export const App = TabNavigator({
   Home: {
       screen: HomeNavigation,
