@@ -53,7 +53,7 @@ export default class CalendarApp extends Component {
 		}
     return (
 		<ScrollView>
-		<Text style={styles.firstTitle}>Pour creer vos sÃ©ances, cliquez sur un jour du calendrier</Text>
+		<Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
 	    <Calendar
 			onDayPress={this.GetDay.bind(this)}
 			markedDates={dateMarked}
