@@ -14,7 +14,7 @@ import { NavigationActions } from 'react-navigation'
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'UserLoggedIn'})
+    NavigationActions.navigate({ routeName: 'Login'})
   ]
 })
 
@@ -50,10 +50,11 @@ export default class UserLogin extends Component {
         .then((res) => {
             this.setState({isLoading: false})
             if(res === 'false'){
-                this.setState({errorMsg: 'true'});
+                this.setState({errorMsg: true});
             }else{
-                Alert.alert(res);
-                //this.props.navigation.dispatch(resetAction);
+                userId = res.user_id;
+                this.props.navigation.dispatch(resetAction);
+                this.props.navigation.navigate('UserLoggedIn');
             }
         })
         .catch((error) => {
