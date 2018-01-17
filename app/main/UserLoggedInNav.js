@@ -1,34 +1,51 @@
 import React, { Component } from 'react';
-import { StackNavigator } from 'react-navigation';
-import CreatePlan from './CreatePlan';
-import CreatePlanBis from './CreatePlan2';
-import Home from './Home';
+import { TabNavigator, } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import CalendarNavigation from './CalendarNavigation';
+import Shop from './Shop';
+import User from './User';
+import HomeNavigation from './HomeNavigation';
 
-export const UserLoggedInNav = StackNavigator({
-    Home: {
-	  screen: Home,
-	  navigationOptions: {
-        header : null,
+export const UserLoggedInNav = TabNavigator({
+  Home: {
+      screen: HomeNavigation,
+	   navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
       },
 	},
-    CreatePlan: {
-	  screen: CreatePlan,
+  Calendar: {
+	  screen: CalendarNavigation,
 	  navigationOptions: {
-        header : null,
+        tabBarIcon: ({ tintColor }) => <Icon name="calendar" size={25} />,
       },
 	},
-    CreatePlanBis: {
-	  screen: CreatePlanBis,
+  Shop: {
+	  screen: Shop,
 	  navigationOptions: {
-        header : null,
+        tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
       },
 	},
-},{
-  StackNavigatorConfig: {
-      initialRouteName: 'Home',
+  User: {
+	  screen: User,
+	  navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
+      },
+	},
+  
+},
+{
+  tabBarOptions: {
+    showIcon: true,
+	showLabel : false,
+    indicatorStyle: {
+          backgroundColor: 'rgb(125,125,125)',
+          height: 60,
+      },
+	style: {
+		backgroundColor: 'rgb(217,217,217)',
+	},
   },
- },
-
+},
 );
 
 export default UserLoggedInNav;

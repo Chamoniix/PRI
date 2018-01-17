@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import UserIdentification from './UserIdentification';
-import UserLoggedInNav from './UserLoggedInNav';
-
+import CreatePlan from './CreatePlan';
+import CreatePlanBis from './CreatePlan2';
 import Home from './Home';
 
 export const HomeNavigation = StackNavigator({
-    LogIn: {
-      //screen : Home,
-	  screen: UserIdentification,
+    Home: {
+	  screen: Home,
 	  navigationOptions: {
         header : null,
       },
 	},
-    UserLoggedIn: {
-	  screen: UserLoggedInNav,
+    CreatePlan: {
+	  screen: CreatePlan,
 	  navigationOptions: {
         header : null,
       },
 	},
-},
+    CreatePlanBis: {
+	  screen: CreatePlanBis,
+	  navigationOptions: {
+        header : null,
+      },
+	},
+},{
+  StackNavigatorConfig: {
+      initialRouteName: 'Home',
+  },
+ },
 
 );
 

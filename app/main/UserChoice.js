@@ -13,9 +13,9 @@ export default class UserChoice extends Component {
                 <TouchableHighlight onPress={() => this.props.navigation.navigate('Login')}>
                     <Text>Se connecter</Text>
                 </TouchableHighlight>
-                <Text>Nouveau sur l"'"application?</Text>
+                <Text>Nouveau sur l'application?</Text>
                 <TouchableHighlight onPress={() => this.props.navigation.navigate('Register')}>
-                    <Text>S"'"inscrire</Text>
+                    <Text>S'inscrire</Text>
                 </TouchableHighlight>
             </ScrollView>
         );
