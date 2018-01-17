@@ -120,7 +120,7 @@ export default class CalendarApp extends Component {
        return (
     <ScrollView>
       <View>
-        <Text>Selectionnez votre plan ! :)</Text>
+        <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
         <Picker>
           {planItems}
         </Picker>
