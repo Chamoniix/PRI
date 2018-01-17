@@ -22,6 +22,8 @@ var height = Dimensions.get('window').height;
 
 import {objectif} from './CreatePlan';
 
+import {userId} from './UserLogin';
+
 var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -104,8 +106,8 @@ export default class CreatePlanBis extends Component {
     selectNiveaux(rowData, rowID) {
         this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux())});
     }
-
-    createPlan(name, length, level, objectifid, information){
+    
+    createPlan(name, length, level, objectifid, information, id){
       this.setState({
             isLoading: true,
         });
@@ -122,6 +124,7 @@ export default class CreatePlanBis extends Component {
                     nom: name,
                     info: information,
                     obj: objectifid,
+                    idUser: id,
                 })
         })
         .then((response) => response.json())
@@ -215,7 +218,7 @@ export default class CreatePlanBis extends Component {
                     <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info)}
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, userId)}
                     style={this.state.duree === '' || this.state.niveau === '' || this.state.nom === ''
                     ? styles.invisibleButton
                     : styles.buttonNext}>

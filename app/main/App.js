@@ -1,57 +1,24 @@
 import React, { Component } from 'react';
-import { TabNavigator, } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Home from './Home';
-import CalendarNavigation from './CalendarNavigation';
-import Shop from './Shop';
-import User from './User';
-import HomeNavigation from './HomeNavigation';
+import { StackNavigator } from 'react-navigation';
+import UserIdentification from './UserIdentification';
+import UserLoggedInNav from './UserLoggedInNav';
 
-// Temporaire
-import launghSeance from './launghSeance';
+global.path = 'http://213.32.66.63/appliPP/'
 
-export const App = TabNavigator({
-  Home: {
-      screen: HomeNavigation,
-	   navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
-      },
-	},
-  Calendar: {
-	  screen: CalendarNavigation,
+export const App = StackNavigator({
+    LogIn: {
+	  screen: UserIdentification,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="calendar" size={25} />,
+        header : null,
       },
 	},
-  Shop: {
-// Temporaire
-
-    // screen: shop,
-    screen: launghSeance,
+    UserLoggedIn: {
+	  screen: UserLoggedInNav,
 	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
+          header: null,
       },
 	},
-  User: {
-	  screen: User,
-	  navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
-      },
-	},
-
-}
-,{
-  tabBarOptions: {
-    showIcon: true,
-	showLabel : false,
-    indicatorStyle: {
-          backgroundColor: 'rgb(125,125,125)',
-          height: 60,
-      },
-	style: {
-		backgroundColor: 'rgb(217,217,217)',
-	},
-  },
-},);
+},
+);
 
 export default App;
