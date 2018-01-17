@@ -39,7 +39,9 @@ var valEx;
 
 var ele = new Array(8);
 var edit = false;
-//var repet = new Array(5);
+// nom exo
+var exoNom = [];
+
 export default class Seance extends Component<{}> {
 	
    gotToChoixZoneCorps = (value) => {
@@ -76,11 +78,38 @@ export default class Seance extends Component<{}> {
         });
     }
    
+	InfoSeance(){
+       this.setState({
+            isLoading: true,
+        });
+        return fetch('http://213.32.66.63/appliPP/getInfoSeance.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+                    seanceId: seance_id,
+                })
+        })
+		.then((res)=> {
+			/*for( var i=0; i<res.length; i++){
+              exoNom[i] = res[i].exercice_nom;
+            }*/
+			//Alert.alert("nom "+ res.length);
+		})
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+	
   test = () => {
 	var k = 1;
+	//this.InfoSeance();
 	while(rep[k]!=0){
-	this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
-		k = k + 1;
+		this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
+			k = k + 1;
 	}
 	this.props.navigation.navigate('CalendarApp');
   }
