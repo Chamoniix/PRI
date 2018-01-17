@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
   TextInput,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
@@ -34,7 +35,7 @@ var ex = new Array(8);
 
 var seanceId = 39;
 import {idExercice, nomExo} from './ChoixExercice';
-import {seance_id} from './CalendarApp';
+import {seanceLaungedId} from './CalendarApp';
 var valEx;
 
 var ele = new Array(8);
@@ -44,14 +45,20 @@ var exoNom = [];
 
 export default class Seance extends Component<{}> {
 
-  constructor(props){
-      super(props);
-      this.state = {
-          isLoading: true,
+	constructor(props){
+        super(props);
+		this.state = {
+			isLoading: false,
           hasInternet: true,
-      }
-  }
-
+		};
+	}
+	
+	componentDidMount(){
+		if(seanceLaungedId != null){
+			
+		this.InfoSeance(seanceLaungedId)
+		}
+	}
    gotToChoixZoneCorps = (value) => {
 
 	this.props.navigation.navigate('ChoixZoneCorps');
@@ -80,26 +87,85 @@ export default class Seance extends Component<{}> {
         })
 		.then((res)=> {
 			err = res;
+			this.setState({
+                isLoading: false,
+            })
 		})
         .catch((error) => {
-          this.setState({
+			this.setState({
               hasInternet: false,
-              isLoading: false,
-          })
+                isLoading: false,
+            })
+            console.error(error);
+        });
+    }
+   
+	InfoSeance(seanceLaungedId){
+       this.setState({
+            isLoading: true,
+        });
+		//Alert.alert(seance_id);
+        return fetch('http://213.32.66.63/appliPP/getInfoSeance.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+                    seanceid: seanceLaungedId,
+                })
+        })
+        .then((response) => response.json())
+		.then((res)=> {
+			for( var i=0; i<res.length; i++){
+              exoNom[i] = res[i].exercice_nom;
+			  rep[i+1] = res[i].nbr_repetiion;
+			  ser[i+1] = res[i].nbr_serie;			  
+            }
+			this.setState({
+                isLoading: false,
+            })
+			//Alert.alert("rep1 "+rep[1]+" rep2 "+rep[2]);
+		})
+        .catch((error) => {
+			this.setState({
+              hasInternet: false,
+                isLoading: false,
+            })
+            console.error(error);
         });
     }
 
   test = () => {
 	var k = 1;
-	//this.InfoSeance();
-	while(rep[k]!=0){
+	//this.InfoSeance(seance_id);
+	if(seanceLaungedId===null){
+		while(rep[k]!=0){
 		this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
 			k = k + 1;
+		}
 	}
+	// re initialisation des variables
+	for(var i=1; i<6; i++){
+		ser[i]=0;
+	}
+	for(var i=1; i<6; i++){
+		rep[i]=0;
+	}
+	// on va a calandarApp
 	this.props.navigation.navigate('CalendarApp');
+
   }
 
   render() {
+   if(this.state.isLoading){
+      return(
+          <View style={{flex: 1, paddingTop: 20}}>
+              <ActivityIndicator />
+          </View>
+      );
+    }
     if(idExercice!=null){
 		ex[valEx]=idExercice;
 	}
@@ -117,20 +183,17 @@ export default class Seance extends Component<{}> {
   }
 
 
-	for(var i=1; i<6; i++){
-		if(edit === false){
-			if(seance_id===null){
-				ele[i]=
-					<View>
-						<Text>{seance_id}</Text>
-					</View>
-			}else{
-				ele[i]=
-					<View>
-						<Text>{seance_id}</Text>
-					</View>
-			}
-		}else{
+	// si la seance est deja creee, on affiche ce qu'il y a dedans
+	if(seanceLaungedId != null){	
+		for(var i=1; i<6; i++){
+			ele[i]=
+				<View>
+					<Text>{exoNom[i-1]}</Text>
+				</View>
+		}
+	}else{
+		for(var i=1; i<6; i++){
+
 			if(idExercice != null){
 				if(ex[i]===idExercice){
 					ele[i]=
@@ -151,9 +214,9 @@ export default class Seance extends Component<{}> {
 			}
 
 		}
+	}	
 		
-	}
-
+	
 	const repet = (value) => (
 		<View >
 		  <TextInput
@@ -199,7 +262,21 @@ export default class Seance extends Component<{}> {
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
-		<Button title="Sauvegarder" style={styles.bouton} onPress={this.test.bind(this)}/>
+		{(() => {
+			if(seanceLaungedId != null){
+				return(
+					<View>
+						<Button title="Modifier" style={styles.bouton} onPress={this.test.bind(this)}/>
+						<Button title="Commencer" style={styles.bouton} onPress={this.test.bind(this)}/>
+					</View>
+				);
+			}else{
+				return(
+					<Button title="Sauvegarder" style={styles.bouton} onPress={this.test.bind(this)}/>
+				);
+			}
+			
+       })()}
       </ScrollView>
     );
   }
