@@ -37,6 +37,7 @@ export default class CalendarApp extends Component {
         super(props);
 		this.state = {
 			isLoading: true,
+      hasInternet: true,
       selectedPlan:"",
 		};
 	}
@@ -96,7 +97,10 @@ export default class CalendarApp extends Component {
             })
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
 
@@ -107,6 +111,18 @@ export default class CalendarApp extends Component {
 			dateMarked[listDate[cpt]]={selected: true};
 			cpt = cpt + 1;
 		}
+
+    if(!this.state.hasInternet){
+        return(
+            <View style={{flex: 1, justifyContent: 'center'}}>
+                <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                <Text style={styles.textTitle}>
+                Pas de connexion internet...
+                </Text>
+            </View>
+        );
+    }
 
     if(this.state.isLoading){
       return(
@@ -152,7 +168,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(204, 204, 204)',
   },
-
+  textTitle:{
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10
+  },
   firstTitle: {
 	  fontSize: 20,
 	  padding :10,
