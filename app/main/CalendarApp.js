@@ -35,7 +35,8 @@ export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
 		this.state = {
-			isLoading: true
+			isLoading: true,
+      selectedPlan:"",
 		};
 	}
 
@@ -89,6 +90,7 @@ export default class CalendarApp extends Component {
             }
             this.setState({
                 isLoading: false,
+                selectedPlan: rowsPlanByUser[0],
                 rowsPlanByUser: rowsPlanByUser,
             })
         })
@@ -121,7 +123,9 @@ export default class CalendarApp extends Component {
     <ScrollView>
       <View>
         <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
-        <Picker>
+        <Picker
+            selectedValue={this.state.selectedPlan}
+            onValueChange={ (plan) => ( this.setState({selectedPlan:plan}) ) }>
           {planItems}
         </Picker>
 
