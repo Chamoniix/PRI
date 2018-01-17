@@ -18,20 +18,20 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-var idZone;
+var idMateriel;
 
 export default class Home extends Component<{}> {
-
 
 	constructor(props){
         super(props);
         this.state = {
             isLoading: true,
+            hasInternet: true,
         }
     }
 
 	componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getZoneCorps.php')
+        return fetch(path + 'getChoixMateriel.php')
         .then((response) => response.json())
         .then((res) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -41,7 +41,10 @@ export default class Home extends Component<{}> {
             })
         })
         .catch((error) => {
-            console.error(error);
+            this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
 
@@ -51,10 +54,10 @@ export default class Home extends Component<{}> {
         );
     }
 
-	zoneChoosen = (rowData) => {
-			//Alert.alert(rowData.zone_id);
-			idZone = rowData.zone_id;
-			this.props.navigation.navigate('ChoixMuscle');
+	materielChoosen = (rowData) => {
+			//Alert.alert(rowData.materiel_id);
+			idMateriel = rowData.materiel_id;
+			this.props.navigation.navigate('ChoixExercice');
 	}
 
 
@@ -62,10 +65,22 @@ export default class Home extends Component<{}> {
 
     const {navigate} = this.props.navigation;
 
-	if(this.state.isLoading){
+        if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
-                    <ActivityIndicator />
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+                </View>
+            );
+        }
+        
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
                 </View>
             );
         }
@@ -82,21 +97,20 @@ export default class Home extends Component<{}> {
 
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez une zone du corps:
+                  Choisissez votre matériel:
                 </Text>
-				<ListView
+
+                <ListView
                     dataSource={this.state.dataSourceAct}
                     renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.zoneChoosen(rowData)}>
-                    {rowData.zone_nom}</Text>}
+                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.materielChoosen(rowData)}>
+                    {rowData.materiel_nom}</Text>}
                 />
             </View>
          </View>
     );
   }
 }
-
-AppRegistry.registerComponent('BackgroundImage', () => BackgroundImage);
 
 var styles = StyleSheet.create({
     container: {
@@ -121,4 +135,4 @@ var styles = StyleSheet.create({
     },
 });
 
-export{idZone};
+export{idMateriel};

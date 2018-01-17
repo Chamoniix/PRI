@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
-import CreatePlan from './CreatePlan';
-import CreatePlanBis from './CreatePlan2';
-import Home from './Home';
+import CreatePlan from './home_screens/CreatePlan';
+import CreatePlanBis from './home_screens/CreatePlan2';
+import Home from './home_screens/Home';
 
 export const HomeNavigation = StackNavigator({
     Home: {

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { TabNavigator, } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CalendarNavigation from './CalendarNavigation';
-import Shop from './Shop';
-import User from './User';
-import HomeNavigation from './HomeNavigation';
+import CalendarNavigation from './calendar_nav/CalendarNavigation';
+import Shop from './shop_nav/Shop';
+import User from './account_nav/User';
+import HomeNavigation from './home_nav/HomeNavigation';
+
+import LaunchSeance from './calendar_nav/calendar_screens/LaunchSeance';
 
 export const UserLoggedInNav = TabNavigator({
   Home: {
@@ -20,7 +22,8 @@ export const UserLoggedInNav = TabNavigator({
       },
 	},
   Shop: {
-	  screen: Shop,
+	  //screen: Shop,
+      screen: LaunchSeance,
 	  navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
       },

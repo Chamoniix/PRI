@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import {date} from './CalendarApp';
-import {planId} from './CreatePlan2';
+import {planId} from '../../home_nav/home_screens/CreatePlan2';
 
 var seanceId;
 var dateM;
@@ -25,7 +25,7 @@ export default class AddSeance extends Component<{}> {
 	constructor(props){
         super(props);
         this.state = {
-            isLoading: true,
+            isLoading: false,
             hasInternet: true,
       			nomSeance : "",
       			infoSeance : "",
@@ -39,7 +39,7 @@ export default class AddSeance extends Component<{}> {
         this.setState({
             isLoading: true,
         });
-        return fetch('http://213.32.66.63/appliPP/addSeance.php',
+        return fetch(path + 'addSeance.php',
         {
             method: "POST",
             headers: {
@@ -86,6 +86,14 @@ export default class AddSeance extends Component<{}> {
             </View>
         );
     }
+    
+    if(this.state.isLoading){
+            return(
+                <View style={{flex: 1, paddingTop: 20}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+                </View>
+            );
+        }
 
 		return(
 			<ScrollView>

@@ -86,7 +86,6 @@ export default class CreatePlan extends Component {
 
     goToNextStep(){
         objectif = this.state.selectedObj;
-        //Alert.alert(objectif);
         this.props.navigation.navigate('CreatePlanBis');
     }
 

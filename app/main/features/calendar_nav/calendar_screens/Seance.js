@@ -71,7 +71,7 @@ export default class Seance extends Component<{}> {
        this.setState({
             isLoading: true,
         });
-        return fetch('http://213.32.66.63/appliPP/addSeanceExo.php',
+        return fetch(path + 'addSeanceExo.php',
         {
             method: "POST",
             headers: {
@@ -104,8 +104,7 @@ export default class Seance extends Component<{}> {
        this.setState({
             isLoading: true,
         });
-		//Alert.alert(seance_id);
-        return fetch('http://213.32.66.63/appliPP/getInfoSeance.php',
+        return fetch(path + 'getInfoSeance.php',
         {
             method: "POST", 
             headers: {
@@ -126,7 +125,6 @@ export default class Seance extends Component<{}> {
 			this.setState({
                 isLoading: false,
             })
-			//Alert.alert("rep1 "+rep[1]+" rep2 "+rep[2]);
 		})
         .catch((error) => {
 			this.setState({
@@ -162,7 +160,7 @@ export default class Seance extends Component<{}> {
    if(this.state.isLoading){
       return(
           <View style={{flex: 1, paddingTop: 20}}>
-              <ActivityIndicator />
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
           </View>
       );
     }

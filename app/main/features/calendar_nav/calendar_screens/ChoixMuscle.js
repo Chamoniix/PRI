@@ -29,11 +29,12 @@ export default class Home extends Component<{}> {
         super(props);
         this.state = {
             isLoading: true,
+            hasInternet: true,
         }
     }
 
 	componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getMuscleByZone.php',
+        return fetch(path + 'getMuscleByZone.php',
         {
             method: "POST",
             headers: {
@@ -53,7 +54,10 @@ export default class Home extends Component<{}> {
             })
         })
         .catch((error) => {
-            console.error(error);
+            this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
 
@@ -79,10 +83,22 @@ export default class Home extends Component<{}> {
 
     const {navigate} = this.props.navigation;
 
-	if(this.state.isLoading){
+        if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
-                    <ActivityIndicator />
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+                </View>
+            );
+        }
+        
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
                 </View>
             );
         }
@@ -120,8 +136,6 @@ export default class Home extends Component<{}> {
     );
   }
 }
-
-AppRegistry.registerComponent('BackgroundImage', () => BackgroundImage);
 
 var styles = StyleSheet.create({
   container: {

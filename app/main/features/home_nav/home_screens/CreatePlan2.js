@@ -22,7 +22,7 @@ var height = Dimensions.get('window').height;
 
 import {objectif} from './CreatePlan';
 
-import {userId} from './UserLogin';
+import {userId} from '../../../log_in/identification_screens/UserLogin';
 
 var planId;
 

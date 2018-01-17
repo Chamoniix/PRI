@@ -31,7 +31,7 @@ export default class Home extends Component<{}> {
 
   render() {
 
-    let imgCreer = require('../img/creerAccueil.jpg');
+    let imgCreer = require('../../../../img/creerAccueil.jpg');
 
     return (
           <View style={styles.container}>
@@ -45,8 +45,6 @@ export default class Home extends Component<{}> {
     );
   }
 }
-
-AppRegistry.registerComponent('BackgroundImage', () => BackgroundImage);
 
 var styles = StyleSheet.create({
     container: {

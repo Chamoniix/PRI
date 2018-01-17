@@ -37,8 +37,8 @@ export default class CalendarApp extends Component {
         super(props);
 		this.state = {
 			isLoading: true,
-      hasInternet: true,
-      selectedPlan:"",
+            hasInternet: true,
+            selectedPlan:"",
 		};
 		seanceLaungedId = null;
 	}
@@ -47,7 +47,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-        return fetch('http://213.32.66.63/appliPP/getSeance.php',
+        return fetch(path + 'getSeance.php',
         {
             method: "POST",
             headers: {
@@ -81,7 +81,7 @@ export default class CalendarApp extends Component {
 	}
 
   componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getPlanByUser.php',
+        return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",
             headers: {
@@ -134,7 +134,7 @@ export default class CalendarApp extends Component {
     if(this.state.isLoading){
       return(
           <View style={{flex: 1, paddingTop: 20}}>
-              <ActivityIndicator />
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
           </View>
       );
     }

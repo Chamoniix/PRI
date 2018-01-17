@@ -23,7 +23,8 @@ export default class UserRegistration extends Component {
                 charge: '',
                 desc: '',
                 errorMsg: '',
-                isLoading: false 
+                isLoading: false,
+                hasInternet: true,
         };
     }
     
@@ -62,7 +63,10 @@ export default class UserRegistration extends Component {
                 }
             })
             .catch((error) => {
-                console.error(error);
+                this.setState({
+                    hasInternet: false,
+                    isLoading: false,
+                })
             });
         }
     }
@@ -72,6 +76,18 @@ export default class UserRegistration extends Component {
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+                </View>
+            );
+        }
+        
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
                 </View>
             );
         }
@@ -106,5 +122,10 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
         fontSize: 20,
-    }
+    },
+    textTitle:{
+        color: 'white',
+        fontSize: 30,
+        textAlign: 'center',
+    },
 });

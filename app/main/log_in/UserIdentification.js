@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
-import UserChoice from './UserChoice';
-import UserLogin from './UserLogin';
-import UserRegistration from './UserRegistration';
-import UserRegistered from './UserRegistered';
+import UserChoice from './identification_screens/UserChoice';
+import UserLogin from './identification_screens/UserLogin';
+import UserRegistration from './identification_screens/UserRegistration';
+import UserRegistered from './identification_screens/UserRegistered';
 
 export const UserIdentification = StackNavigator({  
     Choice: {
