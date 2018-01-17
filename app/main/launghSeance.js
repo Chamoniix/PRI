@@ -17,6 +17,15 @@ var h = Dimensions.get('window').height;
 // TODO IMPORT LAUNGHTSEANCE
 var idLaunghedSeance = 1;
 
+//TODO récupérer les exercices / repetitions ect :
+/*
+select exercice_nom
+from Seance_Exo AS s
+JOIN Exercice AS e
+ON s.exercice_id=e.exercice_id
+WHERE seance_id=1;
+*/
+
 
 export default class Home extends Component<{}> {
 
