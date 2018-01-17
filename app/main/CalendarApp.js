@@ -22,6 +22,9 @@ var listDate=[];
 var mark;
 var cpt = 0;
 var dateMarked=[];
+
+var seance_id;
+
 export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
@@ -29,10 +32,34 @@ export default class CalendarApp extends Component {
 			isLoading: true
 		};
 	}
+	CheckSeance(date){
+		this.setState({
+            isLoading: true,
+        });
+        return fetch('http://213.32.66.63/appliPP/getSeance.php',
+        {
+            method: "POST", 
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+					dateS: date,
+					
+                })
+        })
+        .then((response) => response.json())
+		.then((res)=> {
+			seance_id = res[0].seance_id;
+			this.props.navigation.navigate('Seance');
+		})
+        .catch((error) => {
+			this.props.navigation.navigate('AddSeance');
+        });
+	}
 	GetDay(day) {
 		date = day.dateString;
-		//Alert.alert(dateM);
-		this.props.navigation.navigate('AddSeance');
+		this.CheckSeance(date);
 	}
 	
 	render() {
@@ -46,8 +73,6 @@ export default class CalendarApp extends Component {
 		}*/
 		if(dateM!=null){
 			listDate.push(dateM);
-			
-			//Alert.alert("cpt = "+cpt + "list date" + listDate[cpt]);
 			dateMarked[listDate[cpt]]={selected: true};
 			cpt = cpt + 1;
 		}
@@ -80,4 +105,4 @@ const styles = StyleSheet.create({
    // backgroundColor: 'rgb(204, 204, 204)',
   },
 });
-export {date};
+export {date, seance_id};
