@@ -3,19 +3,28 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight,
 } from 'react-native';
 
 
 
 export default class Navigation extends Component<{}> {
-  render() {
+    
+    logOff(){
+        
+    }
+    
+    render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to User Account!
-        </Text>  
-      </View>
+        <View style={styles.container}>
+            <Text style={styles.welcome}>
+                Welcome to User Account!
+            </Text>
+            <TouchableHighlight onPress={() => this.logOff()}>
+                <Text>Se déconnecter</Text>
+            </TouchableHighlight>
+        </View>
     );
   }
 }

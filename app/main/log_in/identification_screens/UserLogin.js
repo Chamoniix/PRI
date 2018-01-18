@@ -7,7 +7,8 @@ import{
     StyleSheet,
     Alert,
     ActivityIndicator,
-    View
+    View,
+    AsyncStorage
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
@@ -54,8 +55,9 @@ export default class UserLogin extends Component {
                 this.setState({errorMsg: true});
             }else{
                 userId = res.user_id;
+                AsyncStorage.setItem('userId', res.user_id);
                 this.props.navigation.dispatch(resetAction);
-                this.props.navigation.navigate('UserLoggedIn');
+                this.props.navigation.navigate('IsLoggedIn');
             }
         })
         .catch((error) => {

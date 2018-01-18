@@ -8,14 +8,14 @@ import {
   View,
   Button,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
-
-import {userId} from '../../../log_in/identification_screens/UserLogin';
 
 export default class Home extends Component<{}> {
     
@@ -29,6 +29,10 @@ export default class Home extends Component<{}> {
     }
     
     componentDidMount(){
+        AsyncStorage.getItem('userId').then((value) => this.getPseudo(value)).done();
+    }
+    
+    getPseudo(identifiant){
         return fetch(path + 'getUserName.php',
         {
             method: "POST",
@@ -37,7 +41,7 @@ export default class Home extends Component<{}> {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    id: userId,
+                    id:  identifiant,
                 })
         })
         .then((response) => response.json())
