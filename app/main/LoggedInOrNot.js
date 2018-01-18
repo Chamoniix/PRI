@@ -9,7 +9,7 @@ export default class LoggedInOrNot extends Component {
     }
     
     checkIfLoggedIn(id){
-        this.setState({routeName : id===null ? 'LogIn' : 'UserLoggedIn'});
+        this.setState({routeName : id===null || id==='null' ? 'LogIn' : 'UserLoggedIn'});
         this.props.navigation.dispatch(NavigationActions.reset({
                                         index: 0,
                                         actions: [NavigationActions.navigate({ routeName: this.state.routeName})]

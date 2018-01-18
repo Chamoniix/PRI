@@ -5,14 +5,30 @@ import {
   Text,
   View,
   TouchableHighlight,
+  AsyncStorage
 } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'IsLoggedIn'})
+  ]
+})
 
+const returnHome = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Home'})
+  ]
+})
 
 export default class Navigation extends Component<{}> {
     
     logOff(){
-        
+        AsyncStorage.setItem('userId', 'null');
+        this.props.navigation.dispatch(returnHome);
+        //this.props.navigation.dispatch(resetAction);
     }
     
     render() {
