@@ -45,6 +45,7 @@ export default class CreatePlan extends Component {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
             this.setState({
                 isLoading: false,
+                hasInternet: true,
                 dataSourceAct: ds.cloneWithRows(res),
             })
         })
@@ -53,6 +54,7 @@ export default class CreatePlan extends Component {
               hasInternet: false,
               isLoading: false,
           })
+          this.getActivites();
         });
     }
 
@@ -74,6 +76,7 @@ export default class CreatePlan extends Component {
             this.setState({
                 isLoading: false,
                 dataSourceObj: dss.cloneWithRows(res),
+                hasInternet: true,
             })
         })
         .catch((error) => {
@@ -81,6 +84,7 @@ export default class CreatePlan extends Component {
               hasInternet: false,
               isLoading: false,
           })
+          this.getObjectifs(activity);
         });
     }
 
