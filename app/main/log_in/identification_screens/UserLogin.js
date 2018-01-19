@@ -22,7 +22,7 @@ const resetAction = NavigationActions.reset({
 var userId;
 
 export default class UserLogin extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -33,12 +33,12 @@ export default class UserLogin extends Component {
                 hasInternet: true,
         };
     }
-    
+
     logIn(){
         this.setState({isLoading: true})
         return fetch(path + 'loggingIn.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -67,7 +67,7 @@ export default class UserLogin extends Component {
           })
         });
     }
-    
+
     render() {
         if(this.state.isLoading){
             return(
@@ -76,7 +76,7 @@ export default class UserLogin extends Component {
                 </View>
             );
         }
-        
+
         if(!this.state.hasInternet){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -88,13 +88,13 @@ export default class UserLogin extends Component {
                 </View>
             );
         }
-        
+
         return(
             <ScrollView>
                 <Text>Adresse mail ou Identifiant:</Text>
-                <TextInput onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
+                <TextInput onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} autoFocus={true} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                 <Text>Mot de passe:</Text>
-                <TextInput onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
+                <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
                 <TouchableHighlight onPress={() => this.logIn()}>
                     <Text>Se connecter</Text>
                 </TouchableHighlight>
