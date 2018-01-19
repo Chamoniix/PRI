@@ -16,21 +16,21 @@ const resetAction = NavigationActions.reset({
   ]
 })
 
-const returnHome = NavigationActions.reset({
+const resetUserNav = NavigationActions.reset({
   index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'Home'})
+    NavigationActions.navigate({ routeName: 'User'})
   ]
 })
 
 export default class Navigation extends Component<{}> {
-    
+
     logOff(){
         AsyncStorage.setItem('userId', 'null');
-        this.props.navigation.dispatch(returnHome);
-        //this.props.navigation.dispatch(resetAction);
+        this.props.screenProps.rootNavigation.dispatch(resetUserNav);
+        this.props.screenProps.rootNavigation.dispatch(resetAction);
     }
-    
+
     render() {
     return (
         <View style={styles.container}>
