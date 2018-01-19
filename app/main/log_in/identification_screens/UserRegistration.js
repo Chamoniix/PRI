@@ -11,7 +11,7 @@ import{
 } from 'react-native';
 
 export default class UserRegistration extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -27,50 +27,55 @@ export default class UserRegistration extends Component {
                 hasInternet: true,
         };
     }
-    
+
     signIn(){
-        if(this.state.mail==='' || this.state.pseudo==='' || this.state.mdp==='' || this.state.mdpBis==='' || this.state.age===''){
-            this.setState({errorMsg: 'Veuillez remplir tous les champs obligatoires'})
-        }else if(this.state.mdp !== this.state.mdpBis){
-             this.setState({errorMsg: "Vous n'avez pas retapé le même mot de passe"})
+        var re = /^[a-z][a-zA-Z0-9_.]*(\.[a-zA-Z][a-zA-Z0-9_.]*)?@[a-z][a-zA-Z-0-9]*\.[a-z]+(\.[a-z]+)?$/;
+        if (!re.test(this.state.mail)){
+          this.setState({errorMsg: "L'adresse mail entrée n'est pas valide"});
         }else{
-            this.setState({isLoading: true})
-            return fetch(path + 'signingUp.php',
-            {
-                method: "POST", 
-                headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json"
-                    },
-                body: JSON.stringify({
-                        mail: this.state.mail,
-                        pseudo: this.state.pseudo,
-                        mdp : this.state.mdp,
-                        age: this.state.age,
-                        charge: this.state.charge,
-                        desc: this.state.desc,
-                    })
-            })
-            .then((response) => response.json())
-            .then((res) => {
-                this.setState({isLoading: false})
-                if(res === 'Pseudo existe deja'){
-                    this.setState({errorMsg: "Ce pseudo est déjà utilisé"});
-                }else if(res === 'Email existe deja'){
-                    this.setState({errorMsg: "Cet e-mail est déjà utilisé"});
-                }else{
-                    this.props.navigation.navigate('Registered');
-                }
-            })
-            .catch((error) => {
-                this.setState({
-                    hasInternet: false,
-                    isLoading: false,
-                })
-            });
+          if(this.state.mail==='' || this.state.pseudo==='' || this.state.mdp==='' || this.state.mdpBis==='' || this.state.age===''){
+              this.setState({errorMsg: 'Veuillez remplir tous les champs obligatoires'})
+          }else if(this.state.mdp !== this.state.mdpBis){
+               this.setState({errorMsg: "Vous n'avez pas retapé le même mot de passe"})
+          }else{
+              this.setState({isLoading: true})
+              return fetch(path + 'signingUp.php',
+              {
+                  method: "POST",
+                  headers: {
+                          Accept: "application/json",
+                          "Content-Type": "application/json"
+                      },
+                  body: JSON.stringify({
+                          mail: this.state.mail,
+                          pseudo: this.state.pseudo,
+                          mdp : this.state.mdp,
+                          age: this.state.age,
+                          charge: this.state.charge,
+                          desc: this.state.desc,
+                      })
+              })
+              .then((response) => response.json())
+              .then((res) => {
+                  this.setState({isLoading: false})
+                  if(res === 'Pseudo existe deja'){
+                      this.setState({errorMsg: "Ce pseudo est déjà utilisé"});
+                  }else if(res === 'Email existe deja'){
+                      this.setState({errorMsg: "Cet e-mail est déjà utilisé"});
+                  }else{
+                      this.props.navigation.navigate('Registered');
+                  }
+              })
+              .catch((error) => {
+                  this.setState({
+                      hasInternet: false,
+                      isLoading: false,
+                  })
+              });
+          }
         }
     }
-    
+
     render() {
         if(this.state.isLoading){
             return(
@@ -79,7 +84,7 @@ export default class UserRegistration extends Component {
                 </View>
             );
         }
-        
+
         if(!this.state.hasInternet){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -91,7 +96,7 @@ export default class UserRegistration extends Component {
                 </View>
             );
         }
-        
+
         return(
             <ScrollView>
                 <Text>Adresse mail*</Text>

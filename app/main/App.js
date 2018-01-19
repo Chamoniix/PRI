@@ -20,14 +20,15 @@ export const App = StackNavigator({
       },
 	},
     UserLoggedIn: {
-	  screen: UserLoggedInNav,
+	  screen: ({ navigation}) =>
+      <UserLoggedInNav screenProps={{rootNavigation: navigation}}/>,
 	  navigationOptions: {
           header: null,
       },
 	},
-},{ 
+},{
     StackNavigatorConfig: {
-        initialRouteName: 'IsLoggedIn', 
+        initialRouteName: 'IsLoggedIn',
     }
 }
 );
