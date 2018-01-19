@@ -102,17 +102,24 @@ export default class UserRegistration extends Component {
         return(
             <ScrollView>
                 <Text>Adresse mail*</Text>
-                <TextInput onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} autoFocus={this.state.firstTry ? true : false} keyboardType='email-address' onChangeText={(inputMail) => this.setState({mail: inputMail})} value={this.state.mail}/>
+                <TextInput onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none'
+                autoCorrect={false} autoFocus={this.state.firstTry ? true : false} keyboardType='email-address'
+                onChangeText={(inputMail) => this.setState({mail: inputMail})} value={this.state.mail}/>
                 <Text>Pseudo*</Text>
-                <TextInput ref='pseudo' onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} onChangeText={(inputPseudo) => this.setState({pseudo: inputPseudo})} value={this.state.pseudo}/>
+                <TextInput ref='pseudo' onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next'
+                autoCapitalize='none' autoCorrect={false} onChangeText={(inputPseudo) => this.setState({pseudo: inputPseudo})} value={this.state.pseudo}/>
                 <Text>Mot de passe*</Text>
-                <TextInput ref='mdp' onSubmitEditing={() => this.refs.mdp2.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
+                <TextInput ref='mdp' onSubmitEditing={() => this.refs.mdp2.focus()} returnKeyType='next'
+                autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
                 <Text>Retaper le mot de passe*</Text>
-                <TextInput ref='mdp2' onSubmitEditing={() => this.refs.age.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passwBis) => this.setState({mdpBis: passwBis})} value={this.state.mdpBis}/>
+                <TextInput ref='mdp2' onSubmitEditing={() => this.refs.age.focus()} returnKeyType='next'
+                autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passwBis) => this.setState({mdpBis: passwBis})} value={this.state.mdpBis}/>
                 <Text>Votre age*</Text>
-                <TextInput ref='age' onSubmitEditing={() => this.refs.charge.focus()} returnKeyType='next' keyboardType='numeric' onChangeText={(inputAge) => this.setState({age: inputAge})} value={this.state.age}/>
+                <TextInput ref='age' onSubmitEditing={() => this.refs.charge.focus()} returnKeyType='next' keyboardType='numeric'
+                onChangeText={(inputAge) => this.setState({age: inputAge})} value={this.state.age}/>
                 <Text>Charge soulevée maximale en kg</Text>
-                <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric' onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
+                <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric'
+                onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
                 <Text>Décrivez-vous en quelques mots</Text>
                 <TextInput ref='desc' returnKeyType='done' onChangeText={(inputDesc) => this.setState({desc: inputDesc})} value={this.state.desc}/>
                 <TouchableHighlight onPress={() => this.signIn()}>

@@ -34,6 +34,10 @@ export default class UserLogin extends Component {
         };
     }
 
+    componentDidMount(){
+      AsyncStorage.getItem('userPseudo').then((value) => this.setState({nom: value})).done();
+    }
+
     logIn(){
         this.setState({isLoading: true})
         return fetch(path + 'loggingIn.php',
@@ -56,6 +60,7 @@ export default class UserLogin extends Component {
             }else{
                 userId = res.user_id;
                 AsyncStorage.setItem('userId', res.user_id);
+                AsyncStorage.setItem('userPseudo', this.state.nom);
                 this.props.navigation.dispatch(resetAction);
                 this.props.navigation.navigate('IsLoggedIn');
             }
@@ -92,9 +97,11 @@ export default class UserLogin extends Component {
         return(
             <ScrollView>
                 <Text>Adresse mail ou Identifiant:</Text>
-                <TextInput onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none' autoCorrect={false} autoFocus={true} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
+                <TextInput onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none'
+                autoCorrect={false} autoFocus={true} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                 <Text>Mot de passe:</Text>
-                <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
+                <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
+                onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
                 <TouchableHighlight onPress={() => this.logIn()}>
                     <Text>Se connecter</Text>
                 </TouchableHighlight>
