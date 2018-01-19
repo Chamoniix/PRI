@@ -3,7 +3,7 @@ import { TabNavigator, } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CalendarNavigation from './calendar_nav/CalendarNavigation';
 import Shop from './shop_nav/Shop';
-import User from './account_nav/User';
+import UserNavigation from './account_nav/UserNavigation';
 import HomeNavigation from './home_nav/HomeNavigation';
 
 import LaunchSeance from './calendar_nav/calendar_screens/LaunchSeance';
@@ -29,12 +29,12 @@ export const UserLoggedInNav = TabNavigator({
       },
 	},
   User: {
-	  screen: User,
+	  screen: UserNavigation,
 	  navigationOptions: {
         tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
       },
 	},
-  
+
 },
 {
   tabBarOptions: {
