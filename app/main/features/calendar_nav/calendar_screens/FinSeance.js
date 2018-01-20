@@ -22,8 +22,6 @@ export default class Home extends Component<{}> {
   constructor(props){
         super(props);
         this.state = {
-            isLoading: true,
-            hasInternet: true,
         }
     }
 
@@ -38,26 +36,6 @@ export default class Home extends Component<{}> {
   render() {
 
     let imgCreer = require('../../../../img/creerAccueil.jpg');
-
-    if(this.state.isLoading){
-        return(
-            <View style={{flex: 1, paddingTop: 20}}>
-                <ActivityIndicator size='large' color='rgb(125,125,125)'/>
-            </View>
-        );
-    }
-
-    if(!this.state.hasInternet){
-        return(
-            <View style={{flex: 1, justifyContent: 'center'}}>
-                <ActivityIndicator size='large' color='rgb(125,125,125)'/>
-
-                <Text style={styles.textTitle}>
-                Pas de connexion internet...
-                </Text>
-            </View>
-        );
-    }
 
     return (
           <View style={styles.container}>
