@@ -13,7 +13,8 @@ import {
   ListView,
   Alert,
   TextInput,
-  ScrollView
+  ScrollView,
+  AsyncStorage
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 
@@ -21,8 +22,6 @@ var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
 import {objectif} from './CreatePlan';
-
-import {userId} from '../../../log_in/identification_screens/UserLogin';
 
 var planId;
 
@@ -50,9 +49,14 @@ export default class CreatePlanBis extends Component {
                 niveau: '',
                 nom: '',
                 info: '',
+                id: '',
                 dataSourceDuree: ds.cloneWithRows(this.getDurees()),
                 dataSourceNiveau: ds.cloneWithRows(this.getNiveaux()),
         };
+    }
+
+    componentDidMount(){
+      AsyncStorage.getItem('userId').then((value) => this.setState({id: value})).done();
     }
 
     getDurees = () => {
@@ -106,10 +110,10 @@ export default class CreatePlanBis extends Component {
     selectNiveaux(rowData, rowID) {
         this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux())});
     }
-    
-    createPlan(name, length, level, objectifid, information, id){
+
+    createPlan(name, length, level, objectifid, information, id, bool){
       this.setState({
-            isLoading: true,
+            isLoading: bool,
         });
         return fetch('http://213.32.66.63/appliPP/createPlan.php',
         {
@@ -131,16 +135,22 @@ export default class CreatePlanBis extends Component {
         .then((res) => {
             this.setState({
                 isLoading: false,
+                hasInternet: true,
             })
-            planId = res;
-            this.props.navigation.dispatch(resetAction);
-            this.props.navigation.navigate('CalendarApp');
+            if(res==="Pb d'ajout"){
+                //TODO
+            }else{
+              planId = res;
+              this.props.navigation.dispatch(resetAction);
+              this.props.navigation.navigate('Calendar');
+            }
         })
         .catch((error) => {
           this.setState({
               hasInternet: false,
               isLoading: false,
           })
+          this.createPlan(name, length, level, objectifid, information, id, false);
         });
     }
 
@@ -218,7 +228,7 @@ export default class CreatePlanBis extends Component {
                     <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, userId)}
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, this.state.id, true)}
                     style={this.state.duree === '' || this.state.niveau === '' || this.state.nom === ''
                     ? styles.invisibleButton
                     : styles.buttonNext}>

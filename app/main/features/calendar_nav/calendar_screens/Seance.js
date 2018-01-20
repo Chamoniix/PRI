@@ -52,19 +52,18 @@ export default class Seance extends Component<{}> {
           hasInternet: true,
 		};
 	}
-	
+
 	componentDidMount(){
 		if(seanceLaungedId != null){
-			
-		this.InfoSeance(seanceLaungedId)
+		    this.InfoSeance(seanceLaungedId)
 		}
 	}
-   gotToChoixZoneCorps = (value) => {
 
-	this.props.navigation.navigate('ChoixZoneCorps');
-	valEx = value;
-	/*ex[value] = idExercice;
-	Alert.alert("idExercice "+idExercice);*/
+  gotToChoixZoneCorps = (value) => {
+    this.props.navigation.navigate('ChoixZoneCorps');
+    valEx = value;
+    /*ex[value] = idExercice;
+    Alert.alert("idExercice "+idExercice);*/
   }
 
   AddSeanceExo(seanceId, idEx, nbrR, nbrS){
@@ -99,14 +98,14 @@ export default class Seance extends Component<{}> {
             console.error(error);
         });
     }
-   
+
 	InfoSeance(seanceLaungedId){
        this.setState({
             isLoading: true,
         });
         return fetch(path + 'getInfoSeance.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -117,11 +116,13 @@ export default class Seance extends Component<{}> {
         })
         .then((response) => response.json())
 		.then((res)=> {
-			for( var i=0; i<res.length; i++){
-              exoNom[i] = res[i].exercice_nom;
-			  rep[i+1] = res[i].nbr_repetiion;
-			  ser[i+1] = res[i].nbr_serie;			  
-            }
+      if(res !== '0 result'){
+  			for( var i=0; i<res.length; i++){
+                exoNom[i] = res[i].exercice_nom;
+  			  rep[i+1] = res[i].nbr_repetiion;
+  			  ser[i+1] = res[i].nbr_serie;
+        }
+      }
 			this.setState({
                 isLoading: false,
             })
@@ -182,7 +183,7 @@ export default class Seance extends Component<{}> {
 
 
 	// si la seance est deja creee, on affiche ce qu'il y a dedans
-	if(seanceLaungedId != null){	
+	if(seanceLaungedId != null){
 		for(var i=1; i<6; i++){
 			ele[i]=
 				<View>
@@ -212,9 +213,9 @@ export default class Seance extends Component<{}> {
 			}
 
 		}
-	}	
-		
-	
+	}
+
+
 	const repet = (value) => (
 		<View >
 		  <TextInput
@@ -273,7 +274,7 @@ export default class Seance extends Component<{}> {
 					<Button title="Sauvegarder" style={styles.bouton} onPress={this.test.bind(this)}/>
 				);
 			}
-			
+
        })()}
       </ScrollView>
     );
