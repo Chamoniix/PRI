@@ -3,7 +3,7 @@ include 'DBconfig.php';
 $post = json_decode(file_get_contents('php://input'), TRUE);
 
 $seanceId = $post['seanceid'];
-// Create connection 
+// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
@@ -24,7 +24,8 @@ if ($result->num_rows > 0) {
        $json = json_encode($list);
    }
 } else {
-   echo "0 results";
+   $msg = "0 result";
+    $json = json_encode($msg);
 }
 echo $json;
 $conn->close();

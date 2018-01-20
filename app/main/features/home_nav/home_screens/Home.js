@@ -8,17 +8,17 @@ import {
   View,
   Button,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  AsyncStorage
 } from 'react-native';
 
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-import {userId} from '../../../log_in/identification_screens/UserLogin';
-
 export default class Home extends Component<{}> {
-    
+
     constructor(props){
         super(props);
         this.state = {
@@ -27,8 +27,12 @@ export default class Home extends Component<{}> {
             userName: '',
         }
     }
-    
+
     componentDidMount(){
+        AsyncStorage.getItem('userId').then((value) => this.getPseudo(value)).done();
+    }
+
+    getPseudo(identifiant){
         return fetch(path + 'getUserName.php',
         {
             method: "POST",
@@ -37,23 +41,24 @@ export default class Home extends Component<{}> {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    id: userId,
+                    id:  identifiant,
                 })
         })
         .then((response) => response.json())
         .then((res) => {
             this.setState({
                 isLoading: false,
+                hasInternet: true,
                 userName: res.user_pseudo,
             })
         })
         .catch((error) => {
-          /*this.setState({
+          this.setState({
               hasInternet: false,
               isLoading: false,
-          })*/
-          console.log(error);
-        });        
+          })
+          this.getPseudo(identifiant);
+        });
     }
 
     render() {
@@ -61,7 +66,7 @@ export default class Home extends Component<{}> {
     let imgCreer = require('../../../../img/creerAccueil.jpg');
     let imgSuivre = require('../../../../img/gainage.jpg');
     let imgPartage = require('../../../../img/partageAccueil.jpg');
-    
+
         if(this.state.isLoading){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
@@ -89,7 +94,7 @@ export default class Home extends Component<{}> {
                     <Text style={styles.caption}>
                         Bienvenue {this.state.userName}!
                     </Text>
-                </View>            
+                </View>
                 <View>
                     <Image source={imgCreer} style={{height: h*0.2, width: w, opacity: 0.7}}/>
                 </View>
