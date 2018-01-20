@@ -19,6 +19,7 @@ import {
 var date;
 
 import {dateM} from './AddSeance';
+//import {userId} from './UserLogin';
 
 var listDate=[];
 var mark;
@@ -28,7 +29,7 @@ var dateMarked=[];
 var seanceLaungedId = null;
 
 // TODO Enlever l'initialisation quand création utilisateur faite.
-var idUser = 2;
+var userId = 2;
 var rowsPlanByUser = [];
 
 export default class CalendarApp extends Component {
@@ -36,7 +37,8 @@ export default class CalendarApp extends Component {
         super(props);
 		this.state = {
 			isLoading: true,
-      selectedPlan:"",
+            hasInternet: true,
+            selectedPlan:"",
 		};
 		seanceLaungedId = null;
 	}
@@ -45,7 +47,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-        return fetch('http://213.32.66.63/appliPP/getSeance.php',
+        return fetch(path + 'getSeance.php',
         {
             method: "POST",
             headers: {
@@ -79,7 +81,7 @@ export default class CalendarApp extends Component {
 	}
 
   componentDidMount(){
-        return fetch('http://213.32.66.63/appliPP/getPlanByUser.php',
+        return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",
             headers: {
@@ -87,7 +89,7 @@ export default class CalendarApp extends Component {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    userid: idUser,
+                    userid: userId,
                 })
         })
         .then((response) => response.json())
@@ -102,7 +104,10 @@ export default class CalendarApp extends Component {
             })
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
 
@@ -114,10 +119,22 @@ export default class CalendarApp extends Component {
 			cpt = cpt + 1;
 		}
 
+    if(!this.state.hasInternet){
+        return(
+            <View style={{flex: 1, justifyContent: 'center'}}>
+                <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                <Text style={styles.textTitle}>
+                Pas de connexion internet...
+                </Text>
+            </View>
+        );
+    }
+
     if(this.state.isLoading){
       return(
           <View style={{flex: 1, paddingTop: 20}}>
-              <ActivityIndicator />
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
           </View>
       );
     }
@@ -158,7 +175,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgb(204, 204, 204)',
   },
-
+  textTitle:{
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10
+  },
   firstTitle: {
 	  fontSize: 20,
 	  padding :10,

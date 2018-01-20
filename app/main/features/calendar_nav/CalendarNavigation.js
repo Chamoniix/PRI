@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Seance from './Seance';
-import AddSeance from './AddSeance';
-import CalendarApp from './CalendarApp';
-import ChoixZoneCorps from './ChoixZoneCorps.js';
-import ChoixMuscle from './ChoixMuscle.js';
-import ChoixMateriel from './ChoixMateriel.js';
-import ChoixExercice from './ChoixExercice.js'
+import Seance from './calendar_screens/Seance';
+import AddSeance from './calendar_screens/AddSeance';
+import CalendarApp from './calendar_screens/CalendarApp';
+import ChoixZoneCorps from './calendar_screens/ChoixZoneCorps.js';
+import ChoixMuscle from './calendar_screens/ChoixMuscle.js';
+import ChoixMateriel from './calendar_screens/ChoixMateriel.js';
+import ChoixExercice from './calendar_screens/ChoixExercice.js'
 
 export const CalendarNavigation = StackNavigator({
     CalendarApp: {

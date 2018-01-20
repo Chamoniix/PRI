@@ -21,24 +21,25 @@ var height = Dimensions.get('window').height;
 var objectif;
 
 export default class CreatePlan extends Component {
-    
+
     constructor(props){
         super(props);
         this.state = {
             isLoading: true,
+            hasInternet: true,
             dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             dataSourceAct: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             selectedAct: '',
             selectedObj: '',
         }
     }
-    
+
     componentDidMount(){
         this.getActivites();
     }
-    
+
     getActivites = () => {
-        return fetch('http://213.32.66.63/appliPP/getActivites.php')
+        return fetch(path + 'getActivites.php')
         .then((response) => response.json())
         .then((res) => {
             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
@@ -48,14 +49,17 @@ export default class CreatePlan extends Component {
             })
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
-    
+
     getObjectifs(activity){
-        return fetch('http://213.32.66.63/appliPP/getObjectifs.php',
+        return fetch(path + 'getObjectifs.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -73,16 +77,18 @@ export default class CreatePlan extends Component {
             })
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
-    
+
     goToNextStep(){
         objectif = this.state.selectedObj;
-        //Alert.alert(objectif);
         this.props.navigation.navigate('CreatePlanBis');
     }
-    
+
   renderAct(rowData, rowID) {
     return (
       <TouchableHighlight onPress={() => {
@@ -100,13 +106,13 @@ export default class CreatePlan extends Component {
       </TouchableHighlight>
     );
   }
-  
+
   selectAct(rowData, rowID) {
     this.setState({selectedAct: rowData.activite_id, isLoading: true, selectedObj: ''});
     this.getActivites();
     this.getObjectifs(rowData.activite_id);
   }
-  
+
   renderObj(rowData, rowID) {
     return (
       <TouchableHighlight onPress={() => {
@@ -124,18 +130,18 @@ export default class CreatePlan extends Component {
       </TouchableHighlight>
     );
   }
-  
+
   selectObj(rowData, rowID) {
     this.setState({selectedObj: rowData.objectif_id, isLoading: true});
     this.getObjectifs(this.state.selectedAct);
   }
-    
+
   ListViewItemSeparator = () => {
       return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
        );
   }
-    
+
     render() {
         if(this.state.isLoading){
             return(
@@ -144,7 +150,19 @@ export default class CreatePlan extends Component {
                 </View>
             );
         }
-        
+
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
+                </View>
+            );
+        }
+
         return (
           <ScrollView style={styles.container}>
             <View>
@@ -169,7 +187,7 @@ export default class CreatePlan extends Component {
                 </View>
                 <ListView
                     dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}    
+                    renderSeparator={this.ListViewItemSeparator}
                     renderRow={this.renderAct.bind(this)}
                 />
                 <View style={this.state.selectedAct === ''
@@ -179,7 +197,7 @@ export default class CreatePlan extends Component {
                     ? styles.invisibleText
                     : styles.textTitle}>
                       Choisissez votre objectif:
-                    </Text> 
+                    </Text>
                 </View>
                 <ListView
                     dataSource={this.state.dataSourceObj}
@@ -187,7 +205,7 @@ export default class CreatePlan extends Component {
                     renderRow={this.renderObj.bind(this)}
                 />
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()} 
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()}
                     style={this.state.selectedObj === ''
                     ? styles.invisibleButton
                     : styles.buttonNext}>

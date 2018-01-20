@@ -22,6 +22,8 @@ var height = Dimensions.get('window').height;
 
 import {objectif} from './CreatePlan';
 
+import {userId} from '../../../log_in/identification_screens/UserLogin';
+
 var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -35,7 +37,7 @@ const resetAction = NavigationActions.reset({
 })
 
 export default class CreatePlanBis extends Component {
-    
+
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({
@@ -43,6 +45,7 @@ export default class CreatePlanBis extends Component {
         });
         this.state = {
                 isLoading: false,
+                hasInternet: true,
                 duree: '',
                 niveau: '',
                 nom: '',
@@ -51,15 +54,15 @@ export default class CreatePlanBis extends Component {
                 dataSourceNiveau: ds.cloneWithRows(this.getNiveaux()),
         };
     }
-    
+
     getDurees = () => {
         return ["1 mois", "3 mois", "6 mois"];
     }
-    
+
     getNiveaux = () => {
         return ["Debutant", "Intermediaire", "Confirmé"];
     }
-    
+
     renderDuree(rowData, rowID){
         return(
             <TouchableHighlight onPress={() => {
@@ -77,11 +80,11 @@ export default class CreatePlanBis extends Component {
             </TouchableHighlight>
         );
     }
-    
+
     selectDuree(rowData, rowID) {
         this.setState({duree: rowData, dataSourceDuree: this.state.dataSourceDuree.cloneWithRows(this.getDurees())});
     }
-    
+
     renderNiveaux(rowData, rowID){
         return(
             <TouchableHighlight onPress={() => {
@@ -99,18 +102,18 @@ export default class CreatePlanBis extends Component {
             </TouchableHighlight>
         );
     }
-    
+
     selectNiveaux(rowData, rowID) {
         this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux())});
     }
     
-    createPlan(name, length, level, objectifid, information){
+    createPlan(name, length, level, objectifid, information, id){
       this.setState({
             isLoading: true,
         });
         return fetch('http://213.32.66.63/appliPP/createPlan.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -121,6 +124,7 @@ export default class CreatePlanBis extends Component {
                     nom: name,
                     info: information,
                     obj: objectifid,
+                    idUser: id,
                 })
         })
         .then((response) => response.json())
@@ -133,16 +137,19 @@ export default class CreatePlanBis extends Component {
             this.props.navigation.navigate('CalendarApp');
         })
         .catch((error) => {
-            console.error(error);
+          this.setState({
+              hasInternet: false,
+              isLoading: false,
+          })
         });
     }
-        
+
     ListViewItemSeparator = () => {
         return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
-    
+
     render() {
         if(this.state.isLoading){
             return(
@@ -151,7 +158,19 @@ export default class CreatePlanBis extends Component {
                 </View>
             );
         }
-    
+
+        if(!this.state.hasInternet){
+            return(
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+                    <Text style={styles.textTitle}>
+                    Pas de connexion internet...
+                    </Text>
+                </View>
+            );
+        }
+
         return (
           <ScrollView style={styles.container}>
             <View>
@@ -199,7 +218,7 @@ export default class CreatePlanBis extends Component {
                     <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info)}
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, userId)}
                     style={this.state.duree === '' || this.state.niveau === '' || this.state.nom === ''
                     ? styles.invisibleButton
                     : styles.buttonNext}>
@@ -218,6 +237,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F5FCFF',
+    },
+    textTitle:{
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
     },
     textTitle:{
         color: 'white',

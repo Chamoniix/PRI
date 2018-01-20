@@ -44,10 +44,12 @@ var edit = false;
 var exoNom = [];
 
 export default class Seance extends Component<{}> {
+
 	constructor(props){
         super(props);
 		this.state = {
 			isLoading: false,
+          hasInternet: true,
 		};
 	}
 	
@@ -58,20 +60,20 @@ export default class Seance extends Component<{}> {
 		}
 	}
    gotToChoixZoneCorps = (value) => {
-	   
+
 	this.props.navigation.navigate('ChoixZoneCorps');
 	valEx = value;
 	/*ex[value] = idExercice;
 	Alert.alert("idExercice "+idExercice);*/
   }
-  
+
   AddSeanceExo(seanceId, idEx, nbrR, nbrS){
        this.setState({
             isLoading: true,
         });
-        return fetch('http://213.32.66.63/appliPP/addSeanceExo.php',
+        return fetch(path + 'addSeanceExo.php',
         {
-            method: "POST", 
+            method: "POST",
             headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
@@ -91,6 +93,7 @@ export default class Seance extends Component<{}> {
 		})
         .catch((error) => {
 			this.setState({
+              hasInternet: false,
                 isLoading: false,
             })
             console.error(error);
@@ -101,8 +104,7 @@ export default class Seance extends Component<{}> {
        this.setState({
             isLoading: true,
         });
-		//Alert.alert(seance_id);
-        return fetch('http://213.32.66.63/appliPP/getInfoSeance.php',
+        return fetch(path + 'getInfoSeance.php',
         {
             method: "POST", 
             headers: {
@@ -123,15 +125,16 @@ export default class Seance extends Component<{}> {
 			this.setState({
                 isLoading: false,
             })
-			//Alert.alert("rep1 "+rep[1]+" rep2 "+rep[2]);
 		})
         .catch((error) => {
 			this.setState({
+              hasInternet: false,
                 isLoading: false,
             })
             console.error(error);
         });
     }
+
   test = () => {
 	var k = 1;
 	//this.InfoSeance(seance_id);
@@ -150,20 +153,34 @@ export default class Seance extends Component<{}> {
 	}
 	// on va a calandarApp
 	this.props.navigation.navigate('CalendarApp');
-	}
-  
+
+  }
+
   render() {
    if(this.state.isLoading){
       return(
           <View style={{flex: 1, paddingTop: 20}}>
-              <ActivityIndicator />
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
           </View>
       );
     }
     if(idExercice!=null){
 		ex[valEx]=idExercice;
 	}
-	
+
+  if(!this.state.hasInternet){
+      return(
+          <View style={{flex: 1, justifyContent: 'center'}}>
+              <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+
+              <Text style={styles.textTitle}>
+              Pas de connexion internet...
+              </Text>
+          </View>
+      );
+  }
+
+
 	// si la seance est deja creee, on affiche ce qu'il y a dedans
 	if(seanceLaungedId != null){	
 		for(var i=1; i<6; i++){
@@ -174,6 +191,7 @@ export default class Seance extends Component<{}> {
 		}
 	}else{
 		for(var i=1; i<6; i++){
+
 			if(idExercice != null){
 				if(ex[i]===idExercice){
 					ele[i]=
@@ -190,12 +208,12 @@ export default class Seance extends Component<{}> {
 							<Text>choisir</Text>
 						</View>
 					</TouchableOpacity>
-				
+
 			}
+
 		}
 	}	
 		
-	
 	
 	const repet = (value) => (
 		<View >
@@ -219,8 +237,8 @@ export default class Seance extends Component<{}> {
 		  />
 		</View>
 	);
-	
-	
+
+
 	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
     /*const tableData = [
       ['1', ele[1], serie(1), repet[1]],
@@ -264,7 +282,7 @@ export default class Seance extends Component<{}> {
 
 const styles = StyleSheet.create({
   table:{
-	  
+
   },
   container: {
     flex: 1,
@@ -277,24 +295,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  head: { 
-	width : w, 
-	height: w/5, 
+  textTitle:{
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10
+  },
+  head: {
+	width : w,
+	height: w/5,
 	backgroundColor: 'rgb(140,140,140)'
   },
-  headText: { 
+  headText: {
 	textAlign:'center',
 	fontSize : 15,
 	color : 'white',
   },
-  text: { 
+  text: {
 	textAlign:'center',
 	fontSize : 20,
 	color : 'black',
   },
-  row: { 
-	width : w, 
-	height: w/5, 
+  row: {
+	width : w,
+	height: w/5,
 	backgroundColor: 'rgb(208,208,208)'
 	},
   bouton: {
@@ -302,4 +326,3 @@ const styles = StyleSheet.create({
 	  paddingBottom:10,
   }
 });
-
