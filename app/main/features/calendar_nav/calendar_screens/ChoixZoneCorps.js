@@ -73,7 +73,7 @@ export default class Home extends Component<{}> {
                 </View>
             );
         }
-        
+
         if(!this.state.hasInternet){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
