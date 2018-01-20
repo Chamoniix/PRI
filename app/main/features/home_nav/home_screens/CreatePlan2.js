@@ -217,7 +217,8 @@ export default class CreatePlanBis extends Component {
                     </Text>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
+                    <TextInput onSubmitEditing={() => this.refs.comm.focus()} returnKeyType='next' style={styles.textToFill}
+                    underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                 </View>
                 <View style={styles.secondTitle}>
                     <Text style={styles.textTitle}>
@@ -225,7 +226,8 @@ export default class CreatePlanBis extends Component {
                     </Text>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <TextInput style={styles.textToFill} underlineColorAndroid={'transparent'} onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
+                    <TextInput ref='comm' returnKeyType='done' style={styles.textToFill} underlineColorAndroid={'transparent'}
+                    onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
                     <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, this.state.id, true)}
