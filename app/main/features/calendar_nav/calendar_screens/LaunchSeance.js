@@ -16,6 +16,7 @@ import {
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
+var numExercice = -1;
 
 // TODO IMPORT LAUNGHTSEANCE
 var idLaunghedSeance = 1;
@@ -37,6 +38,9 @@ export default class Home extends Component<{}> {
         this.state = {
             isLoading: true,
             hasInternet: true,
+            exercice_nom: "",
+            nb_repetitions: "",
+            nb_series: "",
         }
     }
 
@@ -56,13 +60,12 @@ export default class Home extends Component<{}> {
     .then((res) => {
         this.setState({
             isLoading: false,
-            // TODO : Exporter le numéro de l'exercice et le tableau pour les pages suivantes :)
-            exercice_nom: res[0].exercice_nom,
-            nb_repetitions: res[0].nbr_repetiion,
-            nb_series: res[0].nbr_serie
+            exercices: res,
         })
+        this.exerciceSuivant();
     })
     .catch((error) => {
+        Alert.alert(error);
         this.setState({
           hasInternet: false,
           isLoading: false,
@@ -75,7 +78,18 @@ export default class Home extends Component<{}> {
     }
 
     exerciceSuivant = () => {
-        Alert.alert(this.state.exercice_nom + " : C'est quoi ?");
+      numExercice+=1;
+      if (numExercice >= this.state.exercices.length){
+        this.props.navigation.navigate('FinSeance');
+      }
+      else {
+        this.setState({
+            exercice_nom: this.state.exercices[parseInt(numExercice)].exercice_nom,
+            nb_repetitions: this.state.exercices[parseInt(numExercice)].nbr_repetiion,
+            nb_series: this.state.exercices[parseInt(numExercice)].nbr_serie,
+        })
+      }
+
     }
 
   render() {
@@ -119,7 +133,6 @@ export default class Home extends Component<{}> {
                 Nombre de séries : {this.state.nb_series}
               </Text>
 
-
               <View style={styles.buttonStyle}>
               <Button
                 onPress={() => this.exerciceSuivant()}
@@ -141,6 +154,11 @@ var styles = StyleSheet.create({
     caption: {
       color: '#777',
       fontSize: 40,
+      textAlign: 'center',
+    },
+    textTitle:{
+      color: 'white',
+      fontSize: 30,
       textAlign: 'center',
     },
     smallTitle: {
