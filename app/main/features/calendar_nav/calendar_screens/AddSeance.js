@@ -98,7 +98,7 @@ export default class AddSeance extends Component<{}> {
 		return(
 			<ScrollView>
 			<Text style={styles.firstTitle}>Créer votre seance</Text>
-			<Text style={styles.title}>Nom</Text>
+			<Text style={styles.title}>Nom *</Text>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
@@ -110,14 +110,14 @@ export default class AddSeance extends Component<{}> {
 				maxLength = {40}
 				onChangeText={(text) => this.setState({objSeance: text})}
 			  />
-			<Text style={styles.title}>Jours de repos qui suivent</Text>
+			<Text style={styles.title}>Jours de repos qui suivent *</Text>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
 				keyboardType = 'numeric'
 				 onChangeText={(text) => this.setState({nbRepos: text})}
 			  />
-			<Text style={styles.title}>Numéros de la séance</Text>
+			<Text style={styles.title}>Numéros de la séance *</Text>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
