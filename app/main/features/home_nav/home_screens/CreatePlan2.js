@@ -256,12 +256,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10
     },
-    textTitle:{
-        color: 'white',
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10
-    },
     welcome: {
         fontSize: 20,
         textAlign: 'center',
@@ -312,9 +306,8 @@ const styles = StyleSheet.create({
        borderWidth: .5,
        borderColor: "#000000",
        margin: 15,
-       color: 'darkgray',
+       color: 'rgb(125,125,125)',
        borderRadius:3,
-       backgroundColor: 'white',
    }
 });
 

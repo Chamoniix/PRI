@@ -7,8 +7,12 @@ import{
     StyleSheet,
     Alert,
     ActivityIndicator,
-    View
+    View,
+    Dimensions
 } from 'react-native';
+
+var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
 
 export default class UserRegistration extends Component {
 
@@ -100,33 +104,36 @@ export default class UserRegistration extends Component {
         }
 
         return(
-            <ScrollView>
-                <Text>Adresse mail*</Text>
-                <TextInput onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none'
-                autoCorrect={false} autoFocus={this.state.firstTry ? true : false} keyboardType='email-address'
-                onChangeText={(inputMail) => this.setState({mail: inputMail})} value={this.state.mail}/>
-                <Text>Pseudo*</Text>
-                <TextInput ref='pseudo' onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next'
-                autoCapitalize='none' autoCorrect={false} onChangeText={(inputPseudo) => this.setState({pseudo: inputPseudo})} value={this.state.pseudo}/>
-                <Text>Mot de passe*</Text>
-                <TextInput ref='mdp' onSubmitEditing={() => this.refs.mdp2.focus()} returnKeyType='next'
-                autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
-                <Text>Retaper le mot de passe*</Text>
-                <TextInput ref='mdp2' onSubmitEditing={() => this.refs.age.focus()} returnKeyType='next'
-                autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passwBis) => this.setState({mdpBis: passwBis})} value={this.state.mdpBis}/>
-                <Text>Votre age*</Text>
-                <TextInput ref='age' onSubmitEditing={() => this.refs.charge.focus()} returnKeyType='next' keyboardType='numeric'
-                onChangeText={(inputAge) => this.setState({age: inputAge})} value={this.state.age}/>
-                <Text>Charge soulevée maximale en kg</Text>
-                <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric'
-                onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
-                <Text>Décrivez-vous en quelques mots</Text>
-                <TextInput ref='desc' returnKeyType='done' onChangeText={(inputDesc) => this.setState({desc: inputDesc})} value={this.state.desc}/>
-                <TouchableHighlight onPress={() => this.signIn()}>
-                    <Text>S'inscrire</Text>
-                </TouchableHighlight>
-                <Text>*: champs obligatoires</Text>
-                <Text style={styles.errorText}>{this.state.errorMsg}</Text>
+            <ScrollView style={styles.container}>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={styles.welcome}>Adresse mail*</Text>
+                    <TextInput style={styles.textToFill} onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none'
+                    underlineColorAndroid={'transparent'} autoCorrect={false} autoFocus={this.state.firstTry ? true : false} keyboardType='email-address'
+                    onChangeText={(inputMail) => this.setState({mail: inputMail})} value={this.state.mail}/>
+                    <Text style={styles.welcome}>Pseudo*</Text>
+                    <TextInput style={styles.textToFill} ref='pseudo' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next'
+                    autoCapitalize='none' autoCorrect={false} onChangeText={(inputPseudo) => this.setState({pseudo: inputPseudo})} value={this.state.pseudo}/>
+                    <Text style={styles.welcome}>Mot de passe*</Text>
+                    <TextInput style={styles.textToFill} ref='mdp' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.mdp2.focus()} returnKeyType='next'
+                    autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
+                    <Text style={styles.welcome}>Retaper le mot de passe*</Text>
+                    <TextInput style={styles.textToFill} ref='mdp2' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.age.focus()} returnKeyType='next'
+                    autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passwBis) => this.setState({mdpBis: passwBis})} value={this.state.mdpBis}/>
+                    <Text style={styles.welcome}>Votre age*</Text>
+                    <TextInput ref='age' onSubmitEditing={() => this.refs.charge.focus()} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
+                    style={styles.textToFill} onChangeText={(inputAge) => this.setState({age: inputAge})} value={this.state.age}/>
+                    <Text style={styles.welcome}>Charge soulevée maximale en kg</Text>
+                    <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
+                    style={styles.textToFill} onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
+                    <Text style={styles.welcome}>Décrivez-vous en quelques mots</Text>
+                    <TextInput style={styles.textToFill} ref='desc' returnKeyType='done' underlineColorAndroid={'transparent'}
+                    underlayColor='#db2250' onChangeText={(inputDesc) => this.setState({desc: inputDesc})} value={this.state.desc}/>
+                    <TouchableHighlight style={styles.button} onPress={() => this.signIn()}>
+                        <Text style={styles.textButton}>S''inscrire</Text>
+                    </TouchableHighlight>
+                    <Text style={styles.errorText}>{this.state.errorMsg}</Text>
+                    <Text style={styles.welcome}>*: champs obligatoires</Text>
+                </View>
             </ScrollView>
         );
     }
@@ -136,10 +143,41 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
         fontSize: 20,
+        textAlign: 'center',
     },
     textTitle:{
         color: 'white',
         fontSize: 30,
         textAlign: 'center',
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 5,
+    },
+    button: {
+        margin: 15,
+        backgroundColor: '#FF3366',
+        borderRadius:5,
+        width: 120,
+    },
+    textButton: {
+        fontSize: 14,
+        textAlign: 'center',
+        margin: 10,
+        color: 'white',
+    },
+    textToFill:{
+       height: height* 0.05,
+       width: width*0.8,
+       borderWidth: .5,
+       borderColor: "#000000",
+       margin: 5,
+       color: 'rgb(125,125,125)',
+       borderRadius:3,
+   }
 });
