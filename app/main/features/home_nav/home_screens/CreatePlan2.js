@@ -115,7 +115,7 @@ export default class CreatePlanBis extends Component {
       this.setState({
             isLoading: bool,
         });
-        return fetch('http://213.32.66.63/appliPP/createPlan.php',
+        return fetch(path + 'createPlan.php',
         {
             method: "POST",
             headers: {
@@ -137,8 +137,10 @@ export default class CreatePlanBis extends Component {
                 isLoading: false,
                 hasInternet: true,
             })
-            if(res==="Pb d'ajout"){
+            if(res==="Pb d'ajout Plan"){
                 //TODO
+            }else if(res==="Pb d'ajout Plan_Ut"){
+              //TODO
             }else{
               planId = res;
               this.props.navigation.dispatch(resetAction);

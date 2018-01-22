@@ -4,7 +4,7 @@ import UserIdentification from './log_in/UserIdentification';
 import UserLoggedInNav from './features/UserLoggedInNav';
 import LoggedInOrNot from './LoggedInOrNot'
 
-global.path = 'http://213.32.66.63/appliPP/'
+global.path = 'http://213.32.66.63/appliPP/php/'
 
 export const App = StackNavigator({
     IsLoggedIn: {
