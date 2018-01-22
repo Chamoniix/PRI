@@ -74,7 +74,7 @@ export default class Seance extends Component<{}> {
        this.setState({
             isLoading: true,
         });
-        return fetch(path + 'php/addSeanceExo.php',
+        return fetch(path + 'addSeanceExo.php',
         {
             method: "POST",
             headers: {
@@ -107,7 +107,7 @@ export default class Seance extends Component<{}> {
        this.setState({
             isLoading: true,
         });
-        return fetch(path + 'php/getInfoSeance.php',
+        return fetch(path + 'getInfoSeance.php',
         {
             method: "POST",
             headers: {

@@ -50,7 +50,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-        return fetch(path + 'php/getSeance.php',
+        return fetch(path + 'getSeance.php',
         {
             method: "POST",
             headers: {
@@ -82,7 +82,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-        return fetch(path + 'php/getDateSeanceByUserAndPlan.php',
+        return fetch(path + 'getDateSeanceByUserAndPlan.php',
         {
             method: "POST",
             headers: {
@@ -119,7 +119,7 @@ export default class CalendarApp extends Component {
 		this.CheckSeance(date);
 	}
   componentDidMount(){
-        return fetch(path + 'php/getPlanByUser.php',
+        return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",
             headers: {
