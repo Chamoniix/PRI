@@ -39,7 +39,7 @@ export default class AddSeance extends Component<{}> {
         this.setState({
             isLoading: true,
         });
-        return fetch(path + 'addSeance.php',
+        return fetch(path + 'php/addSeance.php',
         {
             method: "POST",
             headers: {

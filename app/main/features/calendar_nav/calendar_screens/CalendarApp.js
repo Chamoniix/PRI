@@ -24,13 +24,16 @@ import {dateM} from './AddSeance';
 var listDate=[];
 var mark;
 var cpt = 0;
-var dateMarked=new Object();
+var dateMarke=new Object();
 
+var dateMarked=[];
 var seanceLaungedId = null;
 
 // TODO Enlever l'initialisation quand création utilisateur faite.
 var userId = 2;
 var rowsPlanByUser = [];
+
+var dateSeance = [];
 
 export default class CalendarApp extends Component {
 	constructor(props){
@@ -47,7 +50,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-        return fetch(path + 'getSeance.php',
+        return fetch(path + 'php/getSeance.php',
         {
             method: "POST",
             headers: {
@@ -74,14 +77,49 @@ export default class CalendarApp extends Component {
             })
         });
 	}
+	
+	GetDateSeance(userId, planNom){
+		this.setState({
+            isLoading: true,
+        });
+        return fetch(path + 'php/getDateSeanceByUserAndPlan.php',
+        {
+            method: "POST",
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+					userid: userId,
+					plannom: planNom,
+                })
+        })
+        .then((response) => response.json())
+		.then((res)=> {
+			dateSeance = [];
+			dateMarked=[];
+            for( var i=0; i<res.length; i++){
+              dateSeance.push(res[i].date_seance);
+            }
+			//Alert.alert("ok");
+			this.setState({
+                isLoading: false,
+            })
+		})
+        .catch((error) => {
+			Alert.alert("erreur");
+			this.setState({
+                isLoading: false,
+            })
+        });
+	}
 
 	GetDay(day) {
 		date = day.dateString;
 		this.CheckSeance(date);
 	}
-
   componentDidMount(){
-        return fetch(path + 'getPlanByUser.php',
+        return fetch(path + 'php/getPlanByUser.php',
         {
             method: "POST",
             headers: {
@@ -112,10 +150,17 @@ export default class CalendarApp extends Component {
     }
 
 	render() {
-
+		if(dateSeance.length!=0){
+			//Alert.alert("taille : "+dateSeance.length);
+			for(var i=0; i<dateSeance.length; i++){
+				//Alert.alert("date "+dateSeance[0]);
+             dateMarked[dateSeance[i]]={selected: true};
+            }
+		}
 		if(dateM!=null){
+			Alert.alert("dateM : "+dateM);
 			listDate.push(dateM);
-			dateMarked.listDate[cpt]={selected: true};
+			dateMarked[listDate[cpt]]={selected: true};
 			cpt = cpt + 1;
 		}
 
@@ -142,6 +187,8 @@ export default class CalendarApp extends Component {
     let planItems = this.state.rowsPlanByUser.map( (s, i) => {
            return <Picker.Item key={i} value={s} label={s} />;
        });
+	   
+   console.disableYellowBox = true;
 
        return (
     <ScrollView>
@@ -149,7 +196,10 @@ export default class CalendarApp extends Component {
         <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
         <Picker
             selectedValue={this.state.selectedPlan}
-            onValueChange={ (plan) => ( this.setState({selectedPlan:plan}) ) }>
+            onValueChange={ (plan) => ( 
+								this.setState({selectedPlan:plan}),
+								this.GetDateSeance(userId, this.state.selectedPlan)
+								) }>
           {planItems}
         </Picker>
 

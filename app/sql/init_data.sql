@@ -646,6 +646,16 @@ VALUES (4, 2, '2017-12-11',null,false);
 INSERT INTO Seance_Ut
 VALUES (5, 2, '2017-12-14',null,false);
 
+INSERT INTO Seance_Ut
+VALUES (6, 2, '2018-01-14',null,false);
+INSERT INTO Seance_Ut
+VALUES (7, 2, '2018-01-15',null,false);
+
+INSERT INTO Seance_Ut
+VALUES (8, 2, '2018-01-16',null,false);
+
+INSERT INTO Seance_Ut
+VALUES (9, 2, '2018-01-18',null,false);
 -- ---- Données dans Seance_Exo ---- --
 
 INSERT INTO Seance_Exo

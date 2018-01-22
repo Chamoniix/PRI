@@ -33,7 +33,7 @@ export default class Home extends Component<{}> {
     }
 
     getPseudo(identifiant){
-        return fetch(path + 'getUserName.php',
+        return fetch(path + 'php/getUserName.php',
         {
             method: "POST",
             headers: {
