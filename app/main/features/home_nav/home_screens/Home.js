@@ -143,7 +143,7 @@ var styles = StyleSheet.create({
     },
     caption: {
       color: 'white',
-      fontSize: 40,
+      fontSize: 36,
       textAlign: 'center',
     },
     textTitle:{

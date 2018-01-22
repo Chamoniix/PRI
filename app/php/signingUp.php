@@ -38,16 +38,16 @@ if ($result2->num_rows > 0) {
 }else{
     if($charge == NULL){
         if($desc == "''"){
-            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age) VALUES (".$pseudo.", ".$mail.", ".$mdp.", ".$age.");";
+            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age) VALUES (".$pseudo.", ".$mail.", PASSWORD(".$mdp."), ".$age.");";
         }else{
-            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_description) VALUES (".$pseudo.", ".$mail.", ".$mdp.", ".$age.", ".$desc.");";
+            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_description) VALUES (".$pseudo.", ".$mail.", PASSWORD(".$mdp."), ".$age.", ".$desc.");";
         }
     }else{
         if($desc == "''"){
-            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_chargeMax) VALUES (".$pseudo.", ".$mail.", ".$mdp.", ".$age.", ".$charge.");";
+            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_chargeMax) VALUES (".$pseudo.", ".$mail.", PASSWORD(".$mdp."), ".$age.", ".$charge.");";
         }else{
-            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_chargeMax, user_description) 
-        VALUES (".$pseudo.", ".$mail.", ".$mdp.", ".$age.", ".$charge.", ".$desc.");";
+            $sql = "INSERT INTO Utilisateur(user_pseudo, user_identifiant, user_mdp, user_age, user_chargeMax, user_description)
+        VALUES (".$pseudo.", ".$mail.", PASSWORD(".$mdp."), ".$age.", ".$charge.", ".$desc.");";
         }
     }
     $result = $conn->query($sql);
@@ -58,7 +58,7 @@ if ($result2->num_rows > 0) {
     }else{
         $msg = array("msg" => "Pb d'ajout: ".$result);
     }
-    
+
     echo json_encode($mail);
 }
 $conn->close();
