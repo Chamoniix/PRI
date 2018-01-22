@@ -73,6 +73,34 @@ export default class Home extends Component<{}> {
     });
     }
 
+    getImage(exerciceID) {
+      return fetch(path + 'getExerciceVideo.php',
+      {
+          method: "POST",
+          headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+              },
+          body: JSON.stringify({
+                  exerciceid: exerciceID,
+              })
+      })
+      .then((response) => response.json())
+      .then((res) => {
+          this.setState({
+              isLoading: false,
+              imgPath: res[0].exercice_video,
+          })
+      })
+      .catch((error) => {
+          Alert.alert(error);
+          this.setState({
+            hasInternet: false,
+            isLoading: false,
+        })
+      });
+    }
+
     coucou = () => {
         Alert.alert(this.state.exercice_nom + " : C'est quoi ?");
     }
@@ -83,6 +111,7 @@ export default class Home extends Component<{}> {
         this.props.navigation.navigate('FinSeance');
       }
       else {
+        this.getImage(this.state.exercices[parseInt(numExercice)].exercice_id);
         this.setState({
             exercice_nom: this.state.exercices[parseInt(numExercice)].exercice_nom,
             nb_repetitions: this.state.exercices[parseInt(numExercice)].nbr_repetiion,
@@ -94,7 +123,7 @@ export default class Home extends Component<{}> {
 
   render() {
 
-    let imgCreer = require('../../../../img/creerAccueil.jpg');
+    let imgCreer = path.replace("php", "img") + this.state.imgPath;
 
     if(this.state.isLoading){
         return(
@@ -119,7 +148,7 @@ export default class Home extends Component<{}> {
     return (
           <View style={styles.container}>
               <View style={styles.section}>
-                  <Image source={imgCreer} style={{height: h*0.5, width: w, opacity: 0.7}}/>
+                  <Image source={{ uri: imgCreer }} style={{height: h*0.5, width: w, opacity: 0.7}}/>
               </View>
               <Text style={styles.caption} onPress={() => this.coucou()}>
                 {this.state.exercice_nom}
