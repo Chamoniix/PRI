@@ -31,6 +31,8 @@ export default class CreatePlan extends Component {
             dataSourceAct: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             selectedAct: '',
             selectedObj: '',
+            selectActivityText: 'Choisissez votre activité:',
+            selectObjectifText: 'Choisissez votre objectif:',
         }
     }
 
@@ -112,7 +114,7 @@ export default class CreatePlan extends Component {
   }
 
   selectAct(rowData, rowID) {
-    this.setState({selectedAct: rowData.activite_id, isLoading: true, selectedObj: ''});
+    this.setState({selectedAct: rowData.activite_id, isLoading: true, selectedObj: '', selectActivityText: 'Activité choisie:'});
     this.getActivites();
     this.getObjectifs(rowData.activite_id);
   }
@@ -136,7 +138,7 @@ export default class CreatePlan extends Component {
   }
 
   selectObj(rowData, rowID) {
-    this.setState({selectedObj: rowData.objectif_id, isLoading: true});
+    this.setState({selectedObj: rowData.objectif_id, isLoading: true, selectObjectifText: 'Objectif choisi:'});
     this.getObjectifs(this.state.selectedAct);
   }
 
@@ -168,7 +170,7 @@ export default class CreatePlan extends Component {
         }
 
         return (
-          <ScrollView style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={styles.mainTitle}>
                     <Text style={styles.textTitle}>
@@ -186,7 +188,7 @@ export default class CreatePlan extends Component {
             <View>
                 <View style={styles.secondTitle}>
                     <Text style={styles.textTitle}>
-                      Choisissez votre activité:
+                      {this.state.selectActivityText}
                     </Text>
                 </View>
                 <ListView
@@ -200,7 +202,7 @@ export default class CreatePlan extends Component {
                     <Text style={this.state.selectedAct === ''
                     ? styles.invisibleText
                     : styles.textTitle}>
-                      Choisissez votre objectif:
+                      {this.state.selectObjectifText}
                     </Text>
                 </View>
                 <ListView
