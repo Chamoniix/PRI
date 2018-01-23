@@ -30,7 +30,7 @@ export default class Home extends Component<{}> {
     }
 
     toHome = () => {
-      Alert.alert("Stay pls");
+      this.props.navigation.navigate('CalendarApp');
     }
 
   render() {

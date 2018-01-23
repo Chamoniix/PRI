@@ -108,7 +108,9 @@ export default class Home extends Component<{}> {
     exerciceSuivant = () => {
       numExercice+=1;
       if (numExercice >= this.state.exercices.length){
+        this.state.numExercice = 0;
         this.props.navigation.navigate('FinSeance');
+        exercice_nom: this.state.exercices=[];
       }
       else {
         this.getImage(this.state.exercices[parseInt(numExercice)].exercice_id);
