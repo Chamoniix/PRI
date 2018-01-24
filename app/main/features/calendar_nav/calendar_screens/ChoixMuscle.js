@@ -47,6 +47,9 @@ export default class ChoixMuscle extends Component<{}> {
         })
         .then((response) => response.json())
         .then((res) => {
+            this.setState({
+              muscles: res,
+            });
              let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
@@ -69,7 +72,6 @@ export default class ChoixMuscle extends Component<{}> {
 
 	muscleChoosen = (rowData) => {
 		idMuscle = rowData.muscle_id;
-		//Alert.alert(idMuscle);
 		this.props.navigation.navigate('ChoixMateriel');
 	}
 
