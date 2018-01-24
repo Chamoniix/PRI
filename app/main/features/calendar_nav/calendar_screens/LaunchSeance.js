@@ -18,8 +18,6 @@ var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 var numExercice = -1;
 
-// TODO IMPORT LAUNGHTSEANCE
-//var idLaunghedSeance = 1;
 import {seanceLaungedId} from './CalendarApp';
 
 var t0;
