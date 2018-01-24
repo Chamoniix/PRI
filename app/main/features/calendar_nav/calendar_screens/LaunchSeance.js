@@ -103,18 +103,29 @@ export default class Home extends Component<{}> {
     exerciceSuivant = () => {
       numExercice+=1;
       if (numExercice >= this.state.exercices.length){
+
+        /*
         var promiseTime = new Promise(function(resolve, reject) {
           t1 = new Date();
           var timeDiff = t1 - t0; //in ms
           timeDiff /= 1000;
-          var secondes = Math.round(timeDiff);
+          secondes = Math.round(timeDiff);
           secondes += " ";
-          resolve('OK');
+          resolve();
         });
-
-        promiseTime.then(function() {
-          this.props.navigation.navigate('FinSeance');
-        });
+        var calculateTime = function () {
+          promiseTime.then(function() {
+            this.props.navigation.navigate('FinSeance');
+          });
+        }
+        calculateTime();
+        */
+        t1 = new Date();
+        var timeDiff = t1 - t0; //in ms
+        timeDiff /= 1000;
+        secondes = Math.round(timeDiff);
+        secondes += " ";
+        this.props.navigation.navigate('FinSeance');
       }
       else {
         this.getImage(this.state.exercices[parseInt(numExercice)].exercice_id);
