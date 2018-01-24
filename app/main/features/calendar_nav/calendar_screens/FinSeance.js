@@ -10,7 +10,8 @@ import {
   Dimensions,
   Alert,
   ActivityIndicator,
-  button
+  button,
+  TextInput
 } from 'react-native';
 
 import {secondes} from './LaunchSeance.js';
@@ -19,7 +20,7 @@ import {secondes} from './LaunchSeance.js';
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-export default class Home extends Component<{}> {
+export default class FinSeance extends Component<{}> {
 
   constructor(props){
         super(props);
@@ -28,12 +29,33 @@ export default class Home extends Component<{}> {
     }
 
   componentDidMount(){
-      this.setState({secondes: secondes});
+      this.setState({secondes: secondes,
+        myNumber: 0});
     }
 
     toHome = () => {
       this.props.navigation.navigate('CalendarApp');
     }
+
+    onChanged(text){
+    let newText = '';
+    let numbers = '0123456789';
+
+    for (var i=0; i < text.length; i++) {
+        if(numbers.indexOf(text[i]) > -1 ) {
+            newText = newText + text[i];
+        }
+        else {
+            alert("please enter numbers only");
+        }
+    }
+
+    var numNote = parseInt(newText);
+    if ((numNote >=0 && numNote <=10) || isNaN(numNote))
+      this.setState({ note: newText });
+    else
+      alert("Entrez une note entre 0 et 10");
+}
 
   render() {
 
@@ -51,8 +73,17 @@ export default class Home extends Component<{}> {
               </Text>
 
               <Text style={styles.smallTitle}>
-                Note : 5/5
+                Note (/10):
+
               </Text>
+
+              <TextInput
+                 style={styles.textInput}
+                 keyboardType='numeric'
+                 onChangeText={(text)=>this.onChanged(text)}
+                 value={this.state.note}
+                 maxLength={2}
+              />
 
               <View style={styles.buttonStyle}>
               <Button
@@ -91,5 +122,8 @@ var styles = StyleSheet.create({
       paddingRight: 10,
       width: '100%',
       alignItems: 'flex-end',
+    },
+    textInput: {
+      fontSize: 30,
     }
 });

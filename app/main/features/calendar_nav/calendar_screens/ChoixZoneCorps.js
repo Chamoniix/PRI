@@ -20,7 +20,7 @@ var h = Dimensions.get('window').height;
 
 var idZone;
 
-export default class Home extends Component<{}> {
+export default class ChoixZoneCorps extends Component<{}> {
 
 
 	constructor(props){

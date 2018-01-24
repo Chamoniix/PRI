@@ -351,3 +351,5 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   }
 });
+
+export{seanceLaungedId}

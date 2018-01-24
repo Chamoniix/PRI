@@ -19,7 +19,8 @@ var h = Dimensions.get('window').height;
 var numExercice = -1;
 
 // TODO IMPORT LAUNGHTSEANCE
-var idLaunghedSeance = 1;
+//var idLaunghedSeance = 1;
+import {seanceLaungedId} from './CalendarApp';
 
 var t0;
 var t1;
@@ -48,7 +49,7 @@ export default class Home extends Component<{}> {
                 "Content-Type": "application/json"
             },
         body: JSON.stringify({
-                seanceid: idLaunghedSeance,
+                seanceid: seanceLaungedId,
             })
     })
     .then((response) => response.json())
@@ -103,23 +104,6 @@ export default class Home extends Component<{}> {
     exerciceSuivant = () => {
       numExercice+=1;
       if (numExercice >= this.state.exercices.length){
-
-        /*
-        var promiseTime = new Promise(function(resolve, reject) {
-          t1 = new Date();
-          var timeDiff = t1 - t0; //in ms
-          timeDiff /= 1000;
-          secondes = Math.round(timeDiff);
-          secondes += " ";
-          resolve();
-        });
-        var calculateTime = function () {
-          promiseTime.then(function() {
-            this.props.navigation.navigate('FinSeance');
-          });
-        }
-        calculateTime();
-        */
         t1 = new Date();
         var timeDiff = t1 - t0; //in ms
         timeDiff /= 1000;
