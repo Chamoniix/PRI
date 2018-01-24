@@ -41,6 +41,8 @@ export default class UserRegistration extends Component {
         }else{
           if(this.state.mail==='' || this.state.pseudo==='' || this.state.mdp==='' || this.state.mdpBis==='' || this.state.age===''){
               this.setState({errorMsg: 'Veuillez remplir tous les champs obligatoires'})
+          }else if(this.state.mdp.length < 6){
+            this.setState({errorMsg: 'Votre mot de passe doit contenir 6 caractères minimum'})
           }else if(this.state.mdp !== this.state.mdpBis){
                this.setState({errorMsg: "Vous n'avez pas retapé le même mot de passe"})
           }else{
@@ -104,7 +106,7 @@ export default class UserRegistration extends Component {
         }
 
         return(
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={styles.welcome}>Adresse mail*</Text>
                     <TextInput style={styles.textToFill} onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none'
@@ -126,10 +128,10 @@ export default class UserRegistration extends Component {
                     <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
                     style={styles.textToFill} onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
                     <Text style={styles.welcome}>Décrivez-vous en quelques mots</Text>
-                    <TextInput style={styles.textToFill} ref='desc' returnKeyType='done' underlineColorAndroid={'transparent'}
+                    <TextInput style={styles.textToFill} onSubmitEditing={() => this.signIn()} ref='desc' returnKeyType='done' underlineColorAndroid={'transparent'}
                     underlayColor='#db2250' onChangeText={(inputDesc) => this.setState({desc: inputDesc})} value={this.state.desc}/>
                     <TouchableHighlight style={styles.button} onPress={() => this.signIn()}>
-                        <Text style={styles.textButton}>S''inscrire</Text>
+                        <Text style={styles.textButton}>S'inscrire</Text>
                     </TouchableHighlight>
                     <Text style={styles.errorText}>{this.state.errorMsg}</Text>
                     <Text style={styles.welcome}>*: champs obligatoires</Text>

@@ -24,8 +24,16 @@ $result = $conn->query($sql);
 if ($result === TRUE){
         $msg = array("msg" => "Plan ajouté");
         $last_id = $conn->insert_id;
+
+        $sql = "INSERT INTO Plan_Ut(plan_id, user_id, plan_enCours) VALUES(".$last_id.", ".$id.", 0);";
+
+        $result = $conn->query($sql);
+
+        if($result !== TRUE){
+          $last_id = "Pb d'ajout Plan_Ut";
+        }
 }else{
-    $last_id = "Pb d'ajout";
+    $last_id = "Pb d'ajout Plan";
 }
 
 echo json_encode($last_id);

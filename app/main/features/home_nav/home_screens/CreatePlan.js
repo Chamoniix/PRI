@@ -31,6 +31,10 @@ export default class CreatePlan extends Component {
             dataSourceAct: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             selectedAct: '',
             selectedObj: '',
+            selectActivityText: 'Choisissez votre activité:',
+            selectObjectifText: 'Choisissez votre objectif:',
+            act: '',
+            obj: '',
         }
     }
 
@@ -42,11 +46,11 @@ export default class CreatePlan extends Component {
         return fetch(path + 'getActivites.php')
         .then((response) => response.json())
         .then((res) => {
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
             this.setState({
                 isLoading: false,
                 hasInternet: true,
-                dataSourceAct: ds.cloneWithRows(res),
+                dataSourceAct: this.state.dataSourceAct.cloneWithRows(res),
+                act: res,
             })
         })
         .catch((error) => {
@@ -72,10 +76,10 @@ export default class CreatePlan extends Component {
         })
         .then((response) => response.json())
         .then((res) => {
-            let dss = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2});
             this.setState({
                 isLoading: false,
-                dataSourceObj: dss.cloneWithRows(res),
+                dataSourceObj: this.state.dataSourceObj.cloneWithRows(res),
+                obj : res,
                 hasInternet: true,
             })
         })
@@ -112,9 +116,10 @@ export default class CreatePlan extends Component {
   }
 
   selectAct(rowData, rowID) {
-    this.setState({selectedAct: rowData.activite_id, isLoading: true, selectedObj: ''});
-    this.getActivites();
-    this.getObjectifs(rowData.activite_id);
+    if(this.state.selectedAct !== rowData.activite_id){
+      this.setState({selectedAct: rowData.activite_id, dataSourceAct: this.state.dataSourceAct.cloneWithRows(this.state.act),  isLoading: true, selectedObj: '', selectActivityText: 'Activité choisie:', selectObjectifText: 'Choisissez votre objectif:'});
+      this.getObjectifs(rowData.activite_id);
+    }
   }
 
   renderObj(rowData, rowID) {
@@ -136,8 +141,7 @@ export default class CreatePlan extends Component {
   }
 
   selectObj(rowData, rowID) {
-    this.setState({selectedObj: rowData.objectif_id, isLoading: true});
-    this.getObjectifs(this.state.selectedAct);
+    this.setState({selectedObj: rowData.objectif_id, dataSourceObj: this.state.dataSourceObj.cloneWithRows(this.state.obj), selectObjectifText: 'Objectif choisi:'});
   }
 
   ListViewItemSeparator = () => {
@@ -168,7 +172,7 @@ export default class CreatePlan extends Component {
         }
 
         return (
-          <ScrollView style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={styles.mainTitle}>
                     <Text style={styles.textTitle}>
@@ -186,7 +190,7 @@ export default class CreatePlan extends Component {
             <View>
                 <View style={styles.secondTitle}>
                     <Text style={styles.textTitle}>
-                      Choisissez votre activité:
+                      {this.state.selectActivityText}
                     </Text>
                 </View>
                 <ListView
@@ -200,7 +204,7 @@ export default class CreatePlan extends Component {
                     <Text style={this.state.selectedAct === ''
                     ? styles.invisibleText
                     : styles.textTitle}>
-                      Choisissez votre objectif:
+                      {this.state.selectObjectifText}
                     </Text>
                 </View>
                 <ListView
