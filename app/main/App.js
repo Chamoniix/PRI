@@ -6,6 +6,7 @@ import LoggedInOrNot from './LoggedInOrNot';
 
 global.path = 'http://www.gybels.tk/appliPP/php/';
 
+
 export const App = StackNavigator({
     IsLoggedIn: {
         screen: LoggedInOrNot,

@@ -8,9 +8,13 @@ import{
     Alert,
     ActivityIndicator,
     View,
-    AsyncStorage
+    AsyncStorage,
+    Dimensions,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
+
+var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
 
 const resetAction = NavigationActions.reset({
   index: 0,
@@ -28,7 +32,7 @@ export default class UserLogin extends Component {
         this.state = {
                 nom: '',
                 mdp: '',
-                errorMsg: false,
+                errorMsg: '',
                 isLoading: false,
                 hasInternet: true,
         };
@@ -39,38 +43,44 @@ export default class UserLogin extends Component {
     }
 
     logIn(){
-        this.setState({isLoading: true})
-        return fetch(path + 'loggingIn.php',
-        {
-            method: "POST",
-            headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-            body: JSON.stringify({
-                    id: this.state.nom,
-                    password : this.state.mdp,
-                })
-        })
-        .then((response) => response.json())
-        .then((res) => {
-            this.setState({isLoading: false})
-            if(res === 'false'){
-                this.setState({errorMsg: true});
-            }else{
-                userId = res.user_id;
-                AsyncStorage.setItem('userId', res.user_id);
-                AsyncStorage.setItem('userPseudo', this.state.nom);
-                this.props.navigation.dispatch(resetAction);
-                this.props.navigation.navigate('IsLoggedIn');
-            }
-        })
-        .catch((error) => {
-            this.setState({
-              hasInternet: false,
-              isLoading: false,
-          })
-        });
+        if(this.state.nom === ''){
+          this.setState({errorMsg: "Veuillez entrer un identifiant"});
+        }else if(this.state.mdp === ''){
+          this.setState({errorMsg: "Veuillez entrer un mot de passe"});
+        }else{
+            this.setState({isLoading: true})
+            return fetch(path + 'loggingIn.php',
+            {
+                method: "POST",
+                headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json"
+                    },
+                body: JSON.stringify({
+                        id: this.state.nom,
+                        password : this.state.mdp,
+                    })
+            })
+            .then((response) => response.json())
+            .then((res) => {
+                this.setState({isLoading: false})
+                if(res === 'false'){
+                    this.setState({errorMsg: "L'identifiant ou le mot de passe entré est incorrect"});
+                }else{
+                    userId = res.user_id;
+                    AsyncStorage.setItem('userId', res.user_id);
+                    AsyncStorage.setItem('userPseudo', this.state.nom);
+                    this.props.navigation.dispatch(resetAction);
+                    this.props.navigation.navigate('IsLoggedIn');
+                }
+            })
+            .catch((error) => {
+                this.setState({
+                  hasInternet: false,
+                  isLoading: false,
+              })
+            });
+        }
     }
 
     render() {
@@ -95,37 +105,65 @@ export default class UserLogin extends Component {
         }
 
         return(
-            <ScrollView>
-                <Text>Adresse mail ou Identifiant:</Text>
-                <TextInput onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none'
-                autoCorrect={false} autoFocus={true} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
-                <Text>Mot de passe:</Text>
-                <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none' autoCorrect={false} secureTextEntry={true}
-                onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
-                <TouchableHighlight onPress={() => this.logIn()}>
-                    <Text>Se connecter</Text>
-                </TouchableHighlight>
-                <Text style={this.state.errorMsg === false
-                ? styles.invisibleText
-                : styles.errorText}>L'identifiant ou le mot de passe entré est incorrect</Text>
+            <ScrollView style={styles.container}>
+                <View style={{alignItems: 'center'}}>
+                    <Text style={styles.welcome}>Adresse mail ou Identifiant:</Text>
+                    <TextInput style={styles.textToFill} onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next' autoCapitalize='none'
+                    autoCorrect={false} autoFocus={true}  underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
+                    <Text style={styles.welcome}>Mot de passe:</Text>
+                    <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none'  underlineColorAndroid={'transparent'} autoCorrect={false} secureTextEntry={true}
+                    onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp} style={styles.textToFill}/>
+                    <TouchableHighlight underlayColor='#db2250' style={styles.button} onPress={() => this.logIn()}>
+                        <Text style={styles.textButton}>Se connecter</Text>
+                    </TouchableHighlight>
+                    <Text style={styles.errorText}>{this.state.errorMsg}</Text>
+                </View>
             </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    invisibleText: {
-        fontSize: 0,
-    },
     errorText: {
         color: 'red',
         fontSize: 20,
+        textAlign: 'center',
     },
     textTitle:{
         color: 'white',
         fontSize: 30,
         textAlign: 'center',
     },
+    container: {
+        flex: 1,
+        backgroundColor: '#F5FCFF',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    button: {
+        margin: 15,
+        backgroundColor: '#FF3366',
+        borderRadius:5,
+        width: 120,
+    },
+    textButton: {
+        fontSize: 16,
+        textAlign: 'center',
+        margin: 10,
+        color: 'white',
+    },
+    textToFill:{
+       height: height* 0.06,
+       width: width*0.8,
+       borderWidth: .5,
+       borderColor: "#000000",
+       margin: 15,
+       color: 'rgb(125,125,125)',
+       borderRadius:3,
+   }
 });
 
 export {userId};

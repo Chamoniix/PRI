@@ -33,13 +33,16 @@ rep[5]=0;
 // valeur de l'id exo
 var ex = new Array(8);
 
-var seanceId = 39;
+//var seanceId = 39;
+
+import {seanceId} from './AddSeance';
 import {idExercice, nomExo} from './ChoixExercice';
 import {seanceLaungedId} from './CalendarApp';
 var valEx;
 
 var ele = new Array(8);
-var edit = false;
+// mode edit ou non
+//var edit = false;
 // nom exo
 var exoNom = [];
 
@@ -50,6 +53,7 @@ export default class Seance extends Component<{}> {
 		this.state = {
 			isLoading: false,
           hasInternet: true,
+		  edit: true,
 		};
 	}
 
@@ -116,13 +120,16 @@ export default class Seance extends Component<{}> {
         })
         .then((response) => response.json())
 		.then((res)=> {
-      if(res !== '0 result'){
-  			for( var i=0; i<res.length; i++){
-                exoNom[i] = res[i].exercice_nom;
-  			  rep[i+1] = res[i].nbr_repetiion;
-  			  ser[i+1] = res[i].nbr_serie;
-        }
-      }
+		  if(res !== '0 result'){
+				for( var i=0; i<res.length; i++){
+					exoNom[i] = res[i].exercice_nom;
+					rep[i+1] = res[i].nbr_repetiion;
+					ser[i+1] = res[i].nbr_serie;
+				}	
+				this.setState({
+					edit: false,
+				});
+		  }
 			this.setState({
                 isLoading: false,
             })
@@ -139,11 +146,13 @@ export default class Seance extends Component<{}> {
   test = () => {
 	var k = 1;
 	//this.InfoSeance(seance_id);
-	if(seanceLaungedId===null){
+	//if(seanceLaungedId===null){
+	if(this.state.edit === true){
 		while(rep[k]!=0){
 		this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
 			k = k + 1;
 		}
+		
 	}
 	// re initialisation des variables
 	for(var i=1; i<6; i++){
@@ -183,7 +192,7 @@ export default class Seance extends Component<{}> {
 
 
 	// si la seance est deja creee, on affiche ce qu'il y a dedans
-	if(seanceLaungedId != null){
+	if(this.state.edit === false){
 		for(var i=1; i<6; i++){
 			ele[i]=
 				<View>
@@ -262,10 +271,10 @@ export default class Seance extends Component<{}> {
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
 		{(() => {
-			if(seanceLaungedId != null){
+			if(this.state.edit === false){
 				return(
 					<View>
-						<Button title="Modifier" style={styles.bouton} onPress={this.test.bind(this)}/>
+						<Button title="Modifier" style={styles.bouton} onPress={() => {edit=true}}/>
 						<Button title="Commencer" style={styles.bouton} onPress={this.test.bind(this)}/>
 					</View>
 				);

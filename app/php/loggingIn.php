@@ -13,7 +13,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT user_id FROM Utilisateur WHERE (user_pseudo=".$id." OR user_identifiant=".$id.") AND user_mdp=".$pwd.";";
+$sql = "SELECT user_id FROM Utilisateur WHERE (user_pseudo=".$id." OR user_identifiant=".$id.") AND user_mdp=PASSWORD(".$pwd.");";
 
 $result = $conn->query($sql);
 
