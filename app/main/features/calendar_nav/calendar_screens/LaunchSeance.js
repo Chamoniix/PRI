@@ -10,7 +10,7 @@ import {
   Dimensions,
   Alert,
   ActivityIndicator,
-  button
+  button,
 } from 'react-native';
 
 //Dimension of screen :
@@ -21,20 +21,15 @@ var numExercice = -1;
 // TODO IMPORT LAUNGHTSEANCE
 var idLaunghedSeance = 1;
 
-//TODO récupérer les exercices / repetitions ect :
-/*
-select *
-from Seance_Exo AS s
-JOIN Exercice AS e
-ON s.exercice_id=e.exercice_id
-WHERE seance_id=1;
-*/
-
+var t0;
+var t1;
+var secondes;
 
 export default class Home extends Component<{}> {
 
   constructor(props){
         super(props);
+        t0 = new Date();
         this.state = {
             isLoading: true,
             hasInternet: true,
@@ -108,9 +103,18 @@ export default class Home extends Component<{}> {
     exerciceSuivant = () => {
       numExercice+=1;
       if (numExercice >= this.state.exercices.length){
-        this.state.numExercice = 0;
-        this.props.navigation.navigate('FinSeance');
-        exercice_nom: this.state.exercices=[];
+        var promiseTime = new Promise(function(resolve, reject) {
+          t1 = new Date();
+          var timeDiff = t1 - t0; //in ms
+          timeDiff /= 1000;
+          var secondes = Math.round(timeDiff);
+          secondes += " ";
+          resolve('OK');
+        });
+
+        promiseTime.then(function() {
+          this.props.navigation.navigate('FinSeance');
+        });
       }
       else {
         this.getImage(this.state.exercices[parseInt(numExercice)].exercice_id);
@@ -203,3 +207,5 @@ var styles = StyleSheet.create({
       alignItems: 'flex-end',
     }
 });
+
+export {secondes};

@@ -13,6 +13,8 @@ import {
   button
 } from 'react-native';
 
+import {secondes} from './LaunchSeance.js';
+
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
@@ -26,7 +28,7 @@ export default class Home extends Component<{}> {
     }
 
   componentDidMount(){
-
+      this.setState({secondes: secondes});
     }
 
     toHome = () => {
@@ -45,7 +47,7 @@ export default class Home extends Component<{}> {
               </Text>
 
               <Text style={styles.smallTitle}>
-                Temps : 00:00:00
+                Temps : {this.state.secondes} secondes
               </Text>
 
               <Text style={styles.smallTitle}>

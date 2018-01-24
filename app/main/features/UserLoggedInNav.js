@@ -13,8 +13,6 @@ import Shop from './shop_nav/Shop';
 import UserNavigation from './account_nav/UserNavigation';
 import HomeNavigation from './home_nav/HomeNavigation';
 
-import LaunchSeance from './calendar_nav/calendar_screens/LaunchSeance';
-
 export default class UserLoggedInNav extends Component{
 
   constructor(props){
@@ -74,8 +72,7 @@ export default class UserLoggedInNav extends Component{
           },
     	},
       Shop: {
-    	  //screen: Shop,
-          screen: LaunchSeance,
+    	  screen: Shop,
     	  navigationOptions: {
             tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
           },

@@ -125,7 +125,7 @@ export default class Seance extends Component<{}> {
 					exoNom[i] = res[i].exercice_nom;
 					rep[i+1] = res[i].nbr_repetiion;
 					ser[i+1] = res[i].nbr_serie;
-				}	
+				}
 				this.setState({
 					edit: false,
 				});
@@ -152,7 +152,7 @@ export default class Seance extends Component<{}> {
 		this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
 			k = k + 1;
 		}
-		
+
 	}
 	// re initialisation des variables
 	for(var i=1; i<6; i++){
@@ -273,10 +273,14 @@ export default class Seance extends Component<{}> {
 		{(() => {
 			if(this.state.edit === false){
 				return(
-					<View>
-						<Button title="Modifier" style={styles.bouton} onPress={() => {edit=true}}/>
-						<Button title="Commencer" style={styles.bouton} onPress={this.test.bind(this)}/>
-					</View>
+          <View style={styles.buttons}>
+  					<View style={styles.buttonStyleModif}>
+  						<Button title="Modifier" color="#FF3366" onPress={() => {edit=true}}/>
+            </View>
+            <View style={styles.buttonStyleComm}>
+  						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance')}}/>
+  					</View>
+          </View>
 				);
 			}else{
 				return(
@@ -331,8 +335,19 @@ const styles = StyleSheet.create({
 	height: w/5,
 	backgroundColor: 'rgb(208,208,208)'
 	},
-  bouton: {
-	  paddingTop:10,
-	  paddingBottom:10,
+  buttons: {
+    flexDirection: 'row',
+  },
+  buttonStyleModif: {
+    marginTop: 30,
+    paddingLeft: 10,
+    flex: 0.5,
+    alignItems: 'flex-start',
+  },
+  buttonStyleComm: {
+    marginTop: 30,
+    paddingRight: 10,
+    flex: 0.5,
+    alignItems: 'flex-end',
   }
 });
