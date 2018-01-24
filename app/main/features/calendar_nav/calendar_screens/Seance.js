@@ -250,13 +250,6 @@ export default class Seance extends Component<{}> {
 
 
 	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
-    /*const tableData = [
-      ['1', ele[1], serie(1), repet[1]],
-      ['2', ele[2], serie(2), repet[2]],
-      ['3', ele[3], serie(3), repet[3]],
-      ['4', ele[4], serie(4), repet[4]],
-      ['5', ele[5], serie(5), repet[5]],
-    ];*/
 	const tableData = [
       ['1', ele[1], serie(1), repet(1)],
       ['2', ele[2], serie(2), repet(2)],

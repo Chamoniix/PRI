@@ -16,9 +16,8 @@ import {
   TextInput,
 } from 'react-native';
 
-import {date} from './CalendarApp';
-import {planId} from '../../home_nav/home_screens/CreatePlan2';
-
+import {date, planNom, id_user} from './CalendarApp';
+//import {planId} from '../../home_nav/home_screens/CreatePlan2';
 var seanceId;
 var dateM;
 export default class AddSeance extends Component<{}> {
@@ -35,7 +34,7 @@ export default class AddSeance extends Component<{}> {
         }
     }
 
-	AddS(nomS, objS, numS, nbR, infoS, date, planId){
+	AddS(nomS, objS, numS, nbR, infoS, date, planNom, id_user){
         this.setState({
             isLoading: true,
         });
@@ -53,13 +52,15 @@ export default class AddSeance extends Component<{}> {
 					nbRepos: nbR,
 					info: infoS,
 					dateS: date,
-					planIdS:planId,
+					planIdS:planNom,
+					userId: id_user,
 
                 })
         })
         .then((response) => response.json())
 		.then((res)=> {
 			seanceId = res;
+			//Alert.alert("id plan = "+seanceId);
 			dateM = date;
 			this.props.navigation.navigate('Seance');
 			this.setState({
@@ -110,7 +111,7 @@ export default class AddSeance extends Component<{}> {
 				maxLength = {40}
 				onChangeText={(text) => this.setState({objSeance: text})}
 			  />
-			<Text style={styles.title}>Jours de repos qui suivent *</Text>
+			<Text style={styles.title}>Jours de repos qui suivent</Text>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
@@ -133,7 +134,7 @@ export default class AddSeance extends Component<{}> {
 
 
 			<Button
-			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planId)}
+			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planNom, id_user)}
 			title="Continuer" style={styles.bouton}/>
 			</ScrollView>
 		);

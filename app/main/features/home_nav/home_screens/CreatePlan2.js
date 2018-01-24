@@ -115,7 +115,7 @@ export default class CreatePlanBis extends Component {
       this.setState({
             isLoading: bool,
         });
-        return fetch('http://213.32.66.63/appliPP/createPlan.php',
+        return fetch(path + 'createPlan.php',
         {
             method: "POST",
             headers: {

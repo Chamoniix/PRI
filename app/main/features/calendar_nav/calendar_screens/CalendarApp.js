@@ -14,25 +14,25 @@ import {
   ScrollView,
   Navigator,
   Picker,
+  AsyncStorage
 } from 'react-native';
 
 var date;
-
+var id_user;
 import {dateM} from './AddSeance';
 //import {userId} from './UserLogin';
 
 var listDate=[];
 var mark;
 var cpt = 0;
-var dateMarke=new Object();
 
 var dateMarked=[];
 var seanceLaungedId = null;
 
 // TODO Enlever l'initialisation quand création utilisateur faite.
-var userId = 2;
+//var userId = 2;
 var rowsPlanByUser = [];
-
+var planNom = "";
 var dateSeance = [];
 
 export default class CalendarApp extends Component {
@@ -42,10 +42,14 @@ export default class CalendarApp extends Component {
 			isLoading: true,
             hasInternet: true,
             selectedPlan:"",
+			idUser:'',
 		};
 		seanceLaungedId = null;
 	}
-
+	componentDidMount(){
+        AsyncStorage.getItem('userId').then((value) => this.getPlanByUser(value)).done();
+    }
+	
 	CheckSeance(date){
 		this.setState({
             isLoading: true,
@@ -71,14 +75,18 @@ export default class CalendarApp extends Component {
             })
 		})
         .catch((error) => {
-			this.props.navigation.navigate('AddSeance');
+			if(planNom === "" || planNom === "Selectionnez votre plan" ){
+				Alert.alert("Choisissez un plan d'entrainement");
+			}else{
+				this.props.navigation.navigate('AddSeance');
+			}
 			this.setState({
                 isLoading: false,
             })
         });
 	}
 	
-	GetDateSeance(userId, planNom){
+	GetDateSeance(userId, planNo){
 		this.setState({
             isLoading: true,
         });
@@ -91,7 +99,7 @@ export default class CalendarApp extends Component {
                 },
             body: JSON.stringify({
 					userid: userId,
-					plannom: planNom,
+					plannom: planNo,
                 })
         })
         .then((response) => response.json())
@@ -99,15 +107,16 @@ export default class CalendarApp extends Component {
 			dateSeance = [];
 			dateMarked=[];
             for( var i=0; i<res.length; i++){
-              dateSeance.push(res[i].date_seance);
+              dateSeance[i] = res[i].date_seance;
             }
-			//Alert.alert("ok");
 			this.setState({
                 isLoading: false,
             })
 		})
         .catch((error) => {
-			Alert.alert("erreur");
+			dateSeance = [];
+			dateMarked=[];
+			//Alert.alert("erreur");
 			this.setState({
                 isLoading: false,
             })
@@ -118,7 +127,10 @@ export default class CalendarApp extends Component {
 		date = day.dateString;
 		this.CheckSeance(date);
 	}
-  componentDidMount(){
+  getPlanByUser(id){
+	  this.setState({idUser: id})
+	  id_user = this.state.idUser;
+	  //Alert.alert("id : "+this.state.idUser);
         return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",
@@ -127,13 +139,14 @@ export default class CalendarApp extends Component {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    userid: userId,
+                    userid: id,
                 })
         })
         .then((response) => response.json())
         .then((res) => {
+			rowsPlanByUser[0] = "Selectionnez votre plan";
             for( var i=0; i<res.length; i++){
-              rowsPlanByUser[i] = res[i].plan_nom;
+              rowsPlanByUser[i+1] = res[i].plan_nom;
             }
             this.setState({
                 isLoading: false,
@@ -142,8 +155,9 @@ export default class CalendarApp extends Component {
             })
         })
         .catch((error) => {
+			
           this.setState({
-              hasInternet: false,
+              //hasInternet: false,
               isLoading: false,
           })
         });
@@ -151,14 +165,11 @@ export default class CalendarApp extends Component {
 
 	render() {
 		if(dateSeance.length!=0){
-			//Alert.alert("taille : "+dateSeance.length);
 			for(var i=0; i<dateSeance.length; i++){
-				//Alert.alert("date "+dateSeance[0]);
              dateMarked[dateSeance[i]]={selected: true};
             }
 		}
 		if(dateM!=null){
-			Alert.alert("dateM : "+dateM);
 			listDate.push(dateM);
 			dateMarked[listDate[cpt]]={selected: true};
 			cpt = cpt + 1;
@@ -196,9 +207,9 @@ export default class CalendarApp extends Component {
         <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
         <Picker
             selectedValue={this.state.selectedPlan}
-            onValueChange={ (plan) => ( 
-								this.setState({selectedPlan:plan}),
-								this.GetDateSeance(userId, this.state.selectedPlan)
+            onValueChange={ (plan) => (this.setState({selectedPlan:plan}),
+								planNom = plan,
+								this.GetDateSeance(this.state.idUser, plan)
 								) }>
           {planItems}
         </Picker>
@@ -239,4 +250,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {date, seanceLaungedId};
+export {date, seanceLaungedId, planNom, id_user};
