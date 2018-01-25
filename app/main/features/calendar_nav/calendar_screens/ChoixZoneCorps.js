@@ -97,8 +97,6 @@ export default class ChoixZoneCorps extends Component<{}> {
 
   render() {
 
-    const {navigate} = this.props.navigation;
-
         if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
