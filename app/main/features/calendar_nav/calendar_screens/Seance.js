@@ -41,19 +41,18 @@ import {seanceLaungedId} from './CalendarApp';
 var valEx;
 
 var ele = new Array(8);
-// mode edit ou non
-//var edit = false;
 // nom exo
 var exoNom = [];
-
+// variable pour savoir si on a deja choisi des exos (ou si on vient de addSeance du coup)
+var choixExo = false;
 export default class Seance extends Component<{}> {
 
 	constructor(props){
         super(props);
 		this.state = {
 			isLoading: false,
-          hasInternet: true,
-		  edit: true,
+			hasInternet: true,
+			edit: true,
 		};
 	}
 
@@ -62,12 +61,25 @@ export default class Seance extends Component<{}> {
 		    this.InfoSeance(seanceLaungedId)
 		}
 	}
-
+	
+	initialization(){
+		for(var i=1; i<6; i++){
+			ser[i]=0;
+		}
+		for(var i=1; i<6; i++){
+			rep[i]=0;
+		}
+		exoNom = [];
+		//valEx=0;
+		//ele = new Array(8);
+		ex = new Array(8);
+		choixExo = false;
+	}
+	
   gotToChoixZoneCorps = (value) => {
     this.props.navigation.navigate('ChoixZoneCorps');
     valEx = value;
-    /*ex[value] = idExercice;
-    Alert.alert("idExercice "+idExercice);*/
+	choixExo=true;
   }
 
   AddSeanceExo(seanceId, idEx, nbrR, nbrS){
@@ -163,6 +175,7 @@ export default class Seance extends Component<{}> {
 	}
 	// on va a calandarApp
 	this.props.navigation.navigate('CalendarApp');
+	this.initialization();
 
   }
 
@@ -176,6 +189,7 @@ export default class Seance extends Component<{}> {
     }
     if(idExercice!=null){
 		ex[valEx]=idExercice;
+		//idex = idExercice;
 	}
 
   if(!this.state.hasInternet){
@@ -201,8 +215,7 @@ export default class Seance extends Component<{}> {
 		}
 	}else{
 		for(var i=1; i<6; i++){
-
-			if(idExercice != null){
+			if(choixExo!= false){
 				if(ex[i]===idExercice){
 					ele[i]=
 						<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>

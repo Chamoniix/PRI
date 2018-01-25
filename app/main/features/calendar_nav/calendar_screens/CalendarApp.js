@@ -29,8 +29,6 @@ var cpt = 0;
 var dateMarked=[];
 var seanceLaungedId = null;
 
-// TODO Enlever l'initialisation quand création utilisateur faite.
-//var userId = 2;
 var rowsPlanByUser = [];
 var planNom = "";
 var dateSeance = [];
@@ -69,6 +67,7 @@ export default class CalendarApp extends Component {
         .then((response) => response.json())
 		.then((res)=> {
 			seanceLaungedId = res[0].seance_id;
+			//Alert.alert("id seance de calendrier : "+seanceLaungedId);
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,
@@ -90,6 +89,7 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
+		//Alert.alert(planNo+"  "+userId);
         return fetch(path + 'getDateSeanceByUserAndPlan.php',
         {
             method: "POST",
@@ -130,7 +130,6 @@ export default class CalendarApp extends Component {
   getPlanByUser(id){
 	  this.setState({idUser: id})
 	  id_user = this.state.idUser;
-	  //Alert.alert("id : "+this.state.idUser);
         return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",

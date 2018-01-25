@@ -31,6 +31,7 @@ export default class Home extends Component<{}> {
             isLoading: true,
             hasInternet: true,
         }
+		idExercice = null;
     }
 
 	componentDidMount(){
