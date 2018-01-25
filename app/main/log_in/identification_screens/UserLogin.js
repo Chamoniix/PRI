@@ -40,6 +40,7 @@ export default class UserLogin extends Component {
 
     componentDidMount(){
       AsyncStorage.getItem('userPseudo').then((value) => this.setState({nom: value})).done();
+      AsyncStorage.getItem('userMdp').then((value) => this.setState({mdp: value})).done();
     }
 
     logIn(){
@@ -70,6 +71,7 @@ export default class UserLogin extends Component {
                     userId = res.user_id;
                     AsyncStorage.setItem('userId', res.user_id);
                     AsyncStorage.setItem('userPseudo', this.state.nom);
+                    AsyncStorage.setItem('userMdp', this.state.mdp);
                     this.props.navigation.dispatch(resetAction);
                     this.props.navigation.navigate('IsLoggedIn');
                 }

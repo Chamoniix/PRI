@@ -56,7 +56,7 @@ export default class ChoixZoneCorps extends Component<{}> {
               hasInternet: false,
               isLoading: false,
           })
-          this.getZoneCorps();
+          setTimeout(() => this.getZoneCorps(), 3000);
         });
     }
 
