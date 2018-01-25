@@ -9,6 +9,8 @@ import ChoixZoneCorps from './calendar_screens/ChoixZoneCorps.js';
 import ChoixMuscle from './calendar_screens/ChoixMuscle.js';
 import ChoixMateriel from './calendar_screens/ChoixMateriel.js';
 import ChoixExercice from './calendar_screens/ChoixExercice.js'
+import FinSeance from './calendar_screens/FinSeance.js'
+import LaunchSeance from './calendar_screens/LaunchSeance.js'
 
 export const CalendarNavigation = StackNavigator({
     CalendarApp: {
@@ -52,7 +54,19 @@ export const CalendarNavigation = StackNavigator({
 		navigationOptions: {
         header : null,
       },
-	}
+	},
+  LaunchSeance: {
+		screen: LaunchSeance,
+		navigationOptions: {
+        header : null,
+      },
+	},
+  FinSeance: {
+		screen: FinSeance,
+		navigationOptions: {
+        header : null,
+      },
+	},
 },{
   StackNavigatorConfig: {
   },

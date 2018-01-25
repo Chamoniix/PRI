@@ -112,7 +112,7 @@ export default class UserLogin extends Component {
                     autoCorrect={false} autoFocus={true}  underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                     <Text style={styles.welcome}>Mot de passe:</Text>
                     <TextInput ref='mdp' returnKeyType='done' autoCapitalize='none'  underlineColorAndroid={'transparent'} autoCorrect={false} secureTextEntry={true}
-                    onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp} style={styles.textToFill}/>
+                    onSubmitEditing={() => this.logIn()} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp} style={styles.textToFill}/>
                     <TouchableHighlight underlayColor='#db2250' style={styles.button} onPress={() => this.logIn()}>
                         <Text style={styles.textButton}>Se connecter</Text>
                     </TouchableHighlight>

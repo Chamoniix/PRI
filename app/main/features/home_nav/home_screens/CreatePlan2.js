@@ -52,6 +52,8 @@ export default class CreatePlanBis extends Component {
                 id: '',
                 dataSourceDuree: ds.cloneWithRows(this.getDurees()),
                 dataSourceNiveau: ds.cloneWithRows(this.getNiveaux()),
+                selectDureeText: 'Choisissez votre durée:',
+                selectDifficulteText: 'Choisissez votre difficulté:',
         };
     }
 
@@ -86,7 +88,7 @@ export default class CreatePlanBis extends Component {
     }
 
     selectDuree(rowData, rowID) {
-        this.setState({duree: rowData, dataSourceDuree: this.state.dataSourceDuree.cloneWithRows(this.getDurees())});
+        this.setState({duree: rowData, dataSourceDuree: this.state.dataSourceDuree.cloneWithRows(this.getDurees()), selectDureeText: 'Durée chosie:'});
     }
 
     renderNiveaux(rowData, rowID){
@@ -108,7 +110,7 @@ export default class CreatePlanBis extends Component {
     }
 
     selectNiveaux(rowData, rowID) {
-        this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux())});
+        this.setState({niveau: rowData, dataSourceNiveau: this.state.dataSourceNiveau.cloneWithRows(this.getNiveaux()), selectDifficulteText: 'Difficulté chosie:'});
     }
 
     createPlan(name, length, level, objectifid, information, id, bool){
@@ -137,8 +139,10 @@ export default class CreatePlanBis extends Component {
                 isLoading: false,
                 hasInternet: true,
             })
-            if(res==="Pb d'ajout"){
+            if(res==="Pb d'ajout Plan"){
                 //TODO
+            }else if(res==="Pb d'ajout Plan_Ut"){
+              //TODO
             }else{
               planId = res;
               this.props.navigation.dispatch(resetAction);
@@ -182,7 +186,7 @@ export default class CreatePlanBis extends Component {
         }
 
         return (
-          <ScrollView style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={styles.mainTitle}>
                     <Text style={styles.textTitle}>
@@ -193,7 +197,7 @@ export default class CreatePlanBis extends Component {
             <View>
                 <View style={styles.secondTitle}>
                     <Text style={styles.textTitle}>
-                        Choisissez votre durée:
+                        {this.state.selectDureeText}
                     </Text>
                 </View>
                 <ListView
@@ -203,7 +207,7 @@ export default class CreatePlanBis extends Component {
                 />
                 <View style={styles.secondTitle}>
                     <Text style={styles.textTitle}>
-                        Choisissez votre difficulté:
+                        {this.state.selectDifficulteText}
                     </Text>
                 </View>
                 <ListView

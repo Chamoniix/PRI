@@ -23,7 +23,7 @@ import {idMateriel} from './ChoixMateriel.js';
 
 var idExercice;
 var nomExo;
-export default class Home extends Component<{}> {
+export default class ChoixExercice extends Component<{}> {
 
 	constructor(props){
         super(props);
@@ -75,7 +75,7 @@ export default class Home extends Component<{}> {
 		idExercice = rowData.exercice_id;
 		nomExo = rowData.exercice_nom;
       //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
-			
+
         this.props.navigation.navigate('Seance');
 	}
 
@@ -91,7 +91,7 @@ export default class Home extends Component<{}> {
                 </View>
             );
         }
-        
+
         if(!this.state.hasInternet){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>

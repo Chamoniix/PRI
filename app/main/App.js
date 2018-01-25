@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import UserIdentification from './log_in/UserIdentification';
 import UserLoggedInNav from './features/UserLoggedInNav';
-import LoggedInOrNot from './LoggedInOrNot'
+import LoggedInOrNot from './LoggedInOrNot';
 
-global.path = 'http://213.32.66.63/appliPP/php/'
+global.path = 'http://www.gybels.tk/appliPP/php/';
 
 export const App = StackNavigator({
     IsLoggedIn: {

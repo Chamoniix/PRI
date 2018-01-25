@@ -20,7 +20,7 @@ var h = Dimensions.get('window').height;
 
 var idMateriel;
 
-export default class Home extends Component<{}> {
+export default class ChoixMateriel extends Component<{}> {
 
 	constructor(props){
         super(props);
@@ -72,7 +72,7 @@ export default class Home extends Component<{}> {
                 </View>
             );
         }
-        
+
         if(!this.state.hasInternet){
             return(
                 <View style={{flex: 1, justifyContent: 'center'}}>
