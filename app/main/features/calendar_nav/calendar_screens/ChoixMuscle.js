@@ -51,6 +51,7 @@ export default class ChoixMuscle extends Component<{}> {
               muscles: res,
             });
              let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
             this.setState({
                 isLoading: false,
                 dataSourceAct: ds.cloneWithRows(res),
@@ -71,12 +72,17 @@ export default class ChoixMuscle extends Component<{}> {
     }
 
 	muscleChoosen = (rowData) => {
-		idMuscle = rowData.muscle_id;
+		idMuscle = "=" + rowData.muscle_id;
 		this.props.navigation.navigate('ChoixMateriel');
 	}
 
   pass = () => {
-    idMuscle = "ANY(SELECT materiel_id FROM Materiel)";
+    let ids = " IN (";
+    var i=0
+    for (i; i<this.state.muscles.length-1; i++)
+      ids += this.state.muscles[i].muscle_id + ", ";
+    ids += this.state.muscles[i].muscle_id + ")";
+    idMuscle = ids;
     this.props.navigation.navigate('ChoixMateriel');
   }
 

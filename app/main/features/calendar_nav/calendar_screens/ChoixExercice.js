@@ -73,9 +73,8 @@ export default class ChoixExercice extends Component<{}> {
 	exerciceChoosen = (rowData) => {
 		idExercice = rowData.exercice_id;
 		nomExo = rowData.exercice_nom;
-      //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
-
-        this.props.navigation.navigate('Seance');
+    //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
+    this.props.navigation.navigate('Seance');
 	}
 
 

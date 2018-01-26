@@ -32,7 +32,7 @@ FROM (
   ON m.exercice_id=e.exercice_id) AS em
 JOIN Materiel_Ex AS mat
 ON em.exercice_id=mat.exercice_id
-WHERE muscle_id=" . $muscleid .
+WHERE muscle_id" . $muscleid .
 " AND materiel_id=" .$materielid;
 
 /*
