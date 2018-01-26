@@ -11,7 +11,8 @@ import {
   ListView,
   ActivityIndicator,
   Navigator,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
 
 //Dimension of screen :
@@ -27,17 +28,26 @@ export default class ChoixMateriel extends Component<{}> {
         this.state = {
             isLoading: true,
             hasInternet: true,
+            dataSourceMatos : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
+            materiel: '',
+            selectMatosText: 'Choisissez votre matériel:',
+            selectedMatos: '',
         }
     }
 
 	componentDidMount(){
+    this.getMateriel();
+  }
+
+  getMateriel(){
         return fetch(path + 'getChoixMateriel.php')
         .then((response) => response.json())
         .then((res) => {
-            let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
             this.setState({
                 isLoading: false,
-                dataSourceAct: ds.cloneWithRows(res),
+                dataSourceMatos: this.state.dataSourceMatos.cloneWithRows(res),
+                materiel: res,
+                selectedMatos: '',
             })
         })
         .catch((error) => {
@@ -45,7 +55,37 @@ export default class ChoixMateriel extends Component<{}> {
               hasInternet: false,
               isLoading: false,
           })
+          setTimeout(() => this.getMateriel(), 3000);
         });
+    }
+
+    renderMatos(rowData, rowID){
+      return(
+        <TouchableHighlight onPress={() => {
+          this.selectMatos(rowData, rowID)
+        }}>
+          <View style={this.state.selectedMatos == rowData.materiel_id
+            ? styles.viewRowSelected
+            : styles.viewRow}>
+            <Text style={this.state.selectedMatos == rowData.materiel_id
+              ? styles.viewTextSelected
+              : styles.viewText}>
+              {rowData.materiel_nom}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
+
+    selectMatos(rowData, rowID) {
+      if(this.state.selectedMatos !== rowData.materiel_id){
+        this.setState({selectedMatos: rowData.materiel_id, dataSourceMatos: this.state.dataSourceMatos.cloneWithRows(this.state.materiel), selectMatosText: 'Matériel choisi:'});
+      }
+    }
+
+    goToNextStep(){
+        idMateriel = this.state.selectedMatos;
+        this.props.navigation.navigate('ChoixExercice');
     }
 
 	ListViewItemSeparator = () => {
@@ -54,16 +94,7 @@ export default class ChoixMateriel extends Component<{}> {
         );
     }
 
-	materielChoosen = (rowData) => {
-			//Alert.alert(rowData.materiel_id);
-			idMateriel = rowData.materiel_id;
-			this.props.navigation.navigate('ChoixExercice');
-	}
-
-
   render() {
-
-    const {navigate} = this.props.navigation;
 
         if(this.state.isLoading){
             return(
@@ -86,7 +117,7 @@ export default class ChoixMateriel extends Component<{}> {
         }
 
     return (
-          <View style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={{backgroundColor:'#FF3366'}}>
                     <Text style={styles.textTitle}>
@@ -97,17 +128,25 @@ export default class ChoixMateriel extends Component<{}> {
 
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez votre matériel:
+                  {this.state.selectMatosText}
                 </Text>
-
                 <ListView
-                    dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.materielChoosen(rowData)}>
-                    {rowData.materiel_nom}</Text>}
+                   dataSource={this.state.dataSourceMatos}
+                   renderSeparator={this.ListViewItemSeparator}
+                   renderRow={this.renderMatos.bind(this)}
                 />
+                </View>
+                <View style={{alignItems: 'flex-end'}}>
+                <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()}
+                style={this.state.selectedMatos === ''
+                ? styles.invisibleButton
+                : styles.buttonNext}>
+                   <Text style={this.state.selectedMatos === ''
+                   ? styles.invisibleText
+                   : styles.textTitle}>Suivant</Text>
+                </TouchableHighlight>
             </View>
-         </View>
+         </ScrollView>
     );
   }
 }
@@ -115,12 +154,13 @@ export default class ChoixMateriel extends Component<{}> {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
+        backgroundColor: '#F5FCFF',
     },
     textTitle:{
         color: 'white',
-        fontSize: 30,
+        fontSize: 20,
         textAlign: 'center',
+        margin: 10,
     },
 	welcome: {
 		fontSize: 20,
@@ -132,6 +172,33 @@ var styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 10,
         paddingBottom: 10,
+    },
+    viewRowSelected : {
+      backgroundColor: 'rgb(125,125,125)'
+    },
+    viewRow: {
+    },
+    viewTextSelected: {
+      fontSize: 20,
+      color: '#F5FCFF',
+      textAlign: 'center',
+      margin: 10,
+    },
+    viewText: {
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    invisibleText: {
+        fontSize: 0,
+    },
+    invisibleButton: {
+        height: 0,
+    },
+    buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 120,
     },
 });
 

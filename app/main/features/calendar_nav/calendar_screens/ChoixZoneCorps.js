@@ -56,7 +56,7 @@ export default class ChoixZoneCorps extends Component<{}> {
               hasInternet: false,
               isLoading: false,
           })
-          this.getZoneCorps();
+          setTimeout(() => this.getZoneCorps(), 3000);
         });
     }
 
@@ -96,8 +96,6 @@ export default class ChoixZoneCorps extends Component<{}> {
     }
 
   render() {
-
-    const {navigate} = this.props.navigation;
 
         if(this.state.isLoading){
             return(
