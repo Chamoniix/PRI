@@ -18,8 +18,6 @@ import {
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
-var objectif;
-
 export default class CreatePlan extends Component {
 
     constructor(props){
@@ -94,8 +92,7 @@ export default class CreatePlan extends Component {
     }
 
     goToNextStep(){
-        objectif = this.state.selectedObj;
-        this.props.navigation.navigate('CreatePlanBis');
+        this.props.navigation.navigate('CreatePlanBis', {objectif: this.state.selectedObj});
     }
 
   renderAct(rowData, rowID) {
@@ -292,5 +289,3 @@ const styles = StyleSheet.create({
         margin: 10
     }
 });
-
-export {objectif};
