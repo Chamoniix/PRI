@@ -69,6 +69,7 @@ export default class ChoixExercice extends Component<{}> {
     .then((res) => {
         this.setState({
           isLoading: false,
+          hasInternet: true,
           dataSourceExo: this.state.dataSourceExo.cloneWithRows(res),
           exos : res,
           selectedExo : '',

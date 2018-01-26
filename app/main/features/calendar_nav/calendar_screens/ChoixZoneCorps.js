@@ -46,6 +46,7 @@ export default class ChoixZoneCorps extends Component<{}> {
         .then((res) => {
             this.setState({
                 isLoading: false,
+                hasInternet: true,
                 dataSourceZone: this.state.dataSourceZone.cloneWithRows(res),
                 zones : res,
                 selectedZone : '',

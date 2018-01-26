@@ -11,7 +11,8 @@ import {
   ListView,
   ActivityIndicator,
   Navigator,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
 
 //Dimension of screen :
@@ -30,10 +31,18 @@ export default class ChoixMuscle extends Component<{}> {
         this.state = {
             isLoading: true,
             hasInternet: true,
+            dataSourceMuscle : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
+            muscles: '',
+            selectMuscleText: 'Choisissez un muscle à travailler:',
+            selectedMuscle: '',
         }
     }
 
 	componentDidMount(){
+    this.getMuscle();
+  }
+
+  getMuscle(){
         return fetch(path + 'getMuscleByZone.php',
         {
             method: "POST",
@@ -48,13 +57,11 @@ export default class ChoixMuscle extends Component<{}> {
         .then((response) => response.json())
         .then((res) => {
             this.setState({
-              muscles: res,
-            });
-             let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-            this.setState({
                 isLoading: false,
-                dataSourceAct: ds.cloneWithRows(res),
+                hasInternet: true,
+                dataSourceMuscle: this.state.dataSourceMuscle.cloneWithRows(res),
+                muscles: res,
+                selectedMuscle: '',
             })
         })
         .catch((error) => {
@@ -62,7 +69,37 @@ export default class ChoixMuscle extends Component<{}> {
               hasInternet: false,
               isLoading: false,
           })
+          setTimeout(() => this.getMuscle(), 3000);
         });
+    }
+
+    renderMuscle(rowData, rowID){
+      return(
+        <TouchableHighlight onPress={() => {
+          this.selectMuscle(rowData, rowID)
+        }}>
+          <View style={this.state.selectedMuscle == rowData.muscle_id
+            ? styles.viewRowSelected
+            : styles.viewRow}>
+            <Text style={this.state.selectedMuscle == rowData.muscle_id
+              ? styles.viewTextSelected
+              : styles.viewText}>
+              {rowData.muscle_nom}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      );
+    }
+
+    selectMuscle(rowData, rowID) {
+      if(this.state.selectedMuscle !== rowData.muscle_id){
+        this.setState({selectedMuscle: rowData.muscle_id, dataSourceMuscle: this.state.dataSourceMuscle.cloneWithRows(this.state.muscles), selectMuscleText: 'Muscle choisi:'});
+      }
+    }
+
+    goToNextStep(){
+        idMuscle = "=" + this.state.selectedMuscle;
+        this.props.navigation.navigate('ChoixMateriel');
     }
 
 	ListViewItemSeparator = () => {
@@ -71,12 +108,7 @@ export default class ChoixMuscle extends Component<{}> {
         );
     }
 
-	muscleChoosen = (rowData) => {
-		idMuscle = "=" + rowData.muscle_id;
-		this.props.navigation.navigate('ChoixMateriel');
-	}
-
-  pass = () => {
+  pass(){
     let ids = " IN (";
     var i=0
     for (i; i<this.state.muscles.length-1; i++)
@@ -88,8 +120,6 @@ export default class ChoixMuscle extends Component<{}> {
 
 
   render() {
-
-    const {navigate} = this.props.navigation;
 
         if(this.state.isLoading){
             return(
@@ -112,7 +142,7 @@ export default class ChoixMuscle extends Component<{}> {
         }
 
     return (
-          <View style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={{backgroundColor:'#FF3366'}}>
                     <Text style={styles.textTitle}>
@@ -120,40 +150,55 @@ export default class ChoixMuscle extends Component<{}> {
                     </Text>
                 </View>
             </View>
-
+            
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez un muscle à travailler:
+                  {this.state.selectMuscleText}
                 </Text>
-				        <ListView
-                    dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.muscleChoosen(rowData)}>
-                    {rowData.muscle_nom}</Text>}
-                />
-            </View>
-              <View style={styles.buttonStyle}>
-              <Button
-                onPress={() => this.pass()}
-                title="Passer cette étape >"
-                color="#FF3366"
-                accessibilityLabel="Passer cette etape"
-              />
-            </View>
-         </View>
+                <ListView
+                   dataSource={this.state.dataSourceMuscle}
+                   renderSeparator={this.ListViewItemSeparator}
+                   renderRow={this.renderMuscle.bind(this)}
+               />
+           </View>
+           <View style={{alignItems: 'flex-end'}}>
+               <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()}
+               style={this.state.selectedMuscle === ''
+               ? styles.invisibleButton
+               : styles.buttonNext}>
+                   <Text style={this.state.selectedMuscle === ''
+                   ? styles.invisibleText
+                   : styles.textTitle}>Suivant</Text>
+               </TouchableHighlight>
+           </View>
+           <View style={{alignItems: 'flex-end'}}>
+              <TouchableHighlight underlayColor='#db2250' onPress={() => this.pass()} style={styles.buttonPass}>
+                  <Text style={styles.textTitle}>Passer cette étape</Text>
+              </TouchableHighlight>
+           </View>
+         </ScrollView>
     );
   }
 }
 
+/*<View style={styles.buttonStyle}>
+<Button
+  onPress={() => this.pass()}
+  title="Passer cette étape >"
+  color="#FF3366"
+  accessibilityLabel="Passer cette etape"
+/>*/
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    backgroundColor: '#F5FCFF',
   },
     textTitle:{
     color: 'white',
-    fontSize: 30,
+    fontSize: 20,
     textAlign: 'center',
+    margin: 10,
   },
 	welcome: {
 		fontSize: 20,
@@ -171,6 +216,39 @@ var styles = StyleSheet.create({
     paddingRight: 10,
     width: '100%',
     alignItems: 'flex-end',
+  },
+  viewRowSelected : {
+    backgroundColor: 'rgb(125,125,125)'
+  },
+  viewRow: {
+  },
+  viewTextSelected: {
+    fontSize: 20,
+    color: '#F5FCFF',
+    textAlign: 'center',
+    margin: 10,
+  },
+  viewText: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  invisibleText: {
+      fontSize: 0,
+  },
+  invisibleButton: {
+      height: 0,
+  },
+  buttonNext: {
+      margin: 15,
+      backgroundColor: 'rgb(125,125,125)',
+      borderRadius:5,
+      width: 120,
+  },
+  buttonPass: {
+    margin: 15,
+    backgroundColor: "#FF3366",
+    borderRadius:5,
+    width: 200,
   }
 });
 

@@ -45,6 +45,7 @@ export default class ChoixMateriel extends Component<{}> {
         .then((res) => {
             this.setState({
                 isLoading: false,
+                hasInternet: true,
                 dataSourceMatos: this.state.dataSourceMatos.cloneWithRows(res),
                 materiel: res,
                 selectedMatos: '',
