@@ -27,9 +27,9 @@ var idExercice;
 var nomExo;
 
 const resetAction = NavigationActions.reset({
-  index: 1,
+  index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'Seance'})
+    NavigationActions.navigate({ routeName: 'CalendarApp'})
   ]
 })
 
@@ -45,6 +45,7 @@ export default class ChoixExercice extends Component<{}> {
             selectExoText: 'Choisissez votre exercice:',
             selectedExo: '',
             selectedExoNom: '',
+            noExoFound: false,
         }
     }
 
@@ -67,21 +68,29 @@ export default class ChoixExercice extends Component<{}> {
     })
     .then((response) => response.json())
     .then((res) => {
+      if(res === "0 results"){
+        this.setState({
+          noExoFound: true,
+          hasInternet: true,
+          isLoading: false,
+        })
+      }else{
         this.setState({
           isLoading: false,
+          noExoFound: false,
           hasInternet: true,
           dataSourceExo: this.state.dataSourceExo.cloneWithRows(res),
           exos : res,
           selectedExo : '',
         })
+      }
     })
     .catch((error) => {
-        /*this.setState({
+        this.setState({
               hasInternet: false,
               isLoading: false,
-          })*/
-        Alert.alert("0 Result");
-        this.props.navigation.navigate('ChoixZoneCorps');
+        })
+        setTimeout(() => this.getExercices(), 3000);
     });
 }
 
@@ -112,7 +121,14 @@ selectExo(rowData, rowID) {
 goToNextStep(){
     idExercice = this.state.selectedExo;
     nomExo = this.state.selectedExoNom
+    this.props.navigation.dispatch(resetAction);
     this.props.navigation.navigate('Seance');
+}
+
+goBackToChoixZone(){
+  this.props.navigation.dispatch(resetAction);
+  this.props.navigation.navigate('Seance');
+  this.props.navigation.navigate('ChoixZoneCorps');
 }
 
 	ListViewItemSeparator = () => {
@@ -141,6 +157,23 @@ goToNextStep(){
                     </Text>
                 </View>
             );
+        }
+
+        if(this.state.noExoFound){
+          return(
+            <ScrollView style={styles.container}>
+              <View>
+                  <Text style={[styles.textTitle, {color:'rgb(125,125,125)'}]}>
+                  Aucun exercice n'a été trouvé!'
+                  </Text>
+              </View>
+              <View style={{alignItems: 'center'}}>
+                <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goBackToChoixZone()} style={styles.buttonNext}>
+                   <Text style={styles.textTitle}>Refaire les choix</Text>
+                </TouchableHighlight>
+              </View>
+            </ScrollView>
+          );
         }
 
     return (
