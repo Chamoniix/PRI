@@ -19,8 +19,6 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-var idMateriel;
-
 export default class ChoixMateriel extends Component<{}> {
 
 	constructor(props){
@@ -85,8 +83,7 @@ export default class ChoixMateriel extends Component<{}> {
     }
 
     goToNextStep(){
-        idMateriel = this.state.selectedMatos;
-        this.props.navigation.navigate('ChoixExercice');
+        this.props.navigation.navigate('ChoixExercice', {muscle: this.props.navigation.state.params.muscle, materiel: this.state.selectedMatos});
     }
 
 	ListViewItemSeparator = () => {
@@ -202,5 +199,3 @@ var styles = StyleSheet.create({
         width: 120,
     },
 });
-
-export{idMateriel};

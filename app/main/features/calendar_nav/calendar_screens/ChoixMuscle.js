@@ -19,10 +19,6 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-import {idZone} from './ChoixZoneCorps.js';
-
-var idMuscle;
-
 export default class ChoixMuscle extends Component<{}> {
 
 
@@ -31,6 +27,7 @@ export default class ChoixMuscle extends Component<{}> {
         this.state = {
             isLoading: true,
             hasInternet: true,
+            zone: this.props.navigation.state.params.zone,
             dataSourceMuscle : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             muscles: '',
             selectMuscleText: 'Choisissez un muscle à travailler:',
@@ -51,7 +48,7 @@ export default class ChoixMuscle extends Component<{}> {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    zoneid: idZone,
+                    zoneid: this.state.zone,
                 })
         })
         .then((response) => response.json())
@@ -98,8 +95,8 @@ export default class ChoixMuscle extends Component<{}> {
     }
 
     goToNextStep(){
-        idMuscle = "=" + this.state.selectedMuscle;
-        this.props.navigation.navigate('ChoixMateriel');
+        var idMuscle = "=" + this.state.selectedMuscle;
+        this.props.navigation.navigate('ChoixMateriel', {muscle: idMuscle});
     }
 
 	ListViewItemSeparator = () => {
@@ -114,8 +111,7 @@ export default class ChoixMuscle extends Component<{}> {
     for (i; i<this.state.muscles.length-1; i++)
       ids += this.state.muscles[i].muscle_id + ", ";
     ids += this.state.muscles[i].muscle_id + ")";
-    idMuscle = ids;
-    this.props.navigation.navigate('ChoixMateriel');
+    this.props.navigation.navigate('ChoixMateriel', {muscle: ids});
   }
 
 
@@ -150,7 +146,7 @@ export default class ChoixMuscle extends Component<{}> {
                     </Text>
                 </View>
             </View>
-            
+
             <View>
                 <Text style={styles.welcome}>
                   {this.state.selectMuscleText}
@@ -251,5 +247,3 @@ var styles = StyleSheet.create({
     width: 200,
   }
 });
-
-export{idMuscle};

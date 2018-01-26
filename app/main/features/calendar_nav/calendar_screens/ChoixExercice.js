@@ -20,9 +20,6 @@ import { NavigationActions } from 'react-navigation'
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-import {idMuscle} from './ChoixMuscle.js';
-import {idMateriel} from './ChoixMateriel.js';
-
 var idExercice;
 var nomExo;
 
@@ -62,8 +59,8 @@ export default class ChoixExercice extends Component<{}> {
                 "Content-Type": "application/json"
             },
         body: JSON.stringify({
-                muscleid: idMuscle,
-                materielid: idMateriel,
+                muscleid: this.props.navigation.state.params.muscle,
+                materielid:this.props.navigation.state.params.materiel,
             })
     })
     .then((response) => response.json())

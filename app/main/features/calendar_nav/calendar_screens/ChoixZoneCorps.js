@@ -19,8 +19,6 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 
-var idZone;
-
 export default class ChoixZoneCorps extends Component<{}> {
 
 
@@ -86,8 +84,7 @@ export default class ChoixZoneCorps extends Component<{}> {
     }
 
     goToNextStep(){
-        idZone = this.state.selectedZone;
-        this.props.navigation.navigate('ChoixMuscle');
+        this.props.navigation.navigate('ChoixMuscle', {zone: this.state.selectedZone});
     }
 
 	ListViewItemSeparator = () => {
@@ -204,5 +201,3 @@ var styles = StyleSheet.create({
       width: 120,
   },
 });
-
-export{idZone};
