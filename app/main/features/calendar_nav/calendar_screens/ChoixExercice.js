@@ -11,8 +11,10 @@ import {
   ListView,
   ActivityIndicator,
   Navigator,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 
 //Dimension of screen :
 var w = Dimensions.get('window').width;
@@ -23,6 +25,14 @@ import {idMateriel} from './ChoixMateriel.js';
 
 var idExercice;
 var nomExo;
+
+const resetAction = NavigationActions.reset({
+  index: 1,
+  actions: [
+    NavigationActions.navigate({ routeName: 'Seance'})
+  ]
+})
+
 export default class ChoixExercice extends Component<{}> {
 
 	constructor(props){
@@ -30,11 +40,20 @@ export default class ChoixExercice extends Component<{}> {
         this.state = {
             isLoading: true,
             hasInternet: true,
+            dataSourceExo : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
+            exos: '',
+            selectExoText: 'Choisissez votre exercice:',
+            selectedExo: '',
+            selectedExoNom: '',
         }
 		idExercice = null;
     }
 
 	componentDidMount(){
+    this.getExercices();
+  }
+
+  getExercices(){
     return fetch(path + 'getExerciceByMuscleAndMateriel.php',
     {
         method: "POST",
@@ -49,10 +68,11 @@ export default class ChoixExercice extends Component<{}> {
     })
     .then((response) => response.json())
     .then((res) => {
-         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.setState({
-            isLoading: false,
-            dataSourceAct: ds.cloneWithRows(res),
+          isLoading: false,
+          dataSourceExo: this.state.dataSourceExo.cloneWithRows(res),
+          exos : res,
+          selectedExo : '',
         })
     })
     .catch((error) => {
@@ -65,24 +85,43 @@ export default class ChoixExercice extends Component<{}> {
     });
 }
 
+renderExos(rowData, rowID){
+  return(
+    <TouchableHighlight onPress={() => {
+      this.selectExo(rowData, rowID)
+    }}>
+      <View style={this.state.selectedExo == rowData.exercice_id
+        ? styles.viewRowSelected
+        : styles.viewRow}>
+        <Text style={this.state.selectedExo == rowData.exercice_id
+          ? styles.viewTextSelected
+          : styles.viewText}>
+          {rowData.exercice_nom}
+        </Text>
+      </View>
+    </TouchableHighlight>
+  );
+}
+
+selectExo(rowData, rowID) {
+  if(this.state.selectedExo !== rowData.exercice_id){
+    this.setState({selectedExo: rowData.exercice_id, selectedExoNom: rowData.exercice_nom, dataSourceExo: this.state.dataSourceExo.cloneWithRows(this.state.exos), selectExoText: 'Exercice choisi:'});
+  }
+}
+
+goToNextStep(){
+    idExercice = this.state.selectedExo;
+    nomExo = this.state.selectedExoNom
+    this.props.navigation.navigate('Seance');
+}
+
 	ListViewItemSeparator = () => {
         return (
             <View style={{height: .5, width: "100%", backgroundColor: "#000",}}/>
         );
     }
 
-	exerciceChoosen = (rowData) => {
-		idExercice = rowData.exercice_id;
-		nomExo = rowData.exercice_nom;
-      //Alert.alert("Muscle : " + idMuscle + " Materiel : " + idMateriel + "\nExercice Choisi : " + idExercice + "- " + rowData.exercice_nom);
-
-        this.props.navigation.navigate('Seance');
-	}
-
-
   render() {
-
-    const {navigate} = this.props.navigation;
 
         if(this.state.isLoading){
             return(
@@ -105,7 +144,7 @@ export default class ChoixExercice extends Component<{}> {
         }
 
     return (
-          <View style={styles.container}>
+          <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={{backgroundColor:'#FF3366'}}>
                     <Text style={styles.textTitle}>
@@ -116,16 +155,25 @@ export default class ChoixExercice extends Component<{}> {
 
             <View>
                 <Text style={styles.welcome}>
-                  Choisissez votre Exercice:
+                  {this.state.selectExoText}
                 </Text>
-				        <ListView
-                    dataSource={this.state.dataSourceAct}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={(rowData) => <Text style={styles.rowViewContainer} onPress={() => this.exerciceChoosen(rowData)}>
-                    {rowData.exercice_nom}</Text>}
+                <ListView
+                   dataSource={this.state.dataSourceExo}
+                   renderSeparator={this.ListViewItemSeparator}
+                   renderRow={this.renderExos.bind(this)}
                 />
+                </View>
+                <View style={{alignItems: 'flex-end'}}>
+                <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()}
+                style={this.state.selectedExo === ''
+                ? styles.invisibleButton
+                : styles.buttonNext}>
+                   <Text style={this.state.selectedExo === ''
+                   ? styles.invisibleText
+                   : styles.textTitle}>Valider le choix</Text>
+                </TouchableHighlight>
             </View>
-         </View>
+         </ScrollView>
     );
   }
 }
@@ -133,12 +181,13 @@ export default class ChoixExercice extends Component<{}> {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column'
+        backgroundColor: '#F5FCFF',
     },
     textTitle:{
-        color: 'white',
-        fontSize: 30,
-        textAlign: 'center',
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10,
     },
 	welcome: {
 		fontSize: 20,
@@ -150,6 +199,33 @@ var styles = StyleSheet.create({
         paddingRight: 10,
         paddingTop: 10,
         paddingBottom: 10,
+    },
+    viewRowSelected : {
+      backgroundColor: 'rgb(125,125,125)'
+    },
+    viewRow: {
+    },
+    viewTextSelected: {
+      fontSize: 20,
+      color: '#F5FCFF',
+      textAlign: 'center',
+      margin: 10,
+    },
+    viewText: {
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    invisibleText: {
+        fontSize: 0,
+    },
+    invisibleButton: {
+        height: 0,
+    },
+    buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 120,
     },
 });
 

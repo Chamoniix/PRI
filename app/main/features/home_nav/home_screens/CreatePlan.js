@@ -26,6 +26,7 @@ export default class CreatePlan extends Component {
         super(props);
         this.state = {
             isLoading: true,
+            isLoadingObj: false,
             hasInternet: true,
             dataSourceObj: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
             dataSourceAct: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 === r2}),
@@ -58,7 +59,7 @@ export default class CreatePlan extends Component {
               hasInternet: false,
               isLoading: false,
           })
-          this.getActivites();
+          setTimeout(() => this.getActivites(), 3000);
         });
     }
 
@@ -77,7 +78,7 @@ export default class CreatePlan extends Component {
         .then((response) => response.json())
         .then((res) => {
             this.setState({
-                isLoading: false,
+                isLoadingObj: false,
                 dataSourceObj: this.state.dataSourceObj.cloneWithRows(res),
                 obj : res,
                 hasInternet: true,
@@ -86,9 +87,9 @@ export default class CreatePlan extends Component {
         .catch((error) => {
           this.setState({
               hasInternet: false,
-              isLoading: false,
+              isLoadingObj: false,
           })
-          this.getObjectifs(activity);
+          setTimeout(() => this.getObjectifs(activity), 3000);
         });
     }
 
@@ -117,7 +118,7 @@ export default class CreatePlan extends Component {
 
   selectAct(rowData, rowID) {
     if(this.state.selectedAct !== rowData.activite_id){
-      this.setState({selectedAct: rowData.activite_id, dataSourceAct: this.state.dataSourceAct.cloneWithRows(this.state.act),  isLoading: true, selectedObj: '', selectActivityText: 'Activité choisie:', selectObjectifText: 'Choisissez votre objectif:'});
+      this.setState({selectedAct: rowData.activite_id, dataSourceAct: this.state.dataSourceAct.cloneWithRows(this.state.act),  isLoadingObj: true, selectedObj: '', selectActivityText: 'Activité choisie:', selectObjectifText: 'Choisissez votre objectif:'});
       this.getObjectifs(rowData.activite_id);
     }
   }
@@ -198,20 +199,27 @@ export default class CreatePlan extends Component {
                     renderSeparator={this.ListViewItemSeparator}
                     renderRow={this.renderAct.bind(this)}
                 />
-                <View style={this.state.selectedAct === ''
-                ? styles.invisibleButton
-                : styles.secondTitle}>
-                    <Text style={this.state.selectedAct === ''
-                    ? styles.invisibleText
-                    : styles.textTitle}>
-                      {this.state.selectObjectifText}
-                    </Text>
-                </View>
-                <ListView
-                    dataSource={this.state.dataSourceObj}
-                    renderSeparator={this.ListViewItemSeparator}
-                    renderRow={this.renderObj.bind(this)}
-                />
+                { this.state.isLoadingObj ? (
+                  <View style={{flex: 1, alignItems: 'center'}}>
+                      <ActivityIndicator size='large' color='rgb(125,125,125)'/>
+                  </View>
+                ) : (
+                  <View>
+                    <View style={this.state.selectedAct === ''
+                    ? styles.invisibleButton
+                    : styles.secondTitle}>
+                        <Text style={this.state.selectedAct === ''
+                        ? styles.invisibleText
+                        : styles.textTitle}>
+                          {this.state.selectObjectifText}
+                        </Text>
+                    </View>
+                    <ListView
+                        dataSource={this.state.dataSourceObj}
+                        renderSeparator={this.ListViewItemSeparator}
+                        renderRow={this.renderObj.bind(this)}
+                    /><
+                  /View>)}
                 <View style={{alignItems: 'flex-end'}}>
                     <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={() => this.goToNextStep()}
                     style={this.state.selectedObj === ''

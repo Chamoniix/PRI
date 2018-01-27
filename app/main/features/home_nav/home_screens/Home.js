@@ -57,7 +57,7 @@ export default class Home extends Component<{}> {
               hasInternet: false,
               isLoading: false,
           })
-          this.getPseudo(identifiant);
+          setTimeout(() => this.getPseudo(identifiant), 3000);
         });
     }
 
