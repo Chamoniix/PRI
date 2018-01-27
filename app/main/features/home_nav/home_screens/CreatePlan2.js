@@ -29,7 +29,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'Home'})
+    NavigationActions.navigate({ routeName: 'IsLoggedIn'})
   ]
 })
 
@@ -143,8 +143,9 @@ export default class CreatePlanBis extends Component {
               //TODO
             }else{
               planId = res;
-              this.props.navigation.dispatch(resetAction);
-              this.props.navigation.navigate('Calendar');
+              //this.props.navigation.dispatch(resetAction);
+              //this.props.navigation.navigate('Calendar', {nouveauPlan: res});
+              this.props.screenProps.rootNavigation.dispatch(resetAction);
             }
         })
         .catch((error) => {

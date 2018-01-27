@@ -59,7 +59,7 @@ export default class UserLoggedInNav extends Component{
 
   render(){
     const UserLoggedIn = TabNavigator({
-      Home: {
+      HomeNav: {
           screen: HomeNavigation,
     	   navigationOptions: {
             tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} />,
@@ -77,7 +77,7 @@ export default class UserLoggedInNav extends Component{
             tabBarIcon: ({ tintColor }) => <Icon name="shopping-cart" size={25} />,
           },
     	},
-      User: {
+      UserNav: {
     	  screen: UserNavigation,
     	  navigationOptions: {
             tabBarIcon: ({ tintColor }) => <Icon name="user" size={25} />,
@@ -86,7 +86,7 @@ export default class UserLoggedInNav extends Component{
 
     },
     {
-      initialRouteName: this.state.followsPlan ? 'Calendar' : 'Home',
+      initialRouteName: this.state.followsPlan ? 'Calendar' : 'HomeNav',
       tabBarOptions: {
         showIcon: true,
     	showLabel : false,

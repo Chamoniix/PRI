@@ -14,12 +14,12 @@ import {
   ScrollView,
   Navigator,
   Picker,
+  AsyncStorage
 } from 'react-native';
 
 var date;
 
 import {dateM} from './AddSeance';
-//import {userId} from './UserLogin';
 
 var listDate=[];
 var mark;
@@ -30,21 +30,58 @@ var dateMarked=[];
 var seanceLaungedId = null;
 
 // TODO Enlever l'initialisation quand création utilisateur faite.
-var userId = 2;
 var rowsPlanByUser = [];
 
 var dateSeance = [];
 
 export default class CalendarApp extends Component {
-	constructor(props){
-        super(props);
+
+  constructor(props){
+    super(props);
 		this.state = {
-			isLoading: true,
-            hasInternet: true,
-            selectedPlan:"",
-		};
+      isLoading: true,
+      hasInternet: true,
+      selectedPlan:"",
+      id:"",
+    };
 		seanceLaungedId = null;
 	}
+
+  componentDidMount(){
+    AsyncStorage.getItem('userId').then((value) => this.getPlan(value)).done();
+}
+
+  getPlan(idUser){
+    this.setState({id: idUser});
+    return fetch(path + 'getPlanByUser.php',
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userid: this.state.id,
+      })
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      for( var i=0; i<res.length; i++){
+        rowsPlanByUser[i] = res[i].plan_nom;
+      }
+      this.setState({
+        isLoading: false,
+        selectedPlan: rowsPlanByUser[0],
+        rowsPlanByUser: rowsPlanByUser,
+      })
+    })
+    .catch((error) => {
+      this.setState({
+        hasInternet: false,
+        isLoading: false,
+      })
+    });
+  }
 
 	CheckSeance(date){
 		this.setState({
@@ -77,7 +114,7 @@ export default class CalendarApp extends Component {
             })
         });
 	}
-	
+
 	GetDateSeance(userId, planNom){
 		this.setState({
             isLoading: true,
@@ -118,36 +155,6 @@ export default class CalendarApp extends Component {
 		date = day.dateString;
 		this.CheckSeance(date);
 	}
-  componentDidMount(){
-        return fetch(path + 'getPlanByUser.php',
-        {
-            method: "POST",
-            headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-            body: JSON.stringify({
-                    userid: userId,
-                })
-        })
-        .then((response) => response.json())
-        .then((res) => {
-            for( var i=0; i<res.length; i++){
-              rowsPlanByUser[i] = res[i].plan_nom;
-            }
-            this.setState({
-                isLoading: false,
-                selectedPlan: rowsPlanByUser[0],
-                rowsPlanByUser: rowsPlanByUser,
-            })
-        })
-        .catch((error) => {
-          this.setState({
-              hasInternet: false,
-              isLoading: false,
-          })
-        });
-    }
 
 	render() {
 		if(dateSeance.length!=0){
@@ -187,7 +194,7 @@ export default class CalendarApp extends Component {
     let planItems = this.state.rowsPlanByUser.map( (s, i) => {
            return <Picker.Item key={i} value={s} label={s} />;
        });
-	   
+
    console.disableYellowBox = true;
 
        return (
@@ -196,9 +203,9 @@ export default class CalendarApp extends Component {
         <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
         <Picker
             selectedValue={this.state.selectedPlan}
-            onValueChange={ (plan) => ( 
+            onValueChange={ (plan) => (
 								this.setState({selectedPlan:plan}),
-								this.GetDateSeance(userId, this.state.selectedPlan)
+								this.GetDateSeance(this.state.id, this.state.selectedPlan)
 								) }>
           {planItems}
         </Picker>
