@@ -260,7 +260,7 @@ export default class Seance extends Component<{}> {
 	);
 
 
-	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
+	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetition'];
 	const tableData = [
       ['1', ele[1], serie(1), repet(1)],
       ['2', ele[2], serie(2), repet(2)],
@@ -270,7 +270,7 @@ export default class Seance extends Component<{}> {
     ];
     return (
       <ScrollView>
-		<Table style={styles.table}>
+		<Table style={styles.table}  borderStyle={{borderWidth: 0.5, borderColor: '#c8e1ff'}}>
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
@@ -301,7 +301,6 @@ export default class Seance extends Component<{}> {
 
 const styles = StyleSheet.create({
   table:{
-
   },
   container: {
     flex: 1,
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
   head: {
 	width : w,
 	height: w/5,
-	backgroundColor: 'rgb(140,140,140)'
+	 backgroundColor: '#FF3366',
   },
   headText: {
 	textAlign:'center',
@@ -338,7 +337,7 @@ const styles = StyleSheet.create({
   row: {
 	width : w,
 	height: w/5,
-	backgroundColor: 'rgb(208,208,208)'
+	backgroundColor: 'white'
 	},
   buttons: {
     flexDirection: 'row',

@@ -168,7 +168,7 @@ export default class CalendarApp extends Component {
 	render() {
 		if(dateSeance.length!=0){
 			for(var i=0; i<dateSeance.length; i++){
-             dateMarked[dateSeance[i]]={selected: true};
+             dateMarked[dateSeance[i]]={selected: true, selectedColor: 'green'};
             }
 		}
     if(!this.state.hasInternet){
@@ -200,7 +200,12 @@ export default class CalendarApp extends Component {
        return (
     <ScrollView>
       <View>
-        <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
+		<View style={styles.mainTitle}>
+			<Text style={styles.textTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
+		</View>
+		<View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Selectionnez votre plan ! :)</Text>
+		</View>
         <Picker
             selectedValue={planNom}
             onValueChange={ (plan) => (this.setState({selectedPlan:plan}),
@@ -211,9 +216,21 @@ export default class CalendarApp extends Component {
         </Picker>
 
         <Text style = {styles.text}>{this.state.user}</Text>
-      </View>
-    <Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
+		</View>
+	  
       <Calendar
+	  theme={{
+		backgroundColor: '#ffffff',
+		calendarBackground: '#ffffff',
+		textSectionTitleColor: '#FF3366',
+		selectedDayBackgroundColor: '#00adf5',
+		todayTextColor: '#FF3366',
+		textDisabledColor: '#FF3366',
+		arrowColor: '#FF3366',
+		textDayFontSize: 16,
+		textMonthFontSize: 16,
+		textDayHeaderFontSize: 16
+	  }}
       onDayPress={this.GetDay.bind(this)}
       markedDates={dateMarked}
         />
@@ -244,6 +261,14 @@ const styles = StyleSheet.create({
     textAlign:'center',
    // backgroundColor: 'rgb(204, 204, 204)',
   },
+    secondTitle: {
+        backgroundColor: '#FF3366',
+    },
+    mainTitle: {
+        backgroundColor: 'rgb(125,125,125)',
+    },
+	
+  
 });
 
 export {date, seanceLaungedId, planNom, id_user};
