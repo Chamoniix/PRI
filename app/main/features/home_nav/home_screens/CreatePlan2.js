@@ -27,7 +27,6 @@ var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
@@ -145,6 +144,7 @@ export default class CreatePlanBis extends Component {
               //TODO
             }else{
               planId = res;
+			  //versCal = true;
               this.props.navigation.dispatch(resetAction);
               this.props.navigation.navigate('Calendar');
             }

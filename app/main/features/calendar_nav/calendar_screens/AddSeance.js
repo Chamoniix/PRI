@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 
 import {date, planNom, id_user} from './CalendarApp';
-//import {planId} from '../../home_nav/home_screens/CreatePlan2';
 var seanceId;
 var dateM;
 export default class AddSeance extends Component<{}> {

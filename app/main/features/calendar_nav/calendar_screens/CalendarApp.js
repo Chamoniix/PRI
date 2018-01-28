@@ -14,13 +14,12 @@ import {
   ScrollView,
   Navigator,
   Picker,
-  AsyncStorage
+  AsyncStorage,
+  RefreshControl
 } from 'react-native';
 
 var date;
 var id_user;
-import {dateM} from './AddSeance';
-//import {userId} from './UserLogin';
 
 var listDate=[];
 var mark;
@@ -33,19 +32,24 @@ var rowsPlanByUser = [];
 var planNom = "";
 var dateSeance = [];
 
+var unefois = true;
 export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
 		this.state = {
 			isLoading: true,
             hasInternet: true,
-            selectedPlan:"",
+            selectedPlan:planNom,
 			idUser:'',
+			versCal:"",
 		};
 		seanceLaungedId = null;
 	}
+ 
 	componentDidMount(){
-        AsyncStorage.getItem('userId').then((value) => this.getPlanByUser(value)).done();
+        AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value),
+														this.GetDateSeance(value, planNom))).done();
+		
     }
 	
 	CheckSeance(date){
@@ -67,7 +71,7 @@ export default class CalendarApp extends Component {
         .then((response) => response.json())
 		.then((res)=> {
 			seanceLaungedId = res[0].seance_id;
-			//Alert.alert("id seance de calendrier : "+seanceLaungedId);
+			unefois = true;
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,
@@ -77,6 +81,7 @@ export default class CalendarApp extends Component {
 			if(planNom === "" || planNom === "Selectionnez votre plan" ){
 				Alert.alert("Choisissez un plan d'entrainement");
 			}else{
+				unefois = true;
 				this.props.navigation.navigate('AddSeance');
 			}
 			this.setState({
@@ -89,7 +94,6 @@ export default class CalendarApp extends Component {
 		this.setState({
             isLoading: true,
         });
-		//Alert.alert(planNo+"  "+userId);
         return fetch(path + 'getDateSeanceByUserAndPlan.php',
         {
             method: "POST",
@@ -116,7 +120,6 @@ export default class CalendarApp extends Component {
         .catch((error) => {
 			dateSeance = [];
 			dateMarked=[];
-			//Alert.alert("erreur");
 			this.setState({
                 isLoading: false,
             })
@@ -168,12 +171,6 @@ export default class CalendarApp extends Component {
              dateMarked[dateSeance[i]]={selected: true};
             }
 		}
-		if(dateM!=null){
-			listDate.push(dateM);
-			dateMarked[listDate[cpt]]={selected: true};
-			cpt = cpt + 1;
-		}
-
     if(!this.state.hasInternet){
         return(
             <View style={{flex: 1, justifyContent: 'center'}}>
@@ -205,7 +202,7 @@ export default class CalendarApp extends Component {
       <View>
         <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
         <Picker
-            selectedValue={this.state.selectedPlan}
+            selectedValue={planNom}
             onValueChange={ (plan) => (this.setState({selectedPlan:plan}),
 								planNom = plan,
 								this.GetDateSeance(this.state.idUser, plan)

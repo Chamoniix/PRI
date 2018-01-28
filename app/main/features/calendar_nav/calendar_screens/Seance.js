@@ -70,8 +70,6 @@ export default class Seance extends Component<{}> {
 			rep[i]=0;
 		}
 		exoNom = [];
-		//valEx=0;
-		//ele = new Array(8);
 		ex = new Array(8);
 		choixExo = false;
 	}
@@ -284,7 +282,8 @@ export default class Seance extends Component<{}> {
   						<Button title="Modifier" color="#FF3366" onPress={() => {edit=true}}/>
             </View>
             <View style={styles.buttonStyleComm}>
-  						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance')}}/>
+  						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
+																					this.initialization()}}/>
   					</View>
           </View>
 				);
