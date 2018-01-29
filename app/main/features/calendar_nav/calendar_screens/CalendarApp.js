@@ -49,6 +49,37 @@ export default class CalendarApp extends Component {
 
   componentDidMount(){
     AsyncStorage.getItem('userId').then((value) => this.getPlan(value)).done();
+    AsyncStorage.getItem('newPlan').then((value) => value!==null ? this.getPlanName(value) :Alert.alert("null")).done();
+}
+
+getPlanName(idPlan){
+  this.setState({newPlan: idPlan});
+  Alert.alert(idPlan);
+  return fetch(path + 'getPlanName.php',
+  {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: idPlan,
+    })
+  })
+  .then((response) => response.json())
+  .then((res) => {
+    if(res !== "0 results"){
+      this.setState({
+        isLoading: false,
+        selectedPlan: res.plan_nom
+      })
+    }
+  })
+  .catch((error) => {
+    this.setState({
+      isLoading: false,
+    })
+  });
 }
 
   getPlan(idUser){

@@ -139,12 +139,15 @@ export default class CreatePlanBis extends Component {
             })
             if(res==="Pb d'ajout Plan"){
                 //TODO
+                Alert.alert("Pb ajout plan");
             }else if(res==="Pb d'ajout Plan_Ut"){
               //TODO
+              Alert.alert("pb ajout plan_ut");
             }else{
               planId = res;
               //this.props.navigation.dispatch(resetAction);
               //this.props.navigation.navigate('Calendar', {nouveauPlan: res});
+              AsyncStorage.setItem('newPlan', res);
               this.props.screenProps.rootNavigation.dispatch(resetAction);
             }
         })
