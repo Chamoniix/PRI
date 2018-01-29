@@ -48,8 +48,7 @@ export default class CalendarApp extends Component {
  
 	componentDidMount(){
         AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value),
-														this.GetDateSeance(value, planNom))).done();
-		
+		this.GetDateSeance(value, planNom))).done();
     }
 	
 	CheckSeance(date){
@@ -103,7 +102,7 @@ export default class CalendarApp extends Component {
                 },
             body: JSON.stringify({
 					userid: userId,
-					plannom: planNo,
+					planN: planNo,
                 })
         })
         .then((response) => response.json())
@@ -152,14 +151,13 @@ export default class CalendarApp extends Component {
             }
             this.setState({
                 isLoading: false,
-                selectedPlan: rowsPlanByUser[0],
-                rowsPlanByUser: rowsPlanByUser,
+                //selectedPlan: rowsPlanByUser[0],
+                //rowsPlanByUser: rowsPlanByUser,
             })
         })
         .catch((error) => {
 			
           this.setState({
-              //hasInternet: false,
               isLoading: false,
           })
         });
@@ -191,7 +189,7 @@ export default class CalendarApp extends Component {
       );
     }
 
-    let planItems = this.state.rowsPlanByUser.map( (s, i) => {
+    let planItems = rowsPlanByUser.map( (s, i) => {
            return <Picker.Item key={i} value={s} label={s} />;
        });
 	   

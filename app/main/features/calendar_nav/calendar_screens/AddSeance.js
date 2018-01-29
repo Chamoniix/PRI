@@ -62,7 +62,6 @@ export default class AddSeance extends Component<{}> {
         .then((response) => response.json())
 		.then((res)=> {
 			seanceId = res;
-			Alert.alert("id plan = "+seanceId);
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,

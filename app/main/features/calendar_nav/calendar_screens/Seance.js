@@ -13,6 +13,11 @@ import {
   TextInput,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+
+import {seanceId} from './AddSeance';
+import {idExercice, nomExo} from './ChoixExercice';
+import {seanceLaungedId} from './CalendarApp';
+
 // dimensions of the screen
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
@@ -32,14 +37,9 @@ rep[4]=0;
 rep[5]=0;
 // valeur de l'id exo
 var ex = new Array(8);
-
-//var seanceId = 39;
-
-import {seanceId} from './AddSeance';
-import {idExercice, nomExo} from './ChoixExercice';
-import {seanceLaungedId} from './CalendarApp';
+// associer l'exercice a la bonne place
 var valEx;
-
+// valeur de l'exo
 var ele = new Array(8);
 // nom exo
 var exoNom = [];
@@ -187,7 +187,6 @@ export default class Seance extends Component<{}> {
     }
     if(idExercice!=null){
 		ex[valEx]=idExercice;
-		//idex = idExercice;
 	}
 
   if(!this.state.hasInternet){
@@ -270,6 +269,8 @@ export default class Seance extends Component<{}> {
     ];
     return (
       <ScrollView>
+		<View>
+		</View>
 		<Table style={styles.table}  borderStyle={{borderWidth: 0.5, borderColor: '#c8e1ff'}}>
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
@@ -279,7 +280,7 @@ export default class Seance extends Component<{}> {
 				return(
           <View style={styles.buttons}>
   					<View style={styles.buttonStyleModif}>
-  						<Button title="Modifier" color="#FF3366" onPress={() => {edit=true}}/>
+  						<Button title="Modifier" color="#FF3366" onPress={() => {this.setState({edit:true})}/>
             </View>
             <View style={styles.buttonStyleComm}>
   						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
@@ -289,7 +290,11 @@ export default class Seance extends Component<{}> {
 				);
 			}else{
 				return(
-					<Button title="Sauvegarder" style={styles.bouton} onPress={this.test.bind(this)}/>
+				<View style={{alignItems: 'flex-end'}}>
+					<TouchableHighlight underlayColor='rgb(217,217,217)'  onPress={this.test.bind(this)}/>
+						<Text style={ styles.textTitle}>Sauvegarder</Text>
+					</TouchableHighlight>
+				</View>
 				);
 			}
 
@@ -353,7 +358,13 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     flex: 0.5,
     alignItems: 'flex-end',
-  }
+  },
+  buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 150,
+    },
 });
 
 export{seanceLaungedId}
