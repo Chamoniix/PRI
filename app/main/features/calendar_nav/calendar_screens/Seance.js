@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
   TextInput,
+  TouchableHighlight,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
@@ -176,6 +177,10 @@ export default class Seance extends Component<{}> {
 	this.initialization();
 
   }
+  
+  editTrue= () => {
+	  this.setState({edit:true});
+  }
 
   render() {
    if(this.state.isLoading){
@@ -269,6 +274,7 @@ export default class Seance extends Component<{}> {
     ];
     return (
       <ScrollView>
+	  <View>
 		<View>
 		</View>
 		<Table style={styles.table}  borderStyle={{borderWidth: 0.5, borderColor: '#c8e1ff'}}>
@@ -278,27 +284,28 @@ export default class Seance extends Component<{}> {
 		{(() => {
 			if(this.state.edit === false){
 				return(
-          <View style={styles.buttons}>
-  					<View style={styles.buttonStyleModif}>
-  						<Button title="Modifier" color="#FF3366" onPress={() => {this.setState({edit:true})}/>
-            </View>
-            <View style={styles.buttonStyleComm}>
-  						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
-																					this.initialization()}}/>
-  					</View>
-          </View>
+					<View style={styles.buttons}>
+						<View style={styles.buttonStyleModif}>
+							<Button title="Modifier" color="#FF3366" onPress={this.editTrue.bind()}/>
+						</View>
+						<View style={styles.buttonStyleComm}>
+							<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
+																						this.initialization()}}/>
+						</View>
+					</View>
 				);
 			}else{
 				return(
-				<View style={{alignItems: 'flex-end'}}>
-					<TouchableHighlight underlayColor='rgb(217,217,217)'  onPress={this.test.bind(this)}/>
-						<Text style={ styles.textTitle}>Sauvegarder</Text>
-					</TouchableHighlight>
-				</View>
+					<View style={{alignItems: 'flex-end'}}>
+						<TouchableHighlight underlayColor='rgb(217,217,217)'  onPress={this.test.bind(this)} style={styles.buttonNext}>
+							<Text style={ styles.textTitle}>Sauvegarder</Text>
+						</TouchableHighlight>
+					</View>
 				);
 			}
 
        })()}
+	   </View>
       </ScrollView>
     );
   }

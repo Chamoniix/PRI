@@ -44,6 +44,7 @@ export default class CalendarApp extends Component {
 			versCal:"",
 		};
 		seanceLaungedId = null;
+		rowsPlanByUser = [];
 	}
  
 	componentDidMount(){
