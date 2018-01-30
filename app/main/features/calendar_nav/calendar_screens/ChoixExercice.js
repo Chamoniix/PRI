@@ -34,7 +34,7 @@ export default class ChoixExercice extends Component<{}> {
     }
 
 	componentDidMount(){
-    return fetch(path + 'getExerciceByMuscleAndMateriel.php',
+    return fetch(path + 'getExerciceByMeuscleAndMateriel.php',
     {
         method: "POST",
         headers: {
