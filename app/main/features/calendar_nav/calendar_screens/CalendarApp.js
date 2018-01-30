@@ -41,18 +41,17 @@ export default class CalendarApp extends Component {
             hasInternet: true,
             selectedPlan:planNom,
 			idUser:'',
-			versCal:"",
 		};
 		seanceLaungedId = null;
 		rowsPlanByUser = [];
 	}
  
 	componentDidMount(){
-        AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value),
-		this.GetDateSeance(value, planNom))).done();
+        AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value))).done();
+		this.GetDateSeance(id_user, planNom);
     }
 	
-	CheckSeance(date){
+	CheckSeance(date, id_user){
 		this.setState({
             isLoading: true,
         });
@@ -65,7 +64,7 @@ export default class CalendarApp extends Component {
                 },
             body: JSON.stringify({
 					dateS: date,
-
+					idU: id_user,
                 })
         })
         .then((response) => response.json())
@@ -128,7 +127,7 @@ export default class CalendarApp extends Component {
 
 	GetDay(day) {
 		date = day.dateString;
-		this.CheckSeance(date);
+		this.CheckSeance(date, id_user);
 	}
   getPlanByUser(id){
 	  this.setState({idUser: id})
@@ -152,8 +151,6 @@ export default class CalendarApp extends Component {
             }
             this.setState({
                 isLoading: false,
-                //selectedPlan: rowsPlanByUser[0],
-                //rowsPlanByUser: rowsPlanByUser,
             })
         })
         .catch((error) => {
