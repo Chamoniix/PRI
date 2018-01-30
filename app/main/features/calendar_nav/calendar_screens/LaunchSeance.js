@@ -28,7 +28,6 @@ export default class Home extends Component<{}> {
 
   constructor(props){
         super(props);
-        t0 = new Date();
         this.state = {
             isLoading: true,
             hasInternet: true,
@@ -39,6 +38,18 @@ export default class Home extends Component<{}> {
     }
 
   componentDidMount(){
+    numExercice = -1;
+    this.setState({
+        exercice_nom: "",
+        nb_repetitions: 0,
+        nb_series: 0,
+        exercices: []
+    })
+    t0 = new Date();
+    this.getExercices();
+  }
+
+  getExercices() {
     return fetch(path + 'getSeanceById.php',
     {
         method: "POST",
@@ -65,7 +76,7 @@ export default class Home extends Component<{}> {
           isLoading: false,
       })
     });
-    }
+  }
 
     getImage(exerciceID) {
       return fetch(path + 'getExerciceVideo.php',
@@ -87,7 +98,6 @@ export default class Home extends Component<{}> {
           })
       })
       .catch((error) => {
-          Alert.alert(error);
           this.setState({
             hasInternet: false,
             isLoading: false,
@@ -171,6 +181,7 @@ export default class Home extends Component<{}> {
             </View>
           </View>
     );
+
   }
 }
 
