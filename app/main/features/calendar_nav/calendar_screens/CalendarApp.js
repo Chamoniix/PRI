@@ -34,24 +34,86 @@ var dateSeance = [];
 
 var unefois = true;
 export default class CalendarApp extends Component {
-	constructor(props){
-        super(props);
+
+  constructor(props){
+    super(props);
 		this.state = {
 			isLoading: true,
-            hasInternet: true,
-            selectedPlan:planNom,
+      hasInternet: true,
+      selectedPlan:planNom,
 			idUser:'',
-			versCal:"",
 		};
 		seanceLaungedId = null;
 		rowsPlanByUser = [];
 	}
- 
 	componentDidMount(){
-        AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value),
-		this.GetDateSeance(value, planNom))).done();
+        AsyncStorage.getItem('userId').then((value) => this.getPlanByUser(value)).done();
+        AsyncStorage.getItem('newPlan').then((value) => value!==null ? this.getPlanName(value) : Alert.alert("null")).done();
+        this.GetDateSeance(id_user, planNom);
+  }
+
+getPlanName(idPlan){
+  Alert.alert(idPlan);
+  return fetch(path + 'getPlanName.php',
+  {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id: idPlan,
+    })
+  })
+  .then((response) => response.json())
+  .then((res) => {
+    if(res !== "0 results"){
+      this.setState({
+        isLoading: false,
+        selectedPlan: res.plan_nom
+      })
+      planNom = res.plan_nom;
     }
-	
+  })
+  .catch((error) => {
+    this.setState({
+      isLoading: false,
+    })
+  });
+}
+
+getPlanByUser(id){
+  this.setState({idUser: id})
+  id_user = this.state.idUser;
+      return fetch(path + 'getPlanByUser.php',
+      {
+          method: "POST",
+          headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+              },
+          body: JSON.stringify({
+                  userid: this.state.idUser,
+              })
+      })
+      .then((response) => response.json())
+      .then((res) => {
+    rowsPlanByUser[0] = "Selectionnez votre plan";
+          for( var i=0; i<res.length; i++){
+            rowsPlanByUser[i+1] = res[i].plan_nom;
+          }
+          this.setState({
+              isLoading: false,
+          })
+      })
+      .catch((error) => {
+        this.setState({
+          hasInternet: false,
+          isLoading: false,
+        })
+      });
+  }
+
 	CheckSeance(date){
 		this.setState({
             isLoading: true,
@@ -89,8 +151,8 @@ export default class CalendarApp extends Component {
             })
         });
 	}
-	
-	GetDateSeance(userId, planNo){
+
+	GetDateSeance(userId, planNom){
 		this.setState({
             isLoading: true,
         });
@@ -103,7 +165,7 @@ export default class CalendarApp extends Component {
                 },
             body: JSON.stringify({
 					userid: userId,
-					planN: planNo,
+					planN: planNom,
                 })
         })
         .then((response) => response.json())
@@ -130,39 +192,6 @@ export default class CalendarApp extends Component {
 		date = day.dateString;
 		this.CheckSeance(date);
 	}
-  getPlanByUser(id){
-	  this.setState({idUser: id})
-	  id_user = this.state.idUser;
-        return fetch(path + 'getPlanByUser.php',
-        {
-            method: "POST",
-            headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-            body: JSON.stringify({
-                    userid: id,
-                })
-        })
-        .then((response) => response.json())
-        .then((res) => {
-			rowsPlanByUser[0] = "Selectionnez votre plan";
-            for( var i=0; i<res.length; i++){
-              rowsPlanByUser[i+1] = res[i].plan_nom;
-            }
-            this.setState({
-                isLoading: false,
-                //selectedPlan: rowsPlanByUser[0],
-                //rowsPlanByUser: rowsPlanByUser,
-            })
-        })
-        .catch((error) => {
-			
-          this.setState({
-              isLoading: false,
-          })
-        });
-    }
 
 	render() {
 		if(dateSeance.length!=0){
@@ -193,7 +222,7 @@ export default class CalendarApp extends Component {
     let planItems = rowsPlanByUser.map( (s, i) => {
            return <Picker.Item key={i} value={s} label={s} />;
        });
-	   
+
    console.disableYellowBox = true;
 
        return (
@@ -216,7 +245,7 @@ export default class CalendarApp extends Component {
 
         <Text style = {styles.text}>{this.state.user}</Text>
 		</View>
-	  
+
       <Calendar
 	  theme={{
 		backgroundColor: '#ffffff',
@@ -266,8 +295,8 @@ const styles = StyleSheet.create({
     mainTitle: {
         backgroundColor: 'rgb(125,125,125)',
     },
-	
-  
+
+
 });
 
 export {date, seanceLaungedId, planNom, id_user};

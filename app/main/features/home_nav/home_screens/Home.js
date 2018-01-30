@@ -46,11 +46,13 @@ export default class Home extends Component<{}> {
         })
         .then((response) => response.json())
         .then((res) => {
+          if(res !== "0 results"){
             this.setState({
                 isLoading: false,
                 hasInternet: true,
                 userName: res.user_pseudo,
             })
+          }
         })
         .catch((error) => {
           this.setState({
