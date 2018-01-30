@@ -41,8 +41,9 @@ export default class FinSeance extends Component<{}> {
     }
 
     toHome = () => {
-      //if (this.state.note)
-      //alert(this.state.note);
+      if (typeof this.state.note == 'undefined')
+        alert("Entrez une note sur votre ressenti de la séance.");
+      else
       this.props.navigation.dispatch(resetAction);
     }
 
