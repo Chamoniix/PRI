@@ -238,13 +238,13 @@ var styles = StyleSheet.create({
     viewRow: {
     },
     viewTextSelected: {
-      fontSize: 20,
+      fontSize: 30,
       color: '#F5FCFF',
       textAlign: 'center',
       margin: 10,
     },
     viewText: {
-      fontSize: 16,
+      fontSize: 25,
       textAlign: 'center',
     },
     invisibleText: {
