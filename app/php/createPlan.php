@@ -2,11 +2,11 @@
 include 'DBconfig.php';
 
 $post = json_decode(file_get_contents('php://input'), TRUE);
-$nom = "'".$post['nom']."'";
-$duree = "'".$post['duree']."'";
-$niveau = "'".$post['niveau']."'";
+$nom = '"'.$post['nom'].'"';
+$duree = '"'.$post['duree'].'"';
+$niveau = '"'.$post['niveau'].'"';
 $obj = $post['obj'];
-$info = "'".$post['info']."'";
+$info = '"'.$post['info'].'"';
 $id = $post['idUser'];
 
 // Create connection

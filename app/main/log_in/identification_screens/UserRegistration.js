@@ -109,23 +109,23 @@ export default class UserRegistration extends Component {
             <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
                 <View style={{alignItems: 'center'}}>
                     <Text style={styles.welcome}>Adresse mail*</Text>
-                    <TextInput style={styles.textToFill} onSubmitEditing={() => this.refs.pseudo.focus()} returnKeyType='next' autoCapitalize='none'
+                    <TextInput style={styles.textToFill} onSubmitEditing={this.state.firstTry ? () => this.refs.pseudo.focus() : null} returnKeyType='next' autoCapitalize='none'
                     underlineColorAndroid={'transparent'} autoCorrect={false} autoFocus={this.state.firstTry ? true : false} keyboardType='email-address'
                     onChangeText={(inputMail) => this.setState({mail: inputMail})} value={this.state.mail}/>
                     <Text style={styles.welcome}>Pseudo*</Text>
-                    <TextInput style={styles.textToFill} ref='pseudo' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.mdp.focus()} returnKeyType='next'
+                    <TextInput style={styles.textToFill} ref='pseudo' underlineColorAndroid={'transparent'} onSubmitEditing={this.state.firstTry ? () => this.refs.mdp.focus() : null} returnKeyType='next'
                     autoCapitalize='none' autoCorrect={false} onChangeText={(inputPseudo) => this.setState({pseudo: inputPseudo})} value={this.state.pseudo}/>
                     <Text style={styles.welcome}>Mot de passe*</Text>
-                    <TextInput style={styles.textToFill} ref='mdp' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.mdp2.focus()} returnKeyType='next'
+                    <TextInput style={styles.textToFill} ref='mdp' underlineColorAndroid={'transparent'} onSubmitEditing={this.state.firstTry ? () => this.refs.mdp2.focus() : null} returnKeyType='next'
                     autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passw) => this.setState({mdp: passw})} value={this.state.mdp}/>
                     <Text style={styles.welcome}>Retaper le mot de passe*</Text>
-                    <TextInput style={styles.textToFill} ref='mdp2' underlineColorAndroid={'transparent'} onSubmitEditing={() => this.refs.age.focus()} returnKeyType='next'
+                    <TextInput style={styles.textToFill} ref='mdp2' underlineColorAndroid={'transparent'} onSubmitEditing={this.state.firstTry ? () => this.refs.age.focus() : null} returnKeyType='next'
                     autoCapitalize='none' autoCorrect={false} secureTextEntry={true} onChangeText={(passwBis) => this.setState({mdpBis: passwBis})} value={this.state.mdpBis}/>
                     <Text style={styles.welcome}>Votre age*</Text>
-                    <TextInput ref='age' onSubmitEditing={() => this.refs.charge.focus()} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
+                    <TextInput ref='age' onSubmitEditing={this.state.firstTry ? () => this.refs.charge.focus() : null} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
                     style={styles.textToFill} onChangeText={(inputAge) => this.setState({age: inputAge})} value={this.state.age}/>
                     <Text style={styles.welcome}>Charge soulevée maximale en kg</Text>
-                    <TextInput ref='charge' onSubmitEditing={() => this.refs.desc.focus()} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
+                    <TextInput ref='charge' onSubmitEditing={this.state.firstTry ? () => this.refs.desc.focus() : null} returnKeyType='next' keyboardType='numeric' underlineColorAndroid={'transparent'}
                     style={styles.textToFill} onChangeText={(inputCharge) => this.setState({charge: inputCharge})} value={this.state.charge}/>
                     <Text style={styles.welcome}>Décrivez-vous en quelques mots</Text>
                     <TextInput style={styles.textToFill} onSubmitEditing={() => this.signIn()} ref='desc' returnKeyType='done' underlineColorAndroid={'transparent'}

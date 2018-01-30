@@ -21,8 +21,6 @@ import { NavigationActions } from 'react-navigation'
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
-import {objectif} from './CreatePlan';
-
 var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -30,7 +28,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
-    NavigationActions.navigate({ routeName: 'Home'})
+    NavigationActions.navigate({ routeName: 'IsLoggedIn'})
   ]
 })
 
@@ -140,13 +138,13 @@ export default class CreatePlanBis extends Component {
             })
             if(res==="Pb d'ajout Plan"){
                 //TODO
+                Alert.alert("Pb ajout plan");
             }else if(res==="Pb d'ajout Plan_Ut"){
               //TODO
+              Alert.alert("pb ajout plan_ut");
             }else{
               planId = res;
-			  //versCal = true;
-              this.props.navigation.dispatch(resetAction);
-              this.props.navigation.navigate('Calendar');
+              this.props.screenProps.rootNavigation.dispatch(resetAction);
             }
         })
         .catch((error) => {
@@ -185,12 +183,14 @@ export default class CreatePlanBis extends Component {
             );
         }
 
+        const {state} = this.props.navigation;
+
         return (
           <ScrollView style={styles.container} ref={ref => this.scrollView = ref} onContentSizeChange={(contentWidth, contentHeight)=>{this.scrollView.scrollToEnd({animated: true});}}>
             <View>
                 <View style={styles.mainTitle}>
                     <Text style={styles.textTitle}>
-                    Créer mon plan d'entrainement
+                    Créer mon plan d''entrainement
                     </Text>
                 </View>
             </View>
@@ -234,7 +234,7 @@ export default class CreatePlanBis extends Component {
                     onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>
-                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, objectif, this.state.info, this.state.id, true)}
+                    <TouchableHighlight underlayColor='rgb(217,217,217)' onPress={this.createPlan.bind(this, this.state.nom, this.state.duree, this.state.niveau, state.params.objectif, this.state.info, this.state.id, true)}
                     style={this.state.duree === '' || this.state.niveau === '' || this.state.nom === ''
                     ? styles.invisibleButton
                     : styles.buttonNext}>
