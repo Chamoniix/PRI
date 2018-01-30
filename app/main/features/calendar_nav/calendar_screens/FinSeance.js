@@ -1,3 +1,4 @@
+import { NavigationActions } from 'react-navigation'
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -19,6 +20,12 @@ import {secondes} from './LaunchSeance.js';
 //Dimension of screen :
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'CalendarApp'})
+  ]
+})
 
 export default class FinSeance extends Component<{}> {
 
@@ -34,7 +41,8 @@ export default class FinSeance extends Component<{}> {
     }
 
     toHome = () => {
-      this.props.navigation.navigate('CalendarApp');
+      this.props.navigation.dispatch(resetAction);
+      //this.props.navigation.navigate('CalendarApp');
     }
 
     onChanged(text){

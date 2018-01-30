@@ -17,12 +17,11 @@ import {
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
 var numExercice = -1;
-
-import {seanceLaungedId} from './CalendarApp';
-
 var t0;
 var t1;
 var secondes;
+
+import {seanceLaungedId} from './CalendarApp';
 
 export default class Home extends Component<{}> {
 
