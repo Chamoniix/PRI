@@ -8,6 +8,7 @@ import {
   Text,
   View,
   Button,
+  Dimensions,
   Navigator,
   ActivityIndicator,
   TouchableHighlight,
@@ -16,11 +17,11 @@ import {
   TextInput,
 } from 'react-native';
 
-import {date} from './CalendarApp';
-import {planId} from '../../home_nav/home_screens/CreatePlan2';
+import {date, planNom, id_user} from './CalendarApp';
+var width = Dimensions.get('window').width;
+var height = Dimensions.get('window').height;
 
 var seanceId;
-var dateM;
 export default class AddSeance extends Component<{}> {
 	constructor(props){
         super(props);
@@ -35,7 +36,7 @@ export default class AddSeance extends Component<{}> {
         }
     }
 
-	AddS(nomS, objS, numS, nbR, infoS, date, planId){
+	AddS(nomS, objS, numS, nbR, infoS, date, planNom, id_user){
         this.setState({
             isLoading: true,
         });
@@ -53,14 +54,14 @@ export default class AddSeance extends Component<{}> {
 					nbRepos: nbR,
 					info: infoS,
 					dateS: date,
-					planIdS:planId,
+					planIdS:planNom,
+					userId: id_user,
 
                 })
         })
         .then((response) => response.json())
 		.then((res)=> {
 			seanceId = res;
-			dateM = date;
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,
@@ -97,67 +98,111 @@ export default class AddSeance extends Component<{}> {
 
 		return(
 			<ScrollView>
-			<Text style={styles.firstTitle}>Créer votre seance</Text>
-			<Text style={styles.title}>Nom *</Text>
+			<View style={styles.mainTitle}>
+				<Text style={styles.textTitle}>Créer votre seance</Text>
+			</View>
+			<View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Nom *</Text>
+			</View>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
+				 style={styles.textToFill}
 				 onChangeText={(text) => this.setState({nomSeance: text})}
 			  />
-			<Text style={styles.title}>Objectif</Text>
+			  
+			  <View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Objectif</Text>
+			</View>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
+				 style={styles.textToFill}
 				onChangeText={(text) => this.setState({objSeance: text})}
 			  />
-			<Text style={styles.title}>Jours de repos qui suivent *</Text>
+			  
+			  <View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Numéros de la séance *</Text>
+			</View>
 			<TextInput
 				editable = {true}
 				maxLength = {40}
 				keyboardType = 'numeric'
-				 onChangeText={(text) => this.setState({nbRepos: text})}
-			  />
-			<Text style={styles.title}>Numéros de la séance *</Text>
-			<TextInput
-				editable = {true}
-				maxLength = {40}
-				keyboardType = 'numeric'
+				 style={styles.textToFill}
 				 onChangeText={(text) => this.setState({numSeance: text})}
 			  />
-			<Text style={styles.title}>Informations</Text>
+			  <View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Informations</Text>
+			</View>
 			<TextInput
 				editable = {true}
 				maxLength = {140}
+				 style={styles.textToFill}
 				 onChangeText={(text) => this.setState({infoSeance: text})}
 			  />
 
-
-			<Button
-			onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planId)}
-			title="Continuer" style={styles.bouton}/>
+			
+			<View style={{alignItems: 'flex-end'}}>
+				<TouchableHighlight underlayColor='rgb(217,217,217)'
+				onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planNom, id_user)}
+				style={this.state.nomSeance === '' || this.state.numSeance === 0 ? styles.invisibleButton
+						: styles.buttonNext}>
+					 <Text style={this.state.nomSeance === '' || this.state.numSeance === 0
+								? styles.invisibleText
+								: styles.textTitle}>Sauvegarder</Text>
+					
+				</TouchableHighlight>
+			</View>
 			</ScrollView>
 		);
 	}
 }
 
 const styles = StyleSheet.create({
-  title: {
-	  paddingTop :10,
-    textAlign:'center',
-    backgroundColor: 'rgb(204, 204, 204)',
-  },
+  
+    textTitle:{
+        color: 'white',
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10
+    },
   textTitle:{
       color: 'white',
       fontSize: 20,
       textAlign: 'center',
       margin: 10
   },
+    mainTitle: {
+        backgroundColor: 'rgb(125,125,125)',
+    },
   firstTitle: {
 	  fontSize: 20,
 	  padding :10,
     textAlign:'center',
    // backgroundColor: 'rgb(204, 204, 204)',
   },
+    secondTitle: {
+        backgroundColor: '#FF3366',
+    },
+  buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 150,
+    },
+	
+    invisibleText: {
+        fontSize: 0,
+    },
+    textToFill:{
+       height: height* 0.06,
+       width: width*0.8,
+       borderWidth: .5,
+       borderColor: "#000000",
+       margin: 15,
+       color: 'rgb(125,125,125)',
+		borderRadius:3,
+   },
 });
 
-export{seanceId, dateM};
+export{seanceId};

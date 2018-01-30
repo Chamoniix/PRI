@@ -27,7 +27,6 @@ var planId;
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-
 const resetAction = NavigationActions.reset({
   index: 0,
   actions: [
@@ -145,6 +144,7 @@ export default class CreatePlanBis extends Component {
               //TODO
             }else{
               planId = res;
+			  //versCal = true;
               this.props.navigation.dispatch(resetAction);
               this.props.navigation.navigate('Calendar');
             }
@@ -154,7 +154,7 @@ export default class CreatePlanBis extends Component {
               hasInternet: false,
               isLoading: false,
           })
-          this.createPlan(name, length, level, objectifid, information, id, false);
+          setTimeout(() => this.createPlan(name, length, level, objectifid, information, id, false), 3000);
         });
     }
 
@@ -221,7 +221,7 @@ export default class CreatePlanBis extends Component {
                     </Text>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <TextInput onSubmitEditing={() => this.refs.comm.focus()} returnKeyType='next' style={styles.textToFill}
+                    <TextInput returnKeyType='done' style={styles.textToFill}
                     underlineColorAndroid={'transparent'} onChangeText={(name) => this.setState({nom: name})} value={this.state.nom}/>
                 </View>
                 <View style={styles.secondTitle}>
@@ -230,7 +230,7 @@ export default class CreatePlanBis extends Component {
                     </Text>
                 </View>
                 <View style={{alignItems: 'center'}}>
-                    <TextInput ref='comm' returnKeyType='done' style={styles.textToFill} underlineColorAndroid={'transparent'}
+                    <TextInput returnKeyType='done' style={styles.textToFill} underlineColorAndroid={'transparent'}
                     onChangeText={(comm) => this.setState({info: comm})} value={this.state.info}/>
                 </View>
                 <View style={{alignItems: 'flex-end'}}>

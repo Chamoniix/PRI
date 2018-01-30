@@ -14,38 +14,44 @@ import {
   ScrollView,
   Navigator,
   Picker,
+  AsyncStorage,
+  RefreshControl
 } from 'react-native';
 
 var date;
-
-import {dateM} from './AddSeance';
-//import {userId} from './UserLogin';
+var id_user;
 
 var listDate=[];
 var mark;
 var cpt = 0;
-var dateMarke=new Object();
 
 var dateMarked=[];
 var seanceLaungedId = null;
 
-// TODO Enlever l'initialisation quand création utilisateur faite.
-var userId = 2;
 var rowsPlanByUser = [];
-
+var planNom = "";
 var dateSeance = [];
 
+var unefois = true;
 export default class CalendarApp extends Component {
 	constructor(props){
         super(props);
 		this.state = {
 			isLoading: true,
             hasInternet: true,
-            selectedPlan:"",
+            selectedPlan:planNom,
+			idUser:'',
+			versCal:"",
 		};
 		seanceLaungedId = null;
+		rowsPlanByUser = [];
 	}
-
+ 
+	componentDidMount(){
+        AsyncStorage.getItem('userId').then((value) =>(this.getPlanByUser(value),
+		this.GetDateSeance(value, planNom))).done();
+    }
+	
 	CheckSeance(date){
 		this.setState({
             isLoading: true,
@@ -65,20 +71,26 @@ export default class CalendarApp extends Component {
         .then((response) => response.json())
 		.then((res)=> {
 			seanceLaungedId = res[0].seance_id;
+			unefois = true;
 			this.props.navigation.navigate('Seance');
 			this.setState({
                 isLoading: false,
             })
 		})
         .catch((error) => {
-			this.props.navigation.navigate('AddSeance');
+			if(planNom === "" || planNom === "Selectionnez votre plan" ){
+				Alert.alert("Choisissez un plan d'entrainement");
+			}else{
+				unefois = true;
+				this.props.navigation.navigate('AddSeance');
+			}
 			this.setState({
                 isLoading: false,
             })
         });
 	}
 	
-	GetDateSeance(userId, planNom){
+	GetDateSeance(userId, planNo){
 		this.setState({
             isLoading: true,
         });
@@ -91,7 +103,7 @@ export default class CalendarApp extends Component {
                 },
             body: JSON.stringify({
 					userid: userId,
-					plannom: planNom,
+					planN: planNo,
                 })
         })
         .then((response) => response.json())
@@ -99,15 +111,15 @@ export default class CalendarApp extends Component {
 			dateSeance = [];
 			dateMarked=[];
             for( var i=0; i<res.length; i++){
-              dateSeance.push(res[i].date_seance);
+              dateSeance[i] = res[i].date_seance;
             }
-			//Alert.alert("ok");
 			this.setState({
                 isLoading: false,
             })
 		})
         .catch((error) => {
-			Alert.alert("erreur");
+			dateSeance = [];
+			dateMarked=[];
 			this.setState({
                 isLoading: false,
             })
@@ -118,7 +130,9 @@ export default class CalendarApp extends Component {
 		date = day.dateString;
 		this.CheckSeance(date);
 	}
-  componentDidMount(){
+  getPlanByUser(id){
+	  this.setState({idUser: id})
+	  id_user = this.state.idUser;
         return fetch(path + 'getPlanByUser.php',
         {
             method: "POST",
@@ -127,23 +141,24 @@ export default class CalendarApp extends Component {
                     "Content-Type": "application/json"
                 },
             body: JSON.stringify({
-                    userid: userId,
+                    userid: id,
                 })
         })
         .then((response) => response.json())
         .then((res) => {
+			rowsPlanByUser[0] = "Selectionnez votre plan";
             for( var i=0; i<res.length; i++){
-              rowsPlanByUser[i] = res[i].plan_nom;
+              rowsPlanByUser[i+1] = res[i].plan_nom;
             }
             this.setState({
                 isLoading: false,
-                selectedPlan: rowsPlanByUser[0],
-                rowsPlanByUser: rowsPlanByUser,
+                //selectedPlan: rowsPlanByUser[0],
+                //rowsPlanByUser: rowsPlanByUser,
             })
         })
         .catch((error) => {
+			
           this.setState({
-              hasInternet: false,
               isLoading: false,
           })
         });
@@ -151,19 +166,10 @@ export default class CalendarApp extends Component {
 
 	render() {
 		if(dateSeance.length!=0){
-			//Alert.alert("taille : "+dateSeance.length);
 			for(var i=0; i<dateSeance.length; i++){
-				//Alert.alert("date "+dateSeance[0]);
-             dateMarked[dateSeance[i]]={selected: true};
+             dateMarked[dateSeance[i]]={selected: true, selectedColor: 'green'};
             }
 		}
-		if(dateM!=null){
-			Alert.alert("dateM : "+dateM);
-			listDate.push(dateM);
-			dateMarked[listDate[cpt]]={selected: true};
-			cpt = cpt + 1;
-		}
-
     if(!this.state.hasInternet){
         return(
             <View style={{flex: 1, justifyContent: 'center'}}>
@@ -184,7 +190,7 @@ export default class CalendarApp extends Component {
       );
     }
 
-    let planItems = this.state.rowsPlanByUser.map( (s, i) => {
+    let planItems = rowsPlanByUser.map( (s, i) => {
            return <Picker.Item key={i} value={s} label={s} />;
        });
 	   
@@ -193,20 +199,37 @@ export default class CalendarApp extends Component {
        return (
     <ScrollView>
       <View>
-        <Text style={styles.firstTitle}>Selectionnez votre plan ! :)</Text>
+		<View style={styles.mainTitle}>
+			<Text style={styles.textTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
+		</View>
+		<View style={styles.secondTitle}>
+			<Text style={styles.textTitle}>Selectionnez votre plan ! :)</Text>
+		</View>
         <Picker
-            selectedValue={this.state.selectedPlan}
-            onValueChange={ (plan) => ( 
-								this.setState({selectedPlan:plan}),
-								this.GetDateSeance(userId, this.state.selectedPlan)
+            selectedValue={planNom}
+            onValueChange={ (plan) => (this.setState({selectedPlan:plan}),
+								planNom = plan,
+								this.GetDateSeance(this.state.idUser, plan)
 								) }>
           {planItems}
         </Picker>
 
         <Text style = {styles.text}>{this.state.user}</Text>
-      </View>
-    <Text style={styles.firstTitle}>Pour creer vos séances, cliquez sur un jour du calendrier</Text>
+		</View>
+	  
       <Calendar
+	  theme={{
+		backgroundColor: '#ffffff',
+		calendarBackground: '#ffffff',
+		textSectionTitleColor: '#FF3366',
+		selectedDayBackgroundColor: '#00adf5',
+		todayTextColor: '#FF3366',
+		textDisabledColor: '#FF3366',
+		arrowColor: '#FF3366',
+		textDayFontSize: 16,
+		textMonthFontSize: 16,
+		textDayHeaderFontSize: 16
+	  }}
       onDayPress={this.GetDay.bind(this)}
       markedDates={dateMarked}
         />
@@ -237,6 +260,14 @@ const styles = StyleSheet.create({
     textAlign:'center',
    // backgroundColor: 'rgb(204, 204, 204)',
   },
+    secondTitle: {
+        backgroundColor: '#FF3366',
+    },
+    mainTitle: {
+        backgroundColor: 'rgb(125,125,125)',
+    },
+	
+  
 });
 
-export {date, seanceLaungedId};
+export {date, seanceLaungedId, planNom, id_user};

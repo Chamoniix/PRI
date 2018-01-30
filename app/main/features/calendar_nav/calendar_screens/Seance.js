@@ -11,8 +11,14 @@ import {
   Alert,
   ActivityIndicator,
   TextInput,
+  TouchableHighlight,
 } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+
+import {seanceId} from './AddSeance';
+import {idExercice, nomExo} from './ChoixExercice';
+import {seanceLaungedId} from './CalendarApp';
+
 // dimensions of the screen
 var w = Dimensions.get('window').width;
 var h = Dimensions.get('window').height;
@@ -32,28 +38,22 @@ rep[4]=0;
 rep[5]=0;
 // valeur de l'id exo
 var ex = new Array(8);
-
-//var seanceId = 39;
-
-import {seanceId} from './AddSeance';
-import {idExercice, nomExo} from './ChoixExercice';
-import {seanceLaungedId} from './CalendarApp';
+// associer l'exercice a la bonne place
 var valEx;
-
+// valeur de l'exo
 var ele = new Array(8);
-// mode edit ou non
-//var edit = false;
 // nom exo
 var exoNom = [];
-
+// variable pour savoir si on a deja choisi des exos (ou si on vient de addSeance du coup)
+var choixExo = false;
 export default class Seance extends Component<{}> {
 
 	constructor(props){
         super(props);
 		this.state = {
 			isLoading: false,
-          hasInternet: true,
-		  edit: true,
+			hasInternet: true,
+			edit: true,
 		};
 	}
 
@@ -62,12 +62,23 @@ export default class Seance extends Component<{}> {
 		    this.InfoSeance(seanceLaungedId)
 		}
 	}
-
+	
+	initialization(){
+		for(var i=1; i<6; i++){
+			ser[i]=0;
+		}
+		for(var i=1; i<6; i++){
+			rep[i]=0;
+		}
+		exoNom = [];
+		ex = new Array(8);
+		choixExo = false;
+	}
+	
   gotToChoixZoneCorps = (value) => {
     this.props.navigation.navigate('ChoixZoneCorps');
     valEx = value;
-    /*ex[value] = idExercice;
-    Alert.alert("idExercice "+idExercice);*/
+	choixExo=true;
   }
 
   AddSeanceExo(seanceId, idEx, nbrR, nbrS){
@@ -163,7 +174,12 @@ export default class Seance extends Component<{}> {
 	}
 	// on va a calandarApp
 	this.props.navigation.navigate('CalendarApp');
+	this.initialization();
 
+  }
+  
+  editTrue= () => {
+	  this.setState({edit:true});
   }
 
   render() {
@@ -201,8 +217,7 @@ export default class Seance extends Component<{}> {
 		}
 	}else{
 		for(var i=1; i<6; i++){
-
-			if(idExercice != null){
+			if(choixExo!= false){
 				if(ex[i]===idExercice){
 					ele[i]=
 						<TouchableOpacity onPress={this.gotToChoixZoneCorps.bind(this,i)}>
@@ -249,14 +264,7 @@ export default class Seance extends Component<{}> {
 	);
 
 
-	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetion'];
-    /*const tableData = [
-      ['1', ele[1], serie(1), repet[1]],
-      ['2', ele[2], serie(2), repet[2]],
-      ['3', ele[3], serie(3), repet[3]],
-      ['4', ele[4], serie(4), repet[4]],
-      ['5', ele[5], serie(5), repet[5]],
-    ];*/
+	const tableHead = ['', 'Atelier', 'Nombre de serie', 'Nombre de repetition'];
 	const tableData = [
       ['1', ele[1], serie(1), repet(1)],
       ['2', ele[2], serie(2), repet(2)],
@@ -266,29 +274,38 @@ export default class Seance extends Component<{}> {
     ];
     return (
       <ScrollView>
-		<Table style={styles.table}>
+	  <View>
+		<View>
+		</View>
+		<Table style={styles.table}  borderStyle={{borderWidth: 0.5, borderColor: '#c8e1ff'}}>
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
 		{(() => {
 			if(this.state.edit === false){
 				return(
-          <View style={styles.buttons}>
-  					<View style={styles.buttonStyleModif}>
-  						<Button title="Modifier" color="#FF3366" onPress={() => {edit=true}}/>
-            </View>
-            <View style={styles.buttonStyleComm}>
-  						<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance')}}/>
-  					</View>
-          </View>
+					<View style={styles.buttons}>
+						<View style={styles.buttonStyleModif}>
+							<Button title="Modifier" color="#FF3366" onPress={this.editTrue.bind()}/>
+						</View>
+						<View style={styles.buttonStyleComm}>
+							<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
+																						this.initialization()}}/>
+						</View>
+					</View>
 				);
 			}else{
 				return(
-					<Button title="Sauvegarder" style={styles.bouton} onPress={this.test.bind(this)}/>
+					<View style={{alignItems: 'flex-end'}}>
+						<TouchableHighlight underlayColor='rgb(217,217,217)'  onPress={this.test.bind(this)} style={styles.buttonNext}>
+							<Text style={ styles.textTitle}>Sauvegarder</Text>
+						</TouchableHighlight>
+					</View>
 				);
 			}
 
        })()}
+	   </View>
       </ScrollView>
     );
   }
@@ -296,7 +313,6 @@ export default class Seance extends Component<{}> {
 
 const styles = StyleSheet.create({
   table:{
-
   },
   container: {
     flex: 1,
@@ -318,7 +334,7 @@ const styles = StyleSheet.create({
   head: {
 	width : w,
 	height: w/5,
-	backgroundColor: 'rgb(140,140,140)'
+	 backgroundColor: '#FF3366',
   },
   headText: {
 	textAlign:'center',
@@ -333,7 +349,7 @@ const styles = StyleSheet.create({
   row: {
 	width : w,
 	height: w/5,
-	backgroundColor: 'rgb(208,208,208)'
+	backgroundColor: 'white'
 	},
   buttons: {
     flexDirection: 'row',
@@ -349,7 +365,13 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     flex: 0.5,
     alignItems: 'flex-end',
-  }
+  },
+  buttonNext: {
+        margin: 15,
+        backgroundColor: 'rgb(125,125,125)',
+        borderRadius:5,
+        width: 150,
+    },
 });
 
 export{seanceLaungedId}
