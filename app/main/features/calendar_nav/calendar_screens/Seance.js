@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   TextInput,
   TouchableHighlight,
+  BackHandler,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation'
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
@@ -163,33 +164,37 @@ export default class Seance extends Component<{}> {
         });
     }
 
-  test = () => {
-	var k = 1;
-	//this.InfoSeance(seance_id);
-	//if(seanceLaungedId===null){
-	if(this.state.edit === true){
-		while(rep[k]!=0){
-		this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
-			k = k + 1;
+	test = () => {
+		var k = 1;
+		if(this.state.edit === true){
+			while(rep[k]!=0){
+			this.AddSeanceExo(seanceId, ex[k], rep[k], ser[k]);
+				k = k + 1;
+			}
+
 		}
+		// re initialisation des variables
+		for(var i=1; i<6; i++){
+			ser[i]=0;
+		}
+		for(var i=1; i<6; i++){
+			rep[i]=0;
+		}
+		// on va a calandarApp
+		this.props.navigation.dispatch(resetAction);
+		this.initialization();
 
 	}
-	// re initialisation des variables
-	for(var i=1; i<6; i++){
-		ser[i]=0;
-	}
-	for(var i=1; i<6; i++){
-		rep[i]=0;
-	}
-	// on va a calandarApp
-	this.props.navigation.dispatch(resetAction);
-	this.initialization();
 
-  }
+	editTrue = () => {
+		this.setState({edit:true});
+	}
 
-  editTrue= () => {
-	  this.setState({edit:true});
-  }
+	retour = () => {
+		this.props.navigation.dispatch(resetAction);
+		this.initialization()
+	}
+	
 
   render() {
    if(this.state.isLoading){
@@ -295,7 +300,7 @@ export default class Seance extends Component<{}> {
 				return(
 					<View style={styles.buttons}>
 						<View style={styles.buttonStyleModif}>
-							<Button title="Modifier" color="#FF3366" onPress={this.editTrue.bind()}/>
+							<Button title="Retour" color="#FF3366" onPress={this.retour.bind()}/>
 						</View>
 						<View style={styles.buttonStyleComm}>
 							<Button title="Commencer >" color="#FF3366" onPress={() => {this.props.navigation.navigate('LaunchSeance'),
