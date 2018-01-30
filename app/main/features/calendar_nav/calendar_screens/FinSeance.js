@@ -41,8 +41,9 @@ export default class FinSeance extends Component<{}> {
     }
 
     toHome = () => {
+      //if (this.state.note)
+      //alert(this.state.note);
       this.props.navigation.dispatch(resetAction);
-      //this.props.navigation.navigate('CalendarApp');
     }
 
     onChanged(text){

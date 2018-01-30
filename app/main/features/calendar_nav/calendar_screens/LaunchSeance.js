@@ -104,8 +104,8 @@ export default class Home extends Component<{}> {
       });
     }
 
-    coucou = () => {
-        Alert.alert(this.state.exercice_nom + " : C'est quoi ?");
+    alertDescription = () => {
+        Alert.alert("Description de l'exercice");
     }
 
     exerciceSuivant = () => {
@@ -130,7 +130,6 @@ export default class Home extends Component<{}> {
     }
 
   render() {
-
     let imgCreer = path.replace("php", "img") + this.state.imgPath;
 
     if(this.state.isLoading){
@@ -158,15 +157,15 @@ export default class Home extends Component<{}> {
               <View style={styles.section}>
                   <Image source={{ uri: imgCreer }} style={{height: h*0.5, width: w, opacity: 0.7}}/>
               </View>
-              <Text style={styles.caption} onPress={() => this.coucou()}>
+              <Text style={styles.caption} onPress={() => this.alertDescription()}>
                 {this.state.exercice_nom}
               </Text>
 
-              <Text style={styles.smallTitle} onPress={() => this.coucou()}>
+              <Text style={styles.smallTitle} onPress={() => this.alertDescription()}>
                 Nombre de répétition : {this.state.nb_repetitions}
               </Text>
 
-              <Text style={styles.smallTitle} onPress={() => this.coucou()}>
+              <Text style={styles.smallTitle} onPress={() => this.alertDescription()}>
                 Nombre de séries : {this.state.nb_series}
               </Text>
 
