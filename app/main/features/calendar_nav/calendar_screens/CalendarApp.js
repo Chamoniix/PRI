@@ -51,6 +51,7 @@ export default class CalendarApp extends Component {
         this.GetDateSeance(id_user, planNom);
   }
 
+
 getPlanByUser(id){
   this.setState({idUser: id})
   id_user = this.state.idUser;
@@ -83,7 +84,8 @@ getPlanByUser(id){
       });
   }
 
-	CheckSeance(date){
+
+	CheckSeance(date, id_user){
 		this.setState({
             isLoading: true,
         });
@@ -96,7 +98,7 @@ getPlanByUser(id){
                 },
             body: JSON.stringify({
 					dateS: date,
-
+					idU: id_user,
                 })
         })
         .then((response) => response.json())
@@ -159,8 +161,40 @@ getPlanByUser(id){
 
 	GetDay(day) {
 		date = day.dateString;
-		this.CheckSeance(date);
+		this.CheckSeance(date, id_user);
 	}
+  getPlanByUser(id){
+	  this.setState({idUser: id})
+	  id_user = this.state.idUser;
+        return fetch(path + 'getPlanByUser.php',
+        {
+            method: "POST",
+            headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify({
+                    userid: id,
+                })
+        })
+        .then((response) => response.json())
+        .then((res) => {
+			rowsPlanByUser[0] = "Selectionnez votre plan";
+            for( var i=0; i<res.length; i++){
+              rowsPlanByUser[i+1] = res[i].plan_nom;
+            }
+            this.setState({
+                isLoading: false,
+            })
+        })
+        .catch((error) => {
+			
+          this.setState({
+              isLoading: false,
+          })
+        });
+    }
+
 
 	render() {
 		if(dateSeance.length!=0){
@@ -222,7 +256,7 @@ getPlanByUser(id){
 		textSectionTitleColor: '#FF3366',
 		selectedDayBackgroundColor: '#00adf5',
 		todayTextColor: '#FF3366',
-		textDisabledColor: '#FF3366',
+		textDisabledColor: 'rgb(204, 204, 204)',
 		arrowColor: '#FF3366',
 		textDayFontSize: 16,
 		textMonthFontSize: 16,
