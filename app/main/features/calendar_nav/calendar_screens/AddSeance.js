@@ -17,7 +17,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import {date, planNom, id_user} from './CalendarApp';
+//import {date, planNom, id_user} from './CalendarApp';
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
 
@@ -87,7 +87,7 @@ export default class AddSeance extends Component<{}> {
             </View>
         );
     }
-    
+
     if(this.state.isLoading){
             return(
                 <View style={{flex: 1, paddingTop: 20}}>
@@ -110,7 +110,7 @@ export default class AddSeance extends Component<{}> {
 				 style={styles.textToFill}
 				 onChangeText={(text) => this.setState({nomSeance: text})}
 			  />
-			  
+
 			  <View style={styles.secondTitle}>
 			<Text style={styles.textTitle}>Objectif</Text>
 			</View>
@@ -120,7 +120,7 @@ export default class AddSeance extends Component<{}> {
 				 style={styles.textToFill}
 				onChangeText={(text) => this.setState({objSeance: text})}
 			  />
-			  
+
 			  <View style={styles.secondTitle}>
 			<Text style={styles.textTitle}>Numéros de la séance *</Text>
 			</View>
@@ -141,16 +141,17 @@ export default class AddSeance extends Component<{}> {
 				 onChangeText={(text) => this.setState({infoSeance: text})}
 			  />
 
-			
+
 			<View style={{alignItems: 'flex-end'}}>
 				<TouchableHighlight underlayColor='rgb(217,217,217)'
-				onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance, date, planNom, id_user)}
+				onPress={this.AddS.bind(this, this.state.nomSeance, this.state.objSeance, this.state.numSeance, this.state.nbRepos, this.state.infoSeance,
+          this.props.navigation.state.params.date, this.props.navigation.state.params.planNom, this.props.navigation.state.params.userId)}
 				style={this.state.nomSeance === '' || this.state.numSeance === 0 ? styles.invisibleButton
 						: styles.buttonNext}>
 					 <Text style={this.state.nomSeance === '' || this.state.numSeance === 0
 								? styles.invisibleText
 								: styles.textTitle}>Sauvegarder</Text>
-					
+
 				</TouchableHighlight>
 			</View>
 			</ScrollView>
@@ -159,7 +160,7 @@ export default class AddSeance extends Component<{}> {
 }
 
 const styles = StyleSheet.create({
-  
+
     textTitle:{
         color: 'white',
         fontSize: 20,
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
         borderRadius:5,
         width: 150,
     },
-	
+
     invisibleText: {
         fontSize: 0,
     },

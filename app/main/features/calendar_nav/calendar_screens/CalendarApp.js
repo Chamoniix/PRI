@@ -113,7 +113,7 @@ getPlanByUser(id){
 				Alert.alert("Choisissez un plan d'entrainement");
 			}else{
 				unefois = true;
-				this.props.navigation.navigate('AddSeance');
+				this.props.navigation.navigate('AddSeance', {date: date, planNom: planNom, userId: id_user});
 			}
 			this.setState({
                 isLoading: false,
@@ -268,4 +268,4 @@ const styles = StyleSheet.create({
 
 });
 
-export {date, seanceLaungedId, planNom, id_user};
+export {seanceLaungedId};
