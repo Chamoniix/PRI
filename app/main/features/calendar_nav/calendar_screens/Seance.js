@@ -13,6 +13,7 @@ import {
   TextInput,
   TouchableHighlight,
 } from 'react-native';
+import { NavigationActions } from 'react-navigation'
 import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
 import {seanceId} from './AddSeance';
@@ -46,6 +47,14 @@ var ele = new Array(8);
 var exoNom = [];
 // variable pour savoir si on a deja choisi des exos (ou si on vient de addSeance du coup)
 var choixExo = false;
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [
+    NavigationActions.navigate({ routeName: 'CalendarApp'})
+  ]
+})
+
 export default class Seance extends Component<{}> {
 
 	constructor(props){
@@ -62,7 +71,7 @@ export default class Seance extends Component<{}> {
 		    this.InfoSeance(seanceLaungedId)
 		}
 	}
-	
+
 	initialization(){
 		for(var i=1; i<6; i++){
 			ser[i]=0;
@@ -74,7 +83,7 @@ export default class Seance extends Component<{}> {
 		ex = new Array(8);
 		choixExo = false;
 	}
-	
+
   gotToChoixZoneCorps = (value) => {
     this.props.navigation.navigate('ChoixZoneCorps');
     valEx = value;
@@ -173,11 +182,11 @@ export default class Seance extends Component<{}> {
 		rep[i]=0;
 	}
 	// on va a calandarApp
-	this.props.navigation.navigate('CalendarApp');
+	this.props.navigation.dispatch(resetAction);
 	this.initialization();
 
   }
-  
+
   editTrue= () => {
 	  this.setState({edit:true});
   }
