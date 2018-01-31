@@ -71,7 +71,7 @@ export default class Seance extends Component<{}> {
 
 		if(seanceLaungedId != null){
       this.descriptionSeance(seanceLaungedId);
-		    this.InfoSeance(seanceLaungedId)
+		  this.InfoSeance(seanceLaungedId);
 		}
 	}
 
@@ -324,7 +324,7 @@ export default class Seance extends Component<{}> {
       ['5', ele[5], serie(5), repet(5)],
     ];
     return (
-      <View>
+      <ScrollView>
       <View style={styles.mainTitle}>
           <Text style={styles.textTitle}>
             {this.state.planSeance} - {this.state.nomSeance}
@@ -333,19 +333,27 @@ export default class Seance extends Component<{}> {
 
       <ScrollView>
 	  <View>
-		<View>
-		</View>
+
 		<Table style={styles.table}  borderStyle={{borderWidth: 0.5, borderColor: '#c8e1ff'}}>
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
+
       <View>
-          <Text style={styles.description}>
+      {(() => {
+  			if(this.state.objectifSeance != ""){
+          return (<Text style={styles.description}>
             Objectif : {this.state.objectifSeance}
-          </Text>
-          <Text style={styles.description}>
-            Info     : {this.state.infoSeance}
-          </Text>
+          </Text>);
+        }
+      })()}
+      {(() => {
+        if(this.state.infoSeance != ""){
+          return (<Text style={styles.description}>
+            Info : {this.state.infoSeance}
+          </Text>)};
+
+      })()}
       </View>
 		{(() => {
 			if(this.state.edit === false){
@@ -373,7 +381,7 @@ export default class Seance extends Component<{}> {
        })()}
 	   </View>
       </ScrollView>
-      </View>
+      </ScrollView>
     );
   }
 }
