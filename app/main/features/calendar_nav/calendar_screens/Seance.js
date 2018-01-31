@@ -19,6 +19,7 @@ import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-ta
 import {seanceId} from './AddSeance';
 import {idExercice, nomExo} from './ChoixExercice';
 import {seanceLaungedId} from './CalendarApp';
+import {planNom} from './CalendarApp';
 
 // dimensions of the screen
 var w = Dimensions.get('window').width;
@@ -67,7 +68,9 @@ export default class Seance extends Component<{}> {
 	}
 
 	componentDidMount(){
+
 		if(seanceLaungedId != null){
+      this.descriptionSeance(seanceLaungedId);
 		    this.InfoSeance(seanceLaungedId)
 		}
 	}
@@ -122,6 +125,45 @@ export default class Seance extends Component<{}> {
             console.error(error);
         });
     }
+
+    descriptionSeance(seanceLaungedId){
+         this.setState({
+              isLoading: true,
+          });
+          return fetch(path + 'getSeanceDescription.php',
+          {
+              method: "POST",
+              headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json"
+                  },
+              body: JSON.stringify({
+                      seanceid: seanceLaungedId,
+                  })
+          })
+          .then((response) => response.json())
+  		.then((res)=> {
+  		  if(res !== '0 result'){
+          this.setState({
+            nomSeance: res[0].seance_nom,
+            objectifSeance: res[0].seance_objectif,
+            planSeance: res[0].plan_nom,
+            infoSeance: res[0].seance_info,
+          });
+  				}
+
+  			this.setState({
+                  isLoading: false,
+              })
+  		})
+          .catch((error) => {
+  			this.setState({
+                hasInternet: false,
+                  isLoading: false,
+              })
+              console.error(error);
+          });
+      }
 
 	InfoSeance(seanceLaungedId){
        this.setState({
@@ -282,6 +324,13 @@ export default class Seance extends Component<{}> {
       ['5', ele[5], serie(5), repet(5)],
     ];
     return (
+      <View>
+      <View style={styles.mainTitle}>
+          <Text style={styles.textTitle}>
+            {this.state.planSeance} - {this.state.nomSeance}
+          </Text>
+      </View>
+
       <ScrollView>
 	  <View>
 		<View>
@@ -290,6 +339,14 @@ export default class Seance extends Component<{}> {
           <Row data={tableHead} style={styles.head} textStyle={styles.headText}/>
           <Rows data={tableData} style={styles.row} textStyle={styles.text}/>
         </Table>
+      <View>
+          <Text style={styles.description}>
+            Objectif : {this.state.objectifSeance}
+          </Text>
+          <Text style={styles.description}>
+            Info     : {this.state.infoSeance}
+          </Text>
+      </View>
 		{(() => {
 			if(this.state.edit === false){
 				return(
@@ -316,6 +373,7 @@ export default class Seance extends Component<{}> {
        })()}
 	   </View>
       </ScrollView>
+      </View>
     );
   }
 }
@@ -328,6 +386,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  textTitle:{
+      color: 'white',
+      fontSize: 20,
+      textAlign: 'center',
+      margin: 10
+  },
+  mainTitle: {
+      backgroundColor: 'rgb(125,125,125)',
   },
   welcome: {
     fontSize: 20,
@@ -368,6 +435,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flex: 0.5,
     alignItems: 'flex-start',
+  },
+  description: {
+    fontSize : 20,
+    color : 'grey'
   },
   buttonStyleComm: {
     marginTop: 30,
